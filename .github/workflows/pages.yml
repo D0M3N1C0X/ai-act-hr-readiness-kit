@@ -24,6 +24,9 @@ jobs:
           mkdir -p site
           cp reports/index.html site/index.html
           cp deliverables/ai_act_hr_register.xlsx site/
+          # the browser tool, with the sample systems it offers to try; no visit counter on this page
+          mkdir -p site/tool
+          cp -R web/* site/tool/
           cp site-assets/og.png site/og.png
           python3 - <<'PY'
           from pathlib import Path

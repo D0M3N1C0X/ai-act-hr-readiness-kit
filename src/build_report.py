@@ -103,7 +103,8 @@ def write() -> dict:
                   for row in r.itertuples()], "lllll"))
     add("")
     add("*Workers in scope: employees of the employers and departments where the system is used. Recruitment systems "
-        "also reach applicants, who are not counted.*")
+        "also reach applicants, who are not counted. The same register runs on any list of systems in the "
+        "[browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/).*")
     add("")
     add("How the class is decided, in this order:")
     add("")

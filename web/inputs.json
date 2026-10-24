@@ -1,0 +1,389 @@
+{
+ "assessment": "2026-10-24",
+ "dates": {
+  "chapters_i_ii": "2025-02-02",
+  "general": "2026-08-02",
+  "annex_iii": "2027-12-02"
+ },
+ "classes": [
+  "Prohibited",
+  "High-risk",
+  "Not high-risk (Art. 6(3))",
+  "Transparency only",
+  "Minimal risk"
+ ],
+ "countries": [
+  "IT",
+  "PL",
+  "DE",
+  "ES"
+ ],
+ "entities": {
+  "IT": "IT · Milan",
+  "PL": "PL · Kraków",
+  "DE": "DE · Munich",
+  "ES": "ES · Barcelona"
+ },
+ "departments": [
+  "Customer Service",
+  "Finance",
+  "HR",
+  "Operations",
+  "Sales",
+  "Tech"
+ ],
+ "headcount": [
+  {
+   "country": "DE",
+   "department": "Customer Service",
+   "workers": 209
+  },
+  {
+   "country": "DE",
+   "department": "Finance",
+   "workers": 79
+  },
+  {
+   "country": "DE",
+   "department": "HR",
+   "workers": 73
+  },
+  {
+   "country": "DE",
+   "department": "Operations",
+   "workers": 185
+  },
+  {
+   "country": "DE",
+   "department": "Sales",
+   "workers": 92
+  },
+  {
+   "country": "DE",
+   "department": "Tech",
+   "workers": 103
+  },
+  {
+   "country": "ES",
+   "department": "Customer Service",
+   "workers": 149
+  },
+  {
+   "country": "ES",
+   "department": "Finance",
+   "workers": 44
+  },
+  {
+   "country": "ES",
+   "department": "HR",
+   "workers": 43
+  },
+  {
+   "country": "ES",
+   "department": "Operations",
+   "workers": 112
+  },
+  {
+   "country": "ES",
+   "department": "Sales",
+   "workers": 71
+  },
+  {
+   "country": "ES",
+   "department": "Tech",
+   "workers": 74
+  },
+  {
+   "country": "IT",
+   "department": "Customer Service",
+   "workers": 310
+  },
+  {
+   "country": "IT",
+   "department": "Finance",
+   "workers": 106
+  },
+  {
+   "country": "IT",
+   "department": "HR",
+   "workers": 77
+  },
+  {
+   "country": "IT",
+   "department": "Operations",
+   "workers": 260
+  },
+  {
+   "country": "IT",
+   "department": "Sales",
+   "workers": 125
+  },
+  {
+   "country": "IT",
+   "department": "Tech",
+   "workers": 175
+  },
+  {
+   "country": "PL",
+   "department": "Customer Service",
+   "workers": 328
+  },
+  {
+   "country": "PL",
+   "department": "Finance",
+   "workers": 105
+  },
+  {
+   "country": "PL",
+   "department": "HR",
+   "workers": 89
+  },
+  {
+   "country": "PL",
+   "department": "Operations",
+   "workers": 294
+  },
+  {
+   "country": "PL",
+   "department": "Sales",
+   "workers": 146
+  },
+  {
+   "country": "PL",
+   "department": "Tech",
+   "workers": 194
+  }
+ ],
+ "obligations": [
+  {
+   "key": "O01",
+   "name": "AI literacy of the staff who operate or use it",
+   "article": "Art. 4",
+   "when": "in use",
+   "from": "2025-02-02",
+   "who": "Deployer",
+   "evidence": "Training plan per system and role; measures taken, not a guaranteed level (wording of Reg. 2026/1744)"
+  },
+  {
+   "key": "O02",
+   "name": "Stop the prohibited use",
+   "article": "Art. 5(1)(f)",
+   "when": "prohibited",
+   "from": "2025-02-02",
+   "who": "Deployer",
+   "evidence": "Decision to stop, date, data deleted, supplier told"
+  },
+  {
+   "key": "O03",
+   "name": "People told they are talking to an AI",
+   "article": "Art. 50(1)",
+   "when": "interacts",
+   "from": "2026-08-02",
+   "who": "Provider; deployer checks",
+   "evidence": "Screenshot of the notice; clause in the supplier contract"
+  },
+  {
+   "key": "O04",
+   "name": "Use as instructed, with named human oversight",
+   "article": "Art. 26(1)-(2)",
+   "when": "high-risk",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Instructions for use on file; named overseers with training and authority to override"
+  },
+  {
+   "key": "O05",
+   "name": "Input data relevant and representative",
+   "article": "Art. 26(4)",
+   "when": "high-risk and input",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Data checks before each run; who owns the input"
+  },
+  {
+   "key": "O06",
+   "name": "Monitor; report risks and serious incidents; suspend",
+   "article": "Art. 26(5)",
+   "when": "high-risk",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Monitoring routine; incident procedure with the supplier's contact"
+  },
+  {
+   "key": "O07",
+   "name": "Keep the logs for at least six months",
+   "article": "Art. 26(6)",
+   "when": "high-risk",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Retention setting; who can read the logs"
+  },
+  {
+   "key": "O08",
+   "name": "Tell workers' representatives and affected workers before use",
+   "article": "Art. 26(7)",
+   "when": "high-risk at work",
+   "from": "2027-12-02",
+   "who": "Employer",
+   "evidence": "Dated notice to representatives and workers, through the national procedure"
+  },
+  {
+   "key": "O09",
+   "name": "Data protection impact assessment built on the provider's information",
+   "article": "Art. 26(9); GDPR Art. 35",
+   "when": "high-risk",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "DPIA signed off by the DPO; provider's Article 13 information attached"
+  },
+  {
+   "key": "O10",
+   "name": "Tell the people decisions are made about",
+   "article": "Art. 26(11)",
+   "when": "high-risk and decides",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Notice in the candidate or employee journey"
+  },
+  {
+   "key": "O11",
+   "name": "Explain a decision on request",
+   "article": "Art. 86",
+   "when": "high-risk and decides",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Explanation template; who answers and how fast"
+  },
+  {
+   "key": "O12",
+   "name": "Provider duties for a system built in-house",
+   "article": "Art. 16 and 25",
+   "when": "high-risk in-house",
+   "from": "2027-12-02",
+   "who": "Employer as provider",
+   "evidence": "Quality management, technical documentation, conformity assessment, EU registration"
+  },
+  {
+   "key": "O13",
+   "name": "Not-high-risk assessment documented",
+   "article": "Art. 6(4)",
+   "when": "derogation",
+   "from": "2027-12-02",
+   "who": "Provider; deployer keeps it",
+   "evidence": "The provider's documented assessment, on file"
+  }
+ ],
+ "worker_rules": [
+  {
+   "key": "W-IT1",
+   "country": "IT",
+   "name": "Information on automated decision or monitoring systems",
+   "source": "D.lgs. 152/1997 art. 1-bis; L. 132/2025 art. 11",
+   "when": "fully automated",
+   "what": "Purposes, logic, data and parameters, controls, accuracy and possible discriminatory effects, in writing to each worker and to the union representatives (RSA/RSU)",
+   "timing": "Before work starts, or 24 hours before a change"
+  },
+  {
+   "key": "W-IT2",
+   "country": "IT",
+   "name": "Agreement or authorisation for tools that can monitor workers",
+   "source": "Statuto dei lavoratori, art. 4",
+   "when": "monitors",
+   "what": "An agreement with the union representatives or, failing that, authorisation by the labour inspectorate",
+   "timing": "Before the tool is installed"
+  },
+  {
+   "key": "W-DE1",
+   "country": "DE",
+   "name": "Information and consultation on planned AI in work procedures",
+   "source": "BetrVG §90(1) Nr. 3, §90(2)",
+   "when": "used on workers",
+   "what": "Inform the works council with the documents, and consult it while its views can still change the plan",
+   "timing": "At the planning stage"
+  },
+  {
+   "key": "W-DE2",
+   "country": "DE",
+   "name": "Co-determination on technical devices able to monitor conduct or performance",
+   "source": "BetrVG §87(1) Nr. 6",
+   "when": "processes performance",
+   "what": "A works agreement; without it the system cannot lawfully be used",
+   "timing": "Before introduction"
+  },
+  {
+   "key": "W-DE3",
+   "country": "DE",
+   "name": "Co-determination on selection guidelines, also when AI is used",
+   "source": "BetrVG §95(1), (2a)",
+   "when": "selects",
+   "what": "Works council consent to the selection criteria",
+   "timing": "Before use in hiring, transfer or dismissal decisions"
+  },
+  {
+   "key": "W-DE4",
+   "country": "DE",
+   "name": "An expert for the works council, deemed necessary for AI",
+   "source": "BetrVG §80(3)",
+   "when": "used on workers",
+   "what": "Budget and access for an expert of the works council's choosing",
+   "timing": "When the works council assesses the system"
+  },
+  {
+   "key": "W-ES1",
+   "country": "ES",
+   "name": "Information on the parameters of algorithms affecting work",
+   "source": "Estatuto de los Trabajadores art. 64.4.d",
+   "when": "affects work",
+   "what": "The parameters, rules and instructions the system is based on, to the works council",
+   "timing": "Before use, and with the periodicity that applies"
+  },
+  {
+   "key": "W-PL1",
+   "country": "PL",
+   "name": "Notice of monitoring other than video",
+   "source": "Kodeks pracy art. 22³",
+   "when": "monitors",
+   "what": "Purpose, scope and method in the workplace rules; notice to each worker",
+   "timing": "At least two weeks before it starts"
+  }
+ ],
+ "not_applicable": [
+  {
+   "name": "Fundamental rights impact assessment",
+   "article": "Art. 27",
+   "why": "Owed by public bodies, private entities providing public services, and deployers of credit and insurance systems (Annex III 5(b)-(c)). A private employer using HR systems is none of these."
+  },
+  {
+   "name": "Registration of the use in the EU database",
+   "article": "Art. 26(8), 49(3)",
+   "why": "Owed by deployers that are public authorities. A provider registers its own systems (Art. 49(1)), which here means the in-house attrition model."
+  }
+ ],
+ "choices": {
+  "supplier": [
+   "Vendor",
+   "In-house"
+  ],
+  "scope": [
+   "All",
+   "Customer Service",
+   "Finance",
+   "HR",
+   "Operations",
+   "Sales",
+   "Tech"
+  ],
+  "annex_iii": [
+   "None",
+   "4(a)",
+   "4(b)"
+  ],
+  "art6_3_condition": [
+   "None",
+   "(a)",
+   "(b)",
+   "(c)",
+   "(d)"
+  ]
+ }
+}

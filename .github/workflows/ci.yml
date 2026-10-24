@@ -25,12 +25,14 @@ jobs:
         run: python src/run_all.py
       - name: Text outputs are unchanged
         run: |
-          git diff --exit-code --stat -- reports \
+          git diff --exit-code --stat -- reports web tests/fixtures \
             || (echo "::error::Rebuilding changed a committed output - the pipeline is not deterministic" && exit 1)
       - name: The workbook has the same content
         run: python src/deterministic.py --check deliverables/ai_act_hr_register.xlsx
       - name: Tests
         run: pytest -q
+      - name: The browser tool gives the same results as Python
+        run: node tests/js/check_engine.mjs
 
   workbook:
     # The register recalculated by a real spreadsheet engine and checked against Python.

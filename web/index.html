@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Act check for HR</title>
+<meta name="description" content="Classify your HR team's AI systems under the EU AI Act, see what each one owes and from when, and whom to tell in each country. Nothing leaves the computer.">
+<link rel="stylesheet" href="design/strumenti.css">
+<style>
+  #risultati, #wizard { display: none; }
+  .q { border-top: 1px solid var(--line-soft); padding: 16px 0; }
+  .q:first-of-type { border-top: 0; }
+  .q > legend, .q > .lab { font-weight: 600; font-size: 17px; padding: 0; margin-bottom: 4px; }
+  fieldset.q { border: 0; border-top: 1px solid var(--line-soft); margin: 0; min-width: 0; }
+  .opts { display: grid; gap: 6px; margin-top: 8px; }
+  .opts label { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; font-size: 16px; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: var(--radius-s); cursor: pointer; }
+  .opts label:has(input:checked) { border-color: var(--accent); background: var(--accent-wash); }
+  .opts input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+  .opts.row { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .opts small { display: block; color: var(--muted); font-size: 14px; }
+  .opts label:has(input:checked) small { color: var(--ink-2); }
+  .verdict { position: sticky; bottom: 12px; margin-top: 18px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius-s); padding: 14px 16px; box-shadow: var(--shadow); }
+  .verdict .why { color: var(--ink-2); font-size: 15px; margin-top: 6px; }
+  .text-in { width: 100%; min-height: 44px; font: 400 16px var(--font); border: 1px solid var(--line); border-radius: 10px;
+    padding: 8px 12px; background: var(--surface); color: var(--ink); }
+  .row-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+  .s-drop .file { font-weight: 600; color: var(--good); }
+  .country h3 { font-size: 17px; margin: 18px 0 6px; }
+  .country ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+  .country li span { color: var(--muted); font-size: 14px; }
+  .note { color: var(--muted); font-size: 13px; }
+  .print-only { display: none; }
+  @media print { .print-only { display: block; margin-bottom: 16px; } #risultati { display: block !important; }
+    #passo-sistemi, #wizard, .s-privacy, .s-actions, .row-actions { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="s-page">
+  <div class="s-top">
+    <a class="s-brand" href="../" data-i18n="brand">AI Act Readiness Kit for HR</a>
+    <div class="s-lang" data-lang-switch role="group" aria-label="Language · Lingua">
+      <button type="button" data-lang="en">EN</button><button type="button" data-lang="it">IT</button>
+    </div>
+  </div>
+
+  <header class="s-hero">
+    <p class="s-eyebrow" data-i18n="eyebrow">EU AI Act · Regulation (EU) 2024/1689, as amended in 2026</p>
+    <h1 data-i18n="title">Which of your HR team's AI systems are high-risk?</h1>
+    <p data-i18n="lead">Answer a few plain questions about each AI system, or load a list. You get its class, what it owes and from when, and whom to tell in each country.</p>
+  </header>
+
+  <div class="s-privacy" role="note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <span data-i18n="privacy">Your answers stay on this computer: everything runs in this page and nothing is sent anywhere.</span>
+  </div>
+
+  <section class="s-card" id="passo-sistemi" aria-labelledby="h-sistemi">
+    <h2 id="h-sistemi"><span class="s-step">1</span><span data-i18n="step1">Your AI systems</span></h2>
+    <p class="s-sub" data-i18n="step1sub">Add them one at a time with the questions, or load a list you already have.</p>
+    <div class="s-actions" style="margin-top:0">
+      <button type="button" class="s-btn is-primary" id="aggiungi" data-i18n="aggiungi">Add a system</button>
+      <label class="s-btn" for="file-lista"><span data-i18n="carica">Load a list (Excel or CSV)</span></label>
+      <input type="file" id="file-lista" accept=".xlsx,.csv,text/csv" class="s-visually-hidden">
+      <button type="button" class="s-btn" id="esempio" data-i18n="esempio">Try the sample: 12 systems</button>
+      <span class="s-why"><a href="template_ai_systems.csv" download data-i18n="modello">List template</a></span>
+    </div>
+    <div class="s-msg is-error" id="errore" role="alert"></div>
+    <div class="s-table-wrap" id="lista-wrap" style="margin-top:18px" tabindex="0" role="region" data-i18n-attr="aria-label:step1"><table class="s-table" id="lista"></table></div>
+  </section>
+
+  <section class="s-card" id="wizard" aria-labelledby="h-wizard">
+    <h2 id="h-wizard"><span class="s-step">2</span><span id="wizard-title" data-i18n="wizard">About this system</span></h2>
+    <form id="form" novalidate>
+      <div class="q"><label class="lab" for="f-name" data-i18n="qNome">What is it called?</label>
+        <input class="text-in" id="f-name" required autocomplete="off" data-i18n-attr="placeholder:qNomePh"></div>
+      <div id="domande"></div>
+      <div class="verdict" aria-live="polite"><div id="verdetto"></div><div class="why" id="perche"></div></div>
+      <div class="s-actions">
+        <button type="submit" class="s-btn is-primary" data-i18n="salva">Save this system</button>
+        <button type="button" class="s-btn" id="annulla" data-i18n="annulla">Cancel</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="risultati" aria-live="polite">
+    <div class="print-only"><h2 data-i18n="stampaTitolo">AI Act check</h2><p id="stampa-meta"></p></div>
+    <div class="s-kpis" id="kpis"></div>
+
+    <section class="s-card" aria-labelledby="h-registro">
+      <h2 id="h-registro" data-i18n="registro">The register</h2>
+      <p class="s-sub" data-i18n="registroSub">Each system's class under the AI Act, and why.</p>
+      <div class="s-table-wrap" tabindex="0" role="region" data-i18n-attr="aria-label:registro"><table class="s-table" id="tab-registro"></table></div>
+    </section>
+
+    <section class="s-card" aria-labelledby="h-obblighi">
+      <h2 id="h-obblighi" data-i18n="obblighi">What applies, and when</h2>
+      <p class="s-sub" data-i18n="obblighiSub">The duties for high-risk systems start on 2 December 2027; the ban and AI literacy apply already.</p>
+      <div class="s-table-wrap" tabindex="0" role="region" data-i18n-attr="aria-label:obblighi"><table class="s-table" id="tab-obblighi"></table></div>
+      <p class="note" id="nota-na"></p>
+    </section>
+
+    <section class="s-card" aria-labelledby="h-avvisi">
+      <h2 id="h-avvisi" data-i18n="avvisi">Whom to tell, country by country</h2>
+      <p class="s-sub" data-i18n="avvisiSub">National rules on informing workers and their representatives. They apply now, whatever the AI Act's timetable.</p>
+      <div id="paesi"></div>
+      <div class="s-actions">
+        <button type="button" class="s-btn" id="scarica" data-i18n="scarica">Download in Excel</button>
+        <button type="button" class="s-btn" id="stampa" data-i18n="stampa">Print</button>
+      </div>
+    </section>
+  </section>
+
+  <footer class="s-foot"><span data-i18n="footer">The same rules as the kit's Python register and Excel model, checked against each other on every change. Not legal advice.</span>
+    <a href="../" data-i18n="rapporto">Report</a> · <a href="https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit/blob/main/docs/method.md" data-i18n="metodo">Method</a> ·
+    <a href="https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit/blob/main/docs/worker-information.md" data-i18n="pacchetto">Worker information pack</a> ·
+    <a href="https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit" data-i18n="codice">Code</a></footer>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

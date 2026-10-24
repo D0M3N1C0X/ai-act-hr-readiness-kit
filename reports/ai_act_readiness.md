@@ -31,7 +31,7 @@
 | Writing and translation assistant | HR service | Minimal risk | Deployer | 282 |
 | Internal mobility matching | Talent | High-risk | Deployer | 3,443 |
 
-*Workers in scope: employees of the employers and departments where the system is used. Recruitment systems also reach applicants, who are not counted.*
+*Workers in scope: employees of the employers and departments where the system is used. Recruitment systems also reach applicants, who are not counted. The same register runs on any list of systems in the [browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/).*
 
 How the class is decided, in this order:
 

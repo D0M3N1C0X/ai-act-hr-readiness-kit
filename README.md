@@ -4,7 +4,8 @@
 </picture>
 
 <p align="center">
-  <a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/"><b>Read the report</b></a> ·
+  <a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/"><b>Check your own AI systems</b></a> ·
+  <a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/">Read the report</a> ·
   <a href="https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit/raw/main/deliverables/ai_act_hr_register.xlsx">Excel register</a> ·
   <a href="docs/worker-information.md">Worker information pack</a>
 </p>
@@ -41,12 +42,20 @@ and the notices each country requires.
 | **The attrition model makes the employer a provider.** HR analytics built it, so the provider's duties come with it: quality management, technical documentation, conformity assessment, registration (Art. 16 and 25). | **Two duties apply already**: AI literacy for the staff using 11 systems (Art. 4, softened by the Omnibus) and telling people they are talking to an AI for 2 (Art. 50(1)). |
 | **Germany's works council is the constraint today**: 8 systems to inform it about, 5 that need its agreement before use (BetrVG §87(1) Nr. 6). | **Spain owes the works council the parameters of 7 systems; Italy, notices for 2 fully automated systems** and a union agreement for a monitoring tool; Poland, two weeks' notice of monitoring. |
 
+## Check your own systems
+
+The same register runs in the browser. Answer plain questions about each AI system ("does it score or rank people?",
+"does it read emotions?"), or load the list you already have in Excel or CSV: each system gets its class and the
+reason, the obligations with their dates, and the national rules on telling the workers, and the result downloads as
+an Excel workbook. English and Italian. **Nothing leaves the computer.**
+
 ## What you get
 
 | Deliverable | For | What is in it |
 |---|---|---|
 | [`ai_act_hr_register.xlsx`](deliverables/ai_act_hr_register.xlsx) | the HR, legal and data protection team | Nine sheets: the register with twenty answers per system and its class, the obligations each system triggers, the national rules on telling the workers, a timeline, headcount, settings and a reconciliation sheet. **Every class and obligation is a live formula**: change an answer and the system is reclassified. |
 | [`ai_act_readiness.md`](reports/ai_act_readiness.md) · [online](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/) | the HR director and the board | Answer first: the register, what applies when, the notices country by country, the boundary cases, the next 90 days. |
+| [Browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/) | the HR business partner, on the client's own systems | Guided questions or a file; class, obligations and notices per system; an Excel download. Runs in the page. |
 | [`worker-information.md`](docs/worker-information.md) | HR business partners and employee relations | Who to tell, when and what, in Italy, Germany, Spain and Poland, with a model notice for each (in Italian for Italy). |
 | [`docs/method.md`](docs/method.md) · [`docs/verification.md`](docs/verification.md) | reviewers | The classification rules and the choices the text leaves open; the source and status of every legal statement. |
 
@@ -67,7 +76,7 @@ and the notices each country requires.
 
 | | |
 |---|---|
-| **Two engines, one answer** | Python and the workbook's live formulas, reconciled on 317 checks and recalculated in CI by LibreOffice; a test changes an answer and checks that both engines reclassify the system |
+| **Three engines, one answer** | Python and the workbook's live formulas, reconciled on 317 checks and recalculated in CI by LibreOffice; the browser tool checked against Python on 10,078 values from the twelve systems and 2,000 random ones; a test changes an answer and checks the workbook reclassifies the system |
 | **Law read in the original** | the Official Journal for the AI Act and the Omnibus; normattiva, gesetze-im-internet and the BOE for the national rules; a [verification register](docs/verification.md) with the status of each |
 | **Reproducible** | one command rebuilds every output; CI fails if a rebuilt file differs from the committed one |
 
@@ -100,9 +109,11 @@ pytest                       # includes the workbook calculated in pure Python
 │   ├── build_workbook.py        the Excel register and its reconciliation sheet
 │   ├── check_workbook.py        proves the formulas reproduce Python
 │   ├── build_report.py          the report and its page
+│   ├── build_web.py             the tool's inputs and the cases its JavaScript is checked on
 │   └── run_all.py               the whole pipeline
 ├── deliverables/                the workbook
 ├── reports/                     the report and its HTML page
+├── web/                         the browser tool (engine.js mirrors register.py)
 └── docs/                        method, verification register, worker information pack
 ```
 
