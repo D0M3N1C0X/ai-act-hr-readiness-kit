@@ -23,6 +23,8 @@ ASSESSMENT_DATE = date(2026, 10, 24)
 ENTITIES = {"IT": "IT · Milan", "PL": "PL · Kraków", "DE": "DE · Munich", "ES": "ES · Barcelona"}
 COUNTRIES = list(ENTITIES)
 DEPARTMENTS = ["Customer Service", "Finance", "HR", "Operations", "Sales", "Tech"]
+CHOICES = {"supplier": ["Vendor", "In-house"], "annex_iii": ["None", "4(a)", "4(b)"],
+           "art6_3_condition": ["None", "(a)", "(b)", "(c)", "(d)"]}
 
 # ---- Classification (Articles 5, 6 and 50) ----------------------------------------------------------------------
 PROHIBITED = "Prohibited"
@@ -36,6 +38,8 @@ CLASSES = [PROHIBITED, HIGH_RISK, DEROGATION, TRANSPARENCY, MINIMAL]
 D_CHAPTERS_I_II = date(2025, 2, 2)      # Articles 4 and 5
 D_GENERAL = date(2026, 8, 2)            # the rest, Article 50 included, unless listed below
 D_ANNEX_III = date(2027, 12, 2)         # Chapter III Sections 1-3 for Annex III systems: Articles 6 to 27
+# Article 111(2), as amended: a high-risk system whose type and model was on the market before D_ANNEX_III falls under
+# the Regulation only once its design changes significantly (Reg. 2026/1744, Art. 1(39) and recital 39).
 
 # ---- Obligations ----------------------------------------------------------------------------------------------------
 # key: (short name, article, applies when, from, who acts, evidence a reviewer would ask for)
@@ -45,7 +49,7 @@ OBLIGATIONS = [
      "Training plan per system and role; measures taken, not a guaranteed level (wording of Reg. 2026/1744)"),
     ("O02", "Stop the prohibited use", "Art. 5(1)(f)", "prohibited", D_CHAPTERS_I_II, "Deployer",
      "Decision to stop, date, data deleted, supplier told"),
-    ("O03", "People told they are talking to an AI", "Art. 50(1)", "interacts", D_GENERAL, "Provider; deployer checks",
+    ("O03", "People told they are talking to an AI: the supplier's duty, checked by the employer", "Art. 50(1)", "interacts", D_GENERAL, "Provider; deployer checks",
      "Screenshot of the notice; clause in the supplier contract"),
     ("O04", "Use as instructed, with named human oversight", "Art. 26(1)-(2)", "high-risk", D_ANNEX_III, "Deployer",
      "Instructions for use on file; named overseers with training and authority to override"),
@@ -63,7 +67,7 @@ OBLIGATIONS = [
      "Notice in the candidate or employee journey"),
     ("O11", "Explain a decision on request", "Art. 86", "high-risk and decides", D_ANNEX_III, "Deployer",
      "Explanation template; who answers and how fast"),
-    ("O12", "Provider duties for a system built in-house", "Art. 16 and 25", "high-risk in-house", D_ANNEX_III,
+    ("O12", "Provider duties for a system built in-house", "Art. 3(3), 16", "high-risk in-house", D_ANNEX_III,
      "Employer as provider", "Quality management, technical documentation, conformity assessment, EU registration"),
     ("O13", "Not-high-risk assessment documented", "Art. 6(4)", "derogation", D_ANNEX_III, "Provider; deployer keeps it",
      "The provider's documented assessment, on file"),
@@ -78,32 +82,42 @@ NOT_APPLICABLE = [
     ("Registration of the use in the EU database", "Art. 26(8), 49(3)",
      "Owed by deployers that are public authorities. A provider registers its own systems (Art. 49(1)), which here "
      "means the in-house attrition model."),
+    ("Annex III point 3, education and vocational training", "Annex III, 3",
+     "Covers education and vocational training institutions; an employer's course suggestions that do not feed "
+     "promotion or pay are not in it."),
 ]
 
 # ---- Telling the workers: national rules ---------------------------------------------------------------------------
 # key: (country, rule, source, applies when, what it asks, when)
 WORKER_RULES = [
-    ("W-IT1", "IT", "Information on automated decision or monitoring systems", "D.lgs. 152/1997 art. 1-bis; L. 132/2025 art. 11",
-     "fully automated", "Purposes, logic, data and parameters, controls, accuracy and possible discriminatory effects, "
-     "in writing to each worker and to the union representatives (RSA/RSU)", "Before work starts, or 24 hours before a change"),
-    ("W-IT2", "IT", "Agreement or authorisation for tools that can monitor workers", "Statuto dei lavoratori, art. 4",
-     "monitors", "An agreement with the union representatives or, failing that, authorisation by the labour inspectorate",
+    ("W-IT1", "IT", "Information on fully automated decision or monitoring systems",
+     "D.lgs. 152/1997 art. 1-bis co. 1-6; L. 132/2025 art. 11", "fully automated",
+     "In writing, to each worker and to the union representatives (RSA/RSU): the aspects of the job affected, purposes, "
+     "logic and functioning, data and main parameters, control and correction measures, accuracy, robustness and "
+     "cybersecurity, possible discriminatory effects; in a structured, machine-readable format",
+     "Before work starts; at least 24 hours before any change to that information"),
+    ("W-IT2", "IT", "Agreement or authorisation for tools that allow remote monitoring", "Statuto dei lavoratori, art. 4",
+     "monitors", "Only for organisational and production needs, safety or protection of company assets, and with an "
+     "agreement with the union representatives or, failing that, authorisation by the labour inspectorate; tools used "
+     "to do the work and attendance records are exempt; the data can be used only with adequate information to workers",
      "Before the tool is installed"),
     ("W-DE1", "DE", "Information and consultation on planned AI in work procedures", "BetrVG §90(1) Nr. 3, §90(2)",
-     "used on workers", "Inform the works council with the documents, and consult it while its views can still change the plan",
-     "At the planning stage"),
+     "in the country", "Inform the works council with the documents, and consult it while its views can still change "
+     "the plan", "At the planning stage"),
     ("W-DE2", "DE", "Co-determination on technical devices able to monitor conduct or performance", "BetrVG §87(1) Nr. 6",
-     "processes performance", "A works agreement; without it the system cannot lawfully be used",
-     "Before introduction"),
-    ("W-DE3", "DE", "Co-determination on selection guidelines, also when AI is used", "BetrVG §95(1), (2a)",
-     "selects", "Works council consent to the selection criteria", "Before use in hiring, transfer or dismissal decisions"),
+     "processes performance", "A works agreement; without it the system cannot lawfully be used. Courts read 'able to' "
+     "broadly, so systems that log identifiable use may also need one", "Before introduction"),
+    ("W-DE3", "DE", "Co-determination on selection guidelines", "BetrVG §95(1); (2a) where AI helps draw them up",
+     "selects", "Works council consent to the selection criteria the system applies", "Before use in hiring, transfer "
+     "or dismissal decisions"),
     ("W-DE4", "DE", "An expert for the works council, deemed necessary for AI", "BetrVG §80(3)",
-     "used on workers", "Budget and access for an expert of the works council's choosing", "When the works council assesses the system"),
+     "in the country", "An expert, agreed with the employer as to person, subject and cost; for AI its necessity is "
+     "presumed", "When the works council assesses the system"),
     ("W-ES1", "ES", "Information on the parameters of algorithms affecting work", "Estatuto de los Trabajadores art. 64.4.d",
      "affects work", "The parameters, rules and instructions the system is based on, to the works council",
-     "Before use, and with the periodicity that applies"),
-    ("W-PL1", "PL", "Notice of monitoring other than video", "Kodeks pracy art. 22³",
-     "monitors", "Purpose, scope and method in the workplace rules; notice to each worker",
-     "At least two weeks before it starts"),
+     "With the periodicity that applies; before use is the prudent reading"),
+    ("W-PL1", "PL", "Notice of monitoring other than video", "Kodeks pracy art. 22³ §4 with art. 22² §§6-10",
+     "monitors", "Allowed only where needed for full use of working time and proper use of work tools; purpose, scope "
+     "and method in the workplace rules", "At least two weeks before it starts; new hires in writing before they start"),
 ]
 WORKER_KEYS = [r[0] for r in WORKER_RULES]

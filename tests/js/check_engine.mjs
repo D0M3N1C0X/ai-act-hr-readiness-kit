@@ -9,7 +9,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 for (const c of V.cases) {
   const r = assess(c.system, V.cfg, V.cfg.headcount);
-  for (const k of ["class", "role", "workers", "obligations", "rules"])
+  for (const k of ["class", "role", "timing", "workers", "obligations", "rules"])
     expect(same(r[k], c[k]), `${c.system.system_id} ${k}: ${JSON.stringify(r[k])} vs ${JSON.stringify(c[k])}`);
 }
 // Reading answers the way files write them

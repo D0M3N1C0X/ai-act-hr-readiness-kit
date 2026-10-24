@@ -5,7 +5,7 @@ Sources and their status are in [verification.md](verification.md).
 
 ## The answers about each system
 
-Every system has the same twenty answers in [`data/ai_systems.csv`](../data/ai_systems.csv), with a written
+Every system has the same eighteen answers in [`data/ai_systems.csv`](../data/ai_systems.csv), with a written
 rationale. They are inputs in the workbook's Register sheet, so a reviewer who disagrees with one changes it and sees
 the consequences.
 
@@ -20,7 +20,8 @@ the consequences.
 | Decides or helps decide about people | Yes/No | Art. 26(11), Art. 86 |
 | Fully automated; monitors workers | Yes/No | Italy art. 1-bis, Statuto art. 4, Kodeks pracy art. 22³ |
 | Employer controls the input data | Yes/No | Art. 26(4) |
-| Supplier | Vendor, In-house | Art. 25: who is the provider |
+| Supplier | Vendor, In-house | Art. 3(3) and (11): who is the provider |
+| Type and model on the market before 2 December 2027 | Yes/No | Art. 111(2): when the high-risk duties bite |
 
 ## Classification, in order
 
@@ -45,7 +46,14 @@ Thirteen obligations, each with the condition that triggers it and the date it a
   applies from 2 August 2026, but it attaches to decisions based on high-risk Annex III systems, a classification in
   Chapter III that applies to them from 2 December 2027.
 - **The in-house attrition model** carries the provider's duties (Art. 16) because the employer puts it into service
-  for its own use; the register does not list the provider's duties one by one.
+  for its own use (Art. 3(3) and (11)); the register does not list the provider's duties one by one.
+- **Systems already on the market (Art. 111(2), as amended by Reg. 2026/1744).** A high-risk system whose type and
+  model was on the market or in service before 2 December 2027 falls under the Regulation only once its design
+  changes significantly; recital 39 makes the type and model, not the employer's installation, decisive. The register
+  shows this in a column of its own and keeps the obligations listed, because a supplier's next major release or a
+  retrained in-house model ends the grace period.
+- **Annex III point 3** (education and vocational training) is ruled out for the learning recommendations: it covers
+  training institutions, and the courses suggested do not feed promotion or pay.
 
 ## Telling the workers
 
@@ -53,12 +61,12 @@ Eight national rules (`WORKER_RULES`), each tied to the answers:
 
 | Rule | Triggered when the system is used in the country and |
 |---|---|
-| IT art. 1-bis | fully automated, and in Annex III without a 6(3) condition or monitoring workers |
+| IT art. 1-bis | used on employees, fully automated, and high-risk or monitoring workers (applicants who are hired are told at hiring) |
 | IT Statuto art. 4 | monitors workers |
-| DE §90 and §80(3) | used on employees |
-| DE §87(1) Nr. 6 | monitors workers, or is used on employees and in Annex III without a 6(3) condition |
-| DE §95(2a) | Annex III 4(a) and profiling: it applies selection criteria |
-| ES art. 64.4.d | in Annex III without a 6(3) condition |
+| DE §90 and §80(3) | used in Germany at all: every system changes how HR staff or others work |
+| DE §87(1) Nr. 6 | monitors workers, or is used on employees and high-risk; a minimum, since courts read "able to monitor" broadly |
+| DE §95 | Annex III 4(a), profiling and deciding about people: it applies selection criteria (§95(1); §95(2a) where AI helps draw them up) |
+| ES art. 64.4.d | high-risk: it affects decisions on working conditions or access to employment |
 | PL art. 22³ | monitors workers |
 
 A prohibited system triggers none of them: it has to stop, not be notified.
@@ -69,4 +77,6 @@ A prohibited system triggers none of them: it has to stop, not be notified.
 recomputes all of them with live formulas written as the same tests in the same order, and its Reconciliation sheet
 checks every pair. CI recalculates the workbook with LibreOffice; the tests calculate it in pure Python with
 [excel-twin](https://github.com/D0M3N1C0X/excel-twin), and check that changing an answer reclassifies a system in
-both engines.
+the workbook. Answers must be spelled exactly as allowed (`register.validate`): Excel compares text without regard to
+case and Python does not, so a stray "yes" would let them disagree. The browser tool's `web/engine.js` is checked
+against Python on the twelve systems and 2,000 random ones.

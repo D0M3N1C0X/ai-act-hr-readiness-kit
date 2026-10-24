@@ -25,25 +25,41 @@ Whatever the country, a notice that would satisfy all four regimes covers the sa
 
 | | |
 |---|---|
-| **Rule** | D.lgs. 152/1997, art. 1-bis, as recalled by L. 132/2025, art. 11(2); Statuto dei lavoratori, art. 4 for tools that can monitor workers |
-| **Applies to** | Decision or monitoring systems that are *integralmente automatizzati* (fully automated) and bear on hiring, management, termination, task assignment, or monitoring and evaluating workers |
-| **Tell** | Each worker, in writing, and the company union representatives (RSA/RSU), or the regional offices of the most representative unions where there are none |
-| **When** | Before work starts; for a system introduced later, at least 24 hours before |
-| **Content** | Purposes, logic and functioning, categories of data and main parameters, control and correction measures, accuracy, robustness and cybersecurity levels, possible discriminatory effects of the metrics (art. 1-bis, co. 2); in a structured, machine-readable format (co. 6) |
-| **Monitoring tools** | Art. 4: an agreement with the union representatives or, failing that, authorisation from the labour inspectorate, before installation |
+| **Rule** | D.lgs. 152/1997, art. 1-bis, as recalled by L. 132/2025, art. 11(2); Statuto dei lavoratori, art. 4 for tools that allow remote monitoring |
+| **Applies to** | Decision or monitoring systems that are *integralmente automatizzati* (fully automated) and bear on hiring, management, termination, task assignment, or monitoring and evaluating workers (co. 1). The register leaves out systems used only on applicants who are never hired; candidates who are hired are told at hiring |
+| **Tell** | Each worker, in writing, and the company union representatives (RSA/RSU) or, where there are none, the territorial offices of the unions comparatively most representative at national level (co. 6) |
+| **When** | Before work starts; any change to the information that alters working conditions, in writing at least 24 hours before (co. 5) |
+| **Content** | The aspects of the employment relationship affected; purposes; logic and functioning; categories of data and main parameters used to programme or train the system, including how performance is evaluated; control measures and correction processes, and the person responsible for the quality management system; accuracy, robustness and cybersecurity levels and the metrics used to measure them, and possible discriminatory effects (co. 2); in a structured, commonly used, machine-readable format (co. 6) |
+| **Rights** | The worker, directly or through the unions, can access the data and ask for further information; the employer answers in writing within 30 days (co. 3) |
+| **Monitoring tools** | Art. 4: only for organisational and production needs, safety or protection of company assets, after an agreement with the union representatives or, failing that, authorisation from the labour inspectorate; tools used to perform the work and attendance records are exempt; the data can be used only if workers have adequate information on how the tools are used (co. 1-3) |
 | **Open point** | Whether "fully automated" still limits the duty now that L. 132/2025 extends it to the use of AI "in the cases and in the manner" of art. 1-bis. The register applies the narrow reading and flags it |
 
 **Modello (italiano)**
 
-> Oggetto: informativa sull'utilizzo di sistemi automatizzati (art. 1-bis D.lgs. 152/1997; art. 11 L. 132/2025)
+> Oggetto: informativa sui sistemi decisionali o di monitoraggio integralmente automatizzati (art. 1-bis
+> D.lgs. 152/1997; art. 11 L. 132/2025)
 >
-> Dal [data] l'azienda utilizza [nome del sistema], fornito da [fornitore], per [finalità: es. comporre i turni del
-> magazzino]. Il sistema elabora [categorie di dati: es. competenze certificate, disponibilità, presenze dei sei mesi
-> precedenti] e propone [risultato]. I parametri che pesano di più sono [elenco]. Le proposte sono pubblicate
-> automaticamente; [ruolo] può modificarle in ogni momento. Verifichiamo ogni [periodo] l'accuratezza del sistema e
-> l'assenza di effetti discriminatori, con [misura]. Può chiedere spiegazioni, la correzione dei dati o la revisione di
-> una decisione a [contatto]; risponderemo per iscritto entro 30 giorni. La presente informativa è inviata anche alle
-> RSA/RSU.
+> **Quale sistema e da quando.** Dal [data] l'azienda utilizza [nome del sistema], fornito da [fornitore].
+>
+> **Aspetti del rapporto di lavoro interessati.** [Per esempio: l'assegnazione dei turni nel magazzino di Milano.]
+>
+> **Scopi e finalità.** [Per esempio: coprire i turni con le competenze richieste e distribuire i carichi.]
+>
+> **Logica e funzionamento.** Il sistema elabora [categorie di dati: competenze certificate, disponibilità, presenze
+> dei sei mesi precedenti] e produce [risultato]. I parametri che pesano di più sono [elenco, in ordine]. Le prestazioni
+> sono valutate [come, se il sistema le valuta].
+>
+> **Controlli e correzioni.** Le proposte sono pubblicate automaticamente; [ruolo] può modificarle in ogni momento e
+> corregge gli errori segnalati entro [tempo]. Responsabile del sistema di gestione della qualità: [nome o funzione].
+>
+> **Accuratezza, robustezza, sicurezza.** [Livello di accuratezza e metrica usata; misure di robustezza e di
+> cybersicurezza]. Verifichiamo ogni [periodo] l'assenza di effetti discriminatori, con [misura].
+>
+> **I suoi diritti.** Può accedere ai dati che la riguardano e chiedere ulteriori informazioni, direttamente o tramite
+> le rappresentanze sindacali, scrivendo a [contatto]; risponderemo per iscritto entro 30 giorni. Ogni modifica di
+> queste informazioni le sarà comunicata per iscritto almeno 24 ore prima.
+>
+> La presente informativa è fornita anche alle RSA/RSU, in formato strutturato e leggibile da dispositivo automatico.
 
 ## Germany
 
@@ -52,8 +68,8 @@ Whatever the country, a notice that would satisfy all four regimes covers the sa
 | **Rule** | Betriebsverfassungsgesetz (BetrVG) §90(1) Nr. 3 and §90(2); §87(1) Nr. 6; §95(1) and (2a); §80(3) |
 | **Information and consultation** | Planning the use of AI in work procedures: inform the works council in good time, with the documents, and consult it while its proposals can still change the plan (§90) |
 | **Co-determination** | Any technical device able to monitor conduct or performance needs the works council's agreement before introduction, usually a works agreement (§87(1) Nr. 6). Courts read "able to" broadly: a system that processes performance data qualifies |
-| **Selection** | Guidelines for selection in hiring, transfers, regrading and dismissals need the works council's consent, also where AI is used to draw them up (§95(2a)) |
-| **Expert** | Where the works council has to assess the introduction or use of AI, an expert is deemed necessary (§80(3)); the employer pays |
+| **Selection** | Guidelines for selection in hiring, transfers, regrading and dismissals need the works council's consent (§95(1)), also where AI is used to draw them up (§95(2a)) |
+| **Expert** | Where the works council has to assess the introduction or use of AI, an expert is deemed necessary (§80(3)); the person, the subject and the cost are still agreed with the employer, who pays |
 | **When** | At the planning stage; the system is not used before the agreement |
 
 **Model (to translate into German)**
@@ -74,7 +90,7 @@ Whatever the country, a notice that would satisfy all four regimes covers the sa
 | **Tell** | The works council (*comité de empresa*), or the staff delegates |
 | **Applies to** | Algorithms or AI systems that affect decisions which may bear on working conditions, access to employment or keeping it, profiling included |
 | **Content** | The parameters, rules and instructions the system is based on |
-| **When** | With the periodicity that applies in each case: before use, and again when the system changes |
+| **When** | "With the periodicity that applies in each case": the law sets no moment, so before use, and again when the system changes, is the prudent reading |
 
 **Model (to translate into Spanish)**
 
@@ -89,11 +105,11 @@ Whatever the country, a notice that would satisfy all four regimes covers the sa
 
 | | |
 |---|---|
-| **Rule** | Kodeks pracy, art. 22³ (monitoring other than video, such as of e-mail or work tools) |
-| **Applies to** | Monitoring needed to organise work so that working time and work tools are used fully and properly |
+| **Rule** | Kodeks pracy, art. 22³ §4 (monitoring other than video), with the information rules of art. 22² §§6-8 |
+| **Applies to** | Monitoring allowed only where necessary so that working time and work tools are used fully and properly (art. 22³ §1 and §4); notice does not make another purpose lawful |
 | **Tell** | Each worker; purpose, scope and method in the workplace rules (collective agreement, work regulations or a notice) |
 | **When** | At least two weeks before the monitoring starts; to new hires before they start work |
-| **Also** | The Act of 3 July 2026 on artificial intelligence systems (Dz.U. 2026 poz. 1003) sets up the supervisory authority (KRiBSI); it adds no information duty for employers beyond the AI Act (secondary sources) |
+| **Also** | The Act of 3 July 2026 on artificial intelligence systems (Dz.U. 2026 poz. 1003), in force 11 August 2026, sets up the supervisory authority (KRiBSI); no information duty for employers beyond the AI Act was found (secondary sources; text not read in full) |
 
 **Model (to translate into Polish)**
 

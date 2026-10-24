@@ -17,8 +17,15 @@ export function classify(s) {
   return s.interacts === YES ? TRANSPARENCY : MINIMAL;
 }
 
-// Article 25: an employer that builds a high-risk system for its own use is its provider.
+// Article 3(3) and (11): an employer that puts a high-risk system into service for its own use is its provider.
 export const role = (s, cls) => (s.supplier === "In-house" && cls === HIGH_RISK ? "Provider and deployer" : "Deployer");
+
+// Article 111(2) as amended by Reg. 2026/1744: a high-risk type and model already on the market before 2 December 2027
+// falls under the Regulation only once its design changes significantly.
+export function timing(s, cls) {
+  if (cls !== HIGH_RISK) return "";
+  return s.on_market_before === YES ? "At its next significant design change" : "From 2 December 2027";
+}
 
 // Employees in the system's scope: its countries, and its department or everyone. headcount: [{country, department, workers}]
 export function workers(s, headcount) {
@@ -50,14 +57,15 @@ export function applies(condition, s, cls) {
 export function triggers(condition, country, s, cls) {
   if (s[`in_${country.toLowerCase()}`] !== YES || cls === PROHIBITED) return false;
   const staff = s.applicants !== YES;
-  const inAnnex = s.annex_iii !== "None" && s.art6_3_condition === "None";
+  const high = cls === HIGH_RISK;
   switch (condition) {
-    case "fully automated": return s.fully_automated === YES && (inAnnex || s.monitors_workers === YES);
+    // art. 1-bis informs the worker: systems used only on applicants are left out
+    case "fully automated": return staff && s.fully_automated === YES && (high || s.monitors_workers === YES);
     case "monitors": return s.monitors_workers === YES;
-    case "used on workers": return staff;
-    case "processes performance": return s.monitors_workers === YES || (staff && inAnnex);
-    case "selects": return s.annex_iii === "4(a)" && s.profiling === YES;
-    case "affects work": return inAnnex;
+    case "in the country": return true;
+    case "processes performance": return s.monitors_workers === YES || (staff && high);
+    case "selects": return s.annex_iii === "4(a)" && s.profiling === YES && s.decides_about_people === YES;
+    case "affects work": return high;
     default: throw new Error(`unknown condition ${condition}`);
   }
 }
@@ -66,7 +74,7 @@ export function triggers(condition, country, s, cls) {
 export function assess(s, cfg, headcount = null) {
   const cls = classify(s);
   return {
-    class: cls, role: role(s, cls), workers: headcount ? workers(s, headcount) : null,
+    class: cls, role: role(s, cls), timing: timing(s, cls), workers: headcount ? workers(s, headcount) : null,
     obligations: cfg.obligations.filter((o) => applies(o.when, s, cls)).map((o) => o.key),
     rules: cfg.worker_rules.filter((r) => triggers(r.when, r.country, s, cls)).map((r) => r.key),
   };

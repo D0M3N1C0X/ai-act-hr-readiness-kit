@@ -38,9 +38,9 @@ and the notices each country requires.
 
 | | |
 |---|---|
-| **One system has to stop now.** A video interview pilot in Barcelona infers candidates' emotions from voice and face: prohibited at work since February 2025 (Art. 5(1)(f)), fines up to €35 million or 7% of turnover. | **Seven of twelve systems are high-risk**, from CV screening to the pay review recommender. Their duties start on **2 December 2027**, 404 days from this assessment. |
-| **The attrition model makes the employer a provider.** HR analytics built it, so the provider's duties come with it: quality management, technical documentation, conformity assessment, registration (Art. 16 and 25). | **Two duties apply already**: AI literacy for the staff using 11 systems (Art. 4, softened by the Omnibus) and telling people they are talking to an AI for 2 (Art. 50(1)). |
-| **Germany's works council is the constraint today**: 8 systems to inform it about, 5 that need its agreement before use (BetrVG §87(1) Nr. 6). | **Spain owes the works council the parameters of 7 systems; Italy, notices for 2 fully automated systems** and a union agreement for a monitoring tool; Poland, two weeks' notice of monitoring. |
+| **One system has to stop now.** A video interview pilot in Barcelona infers candidates' emotions from voice and face: prohibited at work since February 2025 (Art. 5(1)(f)), fines up to €35 million or 7% of turnover. | **Seven of twelve systems are high-risk**, from CV screening to the pay review recommender. The duties apply from **2 December 2027**, 404 days from this assessment; for systems already on the market, from their next significant design change (Art. 111(2)). |
+| **The attrition model makes the employer a provider.** HR analytics put it into service for the employer's own use, so the provider's duties come with it: quality management, technical documentation, conformity assessment, registration (Art. 3(3) and 16). | **AI literacy applies already** to the staff using 11 systems (Art. 4, softened by the Omnibus). Telling people they are talking to an AI is the supplier's duty for 2 (Art. 50(1)); the employer checks it. |
+| **Germany's works council is the constraint today**: 11 systems to inform it about, at least 5 that need its agreement before use (BetrVG §87(1) Nr. 6). | **Spain owes the works council the parameters of 7 systems; Italy, a written notice for 1 fully automated system** and a union agreement for a monitoring tool; Poland, two weeks' notice of monitoring. |
 
 ## Check your own systems
 
@@ -53,7 +53,7 @@ an Excel workbook. English and Italian. **Nothing leaves the computer.**
 
 | Deliverable | For | What is in it |
 |---|---|---|
-| [`ai_act_hr_register.xlsx`](deliverables/ai_act_hr_register.xlsx) | the HR, legal and data protection team | Nine sheets: the register with twenty answers per system and its class, the obligations each system triggers, the national rules on telling the workers, a timeline, headcount, settings and a reconciliation sheet. **Every class and obligation is a live formula**: change an answer and the system is reclassified. |
+| [`ai_act_hr_register.xlsx`](deliverables/ai_act_hr_register.xlsx) | the HR, legal and data protection team | Nine sheets: the register with eighteen answers per system and its class, the obligations each system triggers, the national rules on telling the workers, a timeline, headcount, settings and a reconciliation sheet. **Every class and obligation is a live formula**: change an answer and the system is reclassified. |
 | [`ai_act_readiness.md`](reports/ai_act_readiness.md) · [online](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/) | the HR director and the board | Answer first: the register, what applies when, the notices country by country, the boundary cases, the next 90 days. |
 | [Browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/) | the HR business partner, on the client's own systems | Guided questions or a file; class, obligations and notices per system; an Excel download. Runs in the page. |
 | [`worker-information.md`](docs/worker-information.md) | HR business partners and employee relations | Who to tell, when and what, in Italy, Germany, Spain and Poland, with a model notice for each (in Italian for Italy). |
@@ -63,8 +63,11 @@ an Excel workbook. English and Italian. **Nothing leaves the computer.**
 
 - **Profiling closes the Article 6(3) door.** A system in Annex III that profiles people is high-risk whatever narrow
   task it claims; the interview scheduler escapes only because it ranks no one.
-- **Building it yourself makes you the provider.** The in-house attrition model is the register's heaviest item; the
-  report sets out the three ways out.
+- **Building it yourself makes you the provider.** The in-house attrition model is the register's heaviest item
+  (Art. 3(3) and 16); the report sets out the three ways out.
+- **Already on the market is not a free pass.** Article 111(2) spares a system whose type and model was on the market
+  before December 2027 until its design changes significantly; cloud HR software changes often, so the register keeps
+  the duties on the list and dates each system's trigger.
 - **Boundary cases are named, not hidden.** Shift scheduling is high-risk because it uses past attendance; without it,
   it might not be. Learning recommendations are minimal only while they do not feed promotion or pay.
 - **The right to an explanation is dated with the high-risk duties.** Article 86 applies from August 2026, but it
@@ -76,8 +79,8 @@ an Excel workbook. English and Italian. **Nothing leaves the computer.**
 
 | | |
 |---|---|
-| **Three engines, one answer** | Python and the workbook's live formulas, reconciled on 317 checks and recalculated in CI by LibreOffice; the browser tool checked against Python on 10,078 values from the twelve systems and 2,000 random ones; a test changes an answer and checks the workbook reclassifies the system |
-| **Law read in the original** | the Official Journal for the AI Act and the Omnibus; normattiva, gesetze-im-internet and the BOE for the national rules; a [verification register](docs/verification.md) with the status of each |
+| **Three engines, one answer** | Python and the workbook's live formulas, reconciled on 330 checks and recalculated in CI by LibreOffice; the browser tool checked against Python on 12,090 values from the twelve systems and 2,000 random ones; a test changes an answer and checks the workbook reclassifies the system |
+| **Law read in the original** | the Official Journal for the AI Act and the Omnibus; normattiva, gesetze-im-internet and the BOE for the Italian, German and Spanish rules (the Polish ones through secondary sources); a [verification register](docs/verification.md) with the status of each |
 | **Reproducible** | one command rebuilds every output; CI fails if a rebuilt file differs from the committed one |
 
 <details>
@@ -85,7 +88,7 @@ an Excel workbook. English and Italian. **Nothing leaves the computer.**
 
 ```mermaid
 flowchart LR
-    A[data/ai_systems.csv<br/>twenty answers per system] --> R[register.py<br/>class, role, obligations, notices]
+    A[data/ai_systems.csv<br/>eighteen answers per system] --> R[register.py<br/>class, role, obligations, notices]
     H[headcount.csv<br/>from pay-transparency-readiness-kit] --> R
     C[config.py<br/>dates, obligations, national rules] --> R
     R --> X[Excel register<br/>live formulas]
@@ -101,7 +104,7 @@ pytest                       # includes the workbook calculated in pure Python
 ```
 
 ```
-├── data/ai_systems.csv          the twelve systems and the answers that classify them
+├── data/ai_systems.csv          the twelve systems and the eighteen answers that classify them
 ├── data/source/headcount.csv    workers by employer and department (pay-transparency-readiness-kit)
 ├── src/
 │   ├── config.py                dates, obligations, national rules, each with its source

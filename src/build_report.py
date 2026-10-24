@@ -48,6 +48,10 @@ def count(n: int) -> str:
     return WORDS[n].capitalize() if n < len(WORDS) else f"{n:,}"
 
 
+def plural(n: int, one: str, many: str) -> str:
+    return f"{n} {one if n == 1 else many}"
+
+
 def write() -> dict:
     systems = register.load().set_index("system_id")
     r = register.build()
@@ -79,21 +83,26 @@ def write() -> dict:
         "emotions from their voice and face. Inferring emotions in the workplace has been prohibited since 2 February "
         "2025 unless it is for medical or safety reasons (Art. 5(1)(f)); the fine reaches €35 million or 7% of "
         "worldwide turnover (Art. 99(3)).")
-    add(f"- **{count(s['n_' + HIGH_RISK])} systems are high-risk**: {', '.join(names(r, r['class'] == HIGH_RISK))}. Their "
-        f"duties start on {day(D_ANNEX_III)}, {days} days from this assessment: the Digital Omnibus moved them from "
-        "2 August 2026.")
-    add(f"- **The {lower(provider['system'])} makes the employer a provider.** HR analytics built it, so the employer "
-        "carries the provider's duties for it as well as the user's: quality management, technical documentation, "
-        "conformity assessment and registration (Art. 16 and 25). It is the heaviest single item in the register.")
-    add(f"- **Two duties already apply.** AI literacy for the staff who use {obl['O01']} systems (Art. 4, since "
-        "February 2025, now worded as measures to take rather than a level to guarantee), and telling people they "
-        f"are talking to an AI for {obl['O03']} systems (Art. 50(1), since August 2026).")
+    add(f"- **{count(s['n_' + HIGH_RISK])} systems are high-risk**: {', '.join(names(r, r['class'] == HIGH_RISK))}. The "
+        f"high-risk duties apply from {day(D_ANNEX_III)}, {days} days from this assessment, after the Digital Omnibus "
+        f"moved them from 2 August 2026. A system whose type and model was already on the market by then falls under "
+        f"them only when its design changes significantly (Art. 111(2), as amended); "
+        f"{'all ' + WORDS[s['legacy']] if s['legacy'] == s['n_' + HIGH_RISK] else str(s['legacy'])} are in that position. Cloud HR software changes often, so the safe plan is December 2027.")
+    add(f"- **The {lower(provider['system'])} makes the employer a provider.** HR analytics put it into service for the "
+        "employer's own use, so the employer carries the provider's duties as well as the user's: quality management, "
+        "technical documentation, conformity assessment and registration (Art. 3(3) and 16). It is the heaviest single "
+        "item in the register.")
+    add(f"- **One duty already applies to every system in use.** AI literacy for the staff who use {obl['O01']} systems "
+        "(Art. 4, since February 2025, now worded as measures to take rather than a level to guarantee). Telling people "
+        f"they are talking to an AI is the supplier's duty for {plural(obl['O03'], 'system', 'systems')} (Art. 50(1), "
+        "since August 2026); the employer checks it is switched on.")
     add(f"- **Telling the workers is already national law, whatever the AI Act's timetable.** In Germany the works "
-        f"council has to be informed about {rule['W-DE1']} systems and agree to {rule['W-DE2']} before they are "
-        f"used; in Spain it is owed the parameters of {rule['W-ES1']}; in Italy {rule['W-IT1']} fully automated "
-        f"systems must be disclosed to the people they affect and to the unions, and {rule['W-IT2']} monitoring tool "
-        f"needs a union agreement; in "
-        f"Poland {rule['W-PL1']} monitoring tool needs two weeks' notice.")
+        f"council has to be informed about {rule['W-DE1']} systems and agree to at least {rule['W-DE2']} before they "
+        f"are used; in Spain it is owed the parameters of {rule['W-ES1']}; in Italy "
+        f"{plural(rule['W-IT1'], 'fully automated system needs', 'fully automated systems need')} a written notice to "
+        f"each worker and the unions, and {plural(rule['W-IT2'], 'monitoring tool needs', 'monitoring tools need')} a "
+        f"union agreement; in Poland {plural(rule['W-PL1'], 'monitoring tool needs', 'monitoring tools need')} two "
+        "weeks' notice.")
     add("")
 
     add("## 1. The register")
@@ -111,8 +120,9 @@ def write() -> dict:
     add("1. **Prohibited** if the system infers emotions at work and is not there for medical or safety reasons "
         "(Art. 5(1)(f)).")
     add("2. **High-risk** if it is used for recruitment or selection (Annex III 4(a)), or for decisions on terms of "
-        "work, promotion, termination, task allocation, or monitoring and evaluating people (4(b)), unless one of the "
-        "four conditions of Art. 6(3) applies; a system that profiles people is high-risk in every case.")
+        "work, promotion, termination, allocating tasks based on individual behaviour or personal traits, or monitoring "
+        "and evaluating people (4(b)), unless one of the four conditions of Art. 6(3) applies; a system that profiles "
+        "people is high-risk in every case.")
     add("3. **Not high-risk under Art. 6(3)** if it is in Annex III but only performs a narrow procedural or "
         "preparatory task, or improves or checks a human decision, without profiling. The provider documents why.")
     add("4. **Transparency only** if it talks to people (Art. 50(1)); otherwise **minimal risk**, with AI literacy "
@@ -160,20 +170,31 @@ def write() -> dict:
         "(Art. 6(3)(a)), but the documented assessment is the provider's to make (Art. 6(4)); the employer should hold "
         "a copy, and revisit it if the tool starts ranking candidates.")
     add("- **The pay review recommender sits under two laws.** It is high-risk under the AI Act (Annex III 4(b)), and "
-        "its criteria must be objective and gender-neutral under the Pay Transparency Directive (Art. 4), whose "
+        "its pay-setting criteria must be objective and gender-neutral under the Pay Transparency Directive (Art. 4(4) "
+        "and 6(1)), whose "
         "categories and 5% screen are in [pay-transparency-readiness-kit](https://github.com/D0M3N1C0X/pay-transparency-readiness-kit).")
     add("- **Learning recommendations stay minimal only while they do not count.** If course completion fed promotion "
         "or pay, the system would move into Annex III 4(b).")
     add("- **The right to an explanation (Art. 86)** is in a chapter that applies from August 2026, but it attaches to "
         "decisions based on high-risk Annex III systems, a classification that applies from December 2027. The "
-        "register dates it with the high-risk duties; the reading should be confirmed.")
+        "register dates it with the high-risk duties; the reading should be confirmed. It also applies only where "
+        "Union law gives no such right already (Art. 86(3)), and GDPR Art. 15(1)(h) and 22 often do.")
+    add("- **Systems already in use and Article 111(2).** The grace period follows the type and model, not the "
+        "employer's installation (recital 39 of Reg. 2026/1744): a system on the market before 2 December 2027 stays "
+        "outside the high-risk duties until its design changes significantly. The register keeps the duties on the "
+        "list, because a supplier's next major release, or a retrained in-house model, ends the grace period.")
+    add("- **Applicant-only systems and Italy's notice.** Art. 1-bis of D.lgs. 152/1997 informs the worker, so the "
+        "register leaves out systems used only on applicants, such as ad targeting; candidates who are hired are told "
+        "at hiring. A cautious employer tells them anyway.")
     add("- **Data protection law does not wait for 2027.** A data protection impact assessment is already owed for "
         "high-risk processing of employees' data (GDPR Art. 35); from December 2027 the AI Act adds that it must use "
-        "the provider's information (Art. 26(9)). For the two fully automated systems, GDPR Art. 22 already limits "
-        "decisions based solely on automated processing.")
+        "the provider's information (Art. 26(9)). For fully automated systems, GDPR Art. 22 already limits decisions "
+        "based solely on automated processing.")
     add("- **Germany's co-determination is the binding constraint now.** A system able to monitor conduct or "
-        "performance needs a works agreement before it is introduced (BetrVG §87(1) Nr. 6); five systems here already "
-        "process performance data of workers in Munich.")
+        f"performance needs a works agreement before it is introduced (BetrVG §87(1) Nr. 6); "
+        f"{plural(rule['W-DE2'], 'system here processes', 'systems here process')} performance data of workers in "
+        "Munich, and courts read \"able to\" broadly enough that a chatbot or assistant logging who used it may need "
+        "one too.")
     add("")
 
     add("## 5. The next 90 days")
@@ -196,8 +217,9 @@ def write() -> dict:
     add("- **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live "
         "formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet "
         "checks each pair, and CI recalculates the workbook with LibreOffice.")
-    add("- **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the national rules "
-        "on the official legal databases, each with its status in [docs/verification.md](../docs/verification.md).")
+    add("- **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German "
+        "and Spanish rules on the official legal databases; the Polish ones through secondary sources. Each statement "
+        "has its status in [docs/verification.md](../docs/verification.md).")
     add("- **Limits.** Invented systems and answers; the classification follows the text of the Regulation, and "
         "Commission guidelines, harmonised standards or national practice can move boundary cases. Not legal advice.")
     add("")

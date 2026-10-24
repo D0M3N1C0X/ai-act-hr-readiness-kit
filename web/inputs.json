@@ -175,7 +175,7 @@
   },
   {
    "key": "O03",
-   "name": "People told they are talking to an AI",
+   "name": "People told they are talking to an AI: the supplier's duty, checked by the employer",
    "article": "Art. 50(1)",
    "when": "interacts",
    "from": "2026-08-02",
@@ -257,7 +257,7 @@
   {
    "key": "O12",
    "name": "Provider duties for a system built in-house",
-   "article": "Art. 16 and 25",
+   "article": "Art. 3(3), 16",
    "when": "high-risk in-house",
    "from": "2027-12-02",
    "who": "Employer as provider",
@@ -277,19 +277,19 @@
   {
    "key": "W-IT1",
    "country": "IT",
-   "name": "Information on automated decision or monitoring systems",
-   "source": "D.lgs. 152/1997 art. 1-bis; L. 132/2025 art. 11",
+   "name": "Information on fully automated decision or monitoring systems",
+   "source": "D.lgs. 152/1997 art. 1-bis co. 1-6; L. 132/2025 art. 11",
    "when": "fully automated",
-   "what": "Purposes, logic, data and parameters, controls, accuracy and possible discriminatory effects, in writing to each worker and to the union representatives (RSA/RSU)",
-   "timing": "Before work starts, or 24 hours before a change"
+   "what": "In writing, to each worker and to the union representatives (RSA/RSU): the aspects of the job affected, purposes, logic and functioning, data and main parameters, control and correction measures, accuracy, robustness and cybersecurity, possible discriminatory effects; in a structured, machine-readable format",
+   "timing": "Before work starts; at least 24 hours before any change to that information"
   },
   {
    "key": "W-IT2",
    "country": "IT",
-   "name": "Agreement or authorisation for tools that can monitor workers",
+   "name": "Agreement or authorisation for tools that allow remote monitoring",
    "source": "Statuto dei lavoratori, art. 4",
    "when": "monitors",
-   "what": "An agreement with the union representatives or, failing that, authorisation by the labour inspectorate",
+   "what": "Only for organisational and production needs, safety or protection of company assets, and with an agreement with the union representatives or, failing that, authorisation by the labour inspectorate; tools used to do the work and attendance records are exempt; the data can be used only with adequate information to workers",
    "timing": "Before the tool is installed"
   },
   {
@@ -297,7 +297,7 @@
    "country": "DE",
    "name": "Information and consultation on planned AI in work procedures",
    "source": "BetrVG §90(1) Nr. 3, §90(2)",
-   "when": "used on workers",
+   "when": "in the country",
    "what": "Inform the works council with the documents, and consult it while its views can still change the plan",
    "timing": "At the planning stage"
   },
@@ -307,16 +307,16 @@
    "name": "Co-determination on technical devices able to monitor conduct or performance",
    "source": "BetrVG §87(1) Nr. 6",
    "when": "processes performance",
-   "what": "A works agreement; without it the system cannot lawfully be used",
+   "what": "A works agreement; without it the system cannot lawfully be used. Courts read 'able to' broadly, so systems that log identifiable use may also need one",
    "timing": "Before introduction"
   },
   {
    "key": "W-DE3",
    "country": "DE",
-   "name": "Co-determination on selection guidelines, also when AI is used",
-   "source": "BetrVG §95(1), (2a)",
+   "name": "Co-determination on selection guidelines",
+   "source": "BetrVG §95(1); (2a) where AI helps draw them up",
    "when": "selects",
-   "what": "Works council consent to the selection criteria",
+   "what": "Works council consent to the selection criteria the system applies",
    "timing": "Before use in hiring, transfer or dismissal decisions"
   },
   {
@@ -324,8 +324,8 @@
    "country": "DE",
    "name": "An expert for the works council, deemed necessary for AI",
    "source": "BetrVG §80(3)",
-   "when": "used on workers",
-   "what": "Budget and access for an expert of the works council's choosing",
+   "when": "in the country",
+   "what": "An expert, agreed with the employer as to person, subject and cost; for AI its necessity is presumed",
    "timing": "When the works council assesses the system"
   },
   {
@@ -335,16 +335,16 @@
    "source": "Estatuto de los Trabajadores art. 64.4.d",
    "when": "affects work",
    "what": "The parameters, rules and instructions the system is based on, to the works council",
-   "timing": "Before use, and with the periodicity that applies"
+   "timing": "With the periodicity that applies; before use is the prudent reading"
   },
   {
    "key": "W-PL1",
    "country": "PL",
    "name": "Notice of monitoring other than video",
-   "source": "Kodeks pracy art. 22³",
+   "source": "Kodeks pracy art. 22³ §4 with art. 22² §§6-10",
    "when": "monitors",
-   "what": "Purpose, scope and method in the workplace rules; notice to each worker",
-   "timing": "At least two weeks before it starts"
+   "what": "Allowed only where needed for full use of working time and proper use of work tools; purpose, scope and method in the workplace rules",
+   "timing": "At least two weeks before it starts; new hires in writing before they start"
   }
  ],
  "not_applicable": [
@@ -357,6 +357,11 @@
    "name": "Registration of the use in the EU database",
    "article": "Art. 26(8), 49(3)",
    "why": "Owed by deployers that are public authorities. A provider registers its own systems (Art. 49(1)), which here means the in-house attrition model."
+  },
+  {
+   "name": "Annex III point 3, education and vocational training",
+   "article": "Annex III, 3",
+   "why": "Covers education and vocational training institutions; an employer's course suggestions that do not feed promotion or pay are not in it."
   }
  ],
  "choices": {

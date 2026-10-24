@@ -62,7 +62,8 @@ INPUTS = [("system_id", "ID"), ("system", "AI system"), ("function", "HR functio
           ("profiling", "Profiles people"), ("art6_3_condition", "Art. 6(3) condition"),
           ("interacts", "Talks to people"), ("decides_about_people", "Decides or helps decide about people"),
           ("fully_automated", "Fully automated"), ("monitors_workers", "Monitors workers"),
-          ("controls_input_data", "Employer controls the input data")]
+          ("controls_input_data", "Employer controls the input data"),
+          ("on_market_before", "Type and model on the market before 2 Dec 2027")]
 CHOICES = {"supplier": '"Vendor,In-house"', "annex_iii": '"None,4(a),4(b)"', "art6_3_condition": '"None,(a),(b),(c),(d)"'}
 
 
@@ -191,17 +192,18 @@ class Model:
         title(ws, "Register: every AI system the HR function uses, and its class under the AI Act",
               "Blue columns are the answers about each system; the grey-headed columns are formulas. Change an answer "
               "and the system is reclassified.")
-        heads = [h for _, h in INPUTS] + ["Workers in scope", "Class", "Role", "Why"]
+        heads = [h for _, h in INPUTS] + ["Workers in scope", "Class", "Role", "High-risk duties apply", "Why"]
         header(ws, 4, heads, height=58)
         for i in range(len(INPUTS)):
             ws.cell(row=4, column=1 + i).fill = INPUT_HEAD
         self.col = {k: get_column_letter(i + 1) for i, (k, _) in enumerate(INPUTS)}
         n = len(INPUTS)
         self.col.update({"workers": get_column_letter(n + 1), "class": get_column_letter(n + 2),
-                         "role": get_column_letter(n + 3), "rationale": get_column_letter(n + 4)})
+                         "role": get_column_letter(n + 3), "timing": get_column_letter(n + 4),
+                         "rationale": get_column_letter(n + 5)})
         widths(ws, {get_column_letter(i + 1): 11 for i in range(n)})
         widths(ws, {"A": 6, "B": 30, "C": 16, self.col["workers"]: 11, self.col["class"]: 22, self.col["role"]: 18,
-                    self.col["rationale"]: 100})
+                    self.col["timing"]: 22, self.col["rationale"]: 100})
         yesno = DataValidation(type="list", formula1='"Yes,No"', allow_blank=False)
         ws.add_data_validation(yesno)
         lists = {k: DataValidation(type="list", formula1=v, allow_blank=False) for k, v in CHOICES.items()}
@@ -215,7 +217,7 @@ class Model:
                 if key in lists:
                     lists[key].add(f"{self.col[key]}{r}")
                 elif key.startswith(("in_", "applicants", "infers", "medical", "profiling", "interacts", "decides",
-                                     "fully", "monitors", "controls")):
+                                     "fully", "monitors", "controls", "on_market")):
                     yesno.add(f"{self.col[key]}{r}")
             C = {k: f"${v}{r}" for k, v in self.col.items()}
             by_country = "+".join(f'({self.hc["country"]}="{c}")*({C["in_" + c.lower()]}="Yes")' for c in COUNTRIES)
@@ -225,9 +227,13 @@ class Model:
             put(ws, f"{self.col['class']}{r}", self.class_formula(C), bold=True)
             put(ws, f"{self.col['role']}{r}",
                 f'=IF(AND({C["supplier"]}="In-house",{C["class"]}="{HIGH_RISK}"),"Provider and deployer","Deployer")')
+            put(ws, f"{self.col['timing']}{r}",
+                f'=IF({C["class"]}<>"{HIGH_RISK}","",IF({C["on_market_before"]}="Yes",'
+                f'"At its next significant design change","From 2 December 2027"))')
             put(ws, f"{self.col['rationale']}{r}", s["rationale"], color=BLUE)
             p = self.python.loc[s["system_id"]]
-            for item, key in (("class", "class"), ("role", "role"), ("workers in scope", "workers")):
+            for item, key in (("class", "class"), ("role", "role"), ("high-risk timing", "timing"),
+                              ("workers in scope", "workers")):
                 v = p[key]
                 self.check("Register", f"{s['system_id']} {s['system']}: {item}", v.item() if hasattr(v, "item") else v,
                            f"Register!{self.col[key]}{r}")
@@ -264,14 +270,14 @@ class Model:
         used = f'{C["in_" + country.lower()]}="Yes"'
         alive = f'{C["class"]}<>"{PROHIBITED}"'
         staff = f'{C["applicants"]}<>"Yes"'
-        annex = f'AND({C["annex_iii"]}<>"None",{C["art6_3_condition"]}="None")'
+        high = f'{C["class"]}="{HIGH_RISK}"'
         test = {
-            "fully automated": f'AND({C["fully_automated"]}="Yes",OR({annex},{C["monitors_workers"]}="Yes"))',
+            "fully automated": f'AND({staff},{C["fully_automated"]}="Yes",OR({high},{C["monitors_workers"]}="Yes"))',
             "monitors": f'{C["monitors_workers"]}="Yes"',
-            "used on workers": staff,
-            "processes performance": f'OR({C["monitors_workers"]}="Yes",AND({staff},{annex}))',
-            "selects": f'AND({C["annex_iii"]}="4(a)",{C["profiling"]}="Yes")',
-            "affects work": annex,
+            "in the country": "TRUE",
+            "processes performance": f'OR({C["monitors_workers"]}="Yes",AND({staff},{high}))',
+            "selects": f'AND({C["annex_iii"]}="4(a)",{C["profiling"]}="Yes",{C["decides_about_people"]}="Yes")',
+            "affects work": high,
         }[cond]
         return f"AND({used},{alive},{test})"
 
@@ -376,12 +382,16 @@ class Model:
         r = 6 + len(CLASSES)
         put(ws, f"B{r}", "Total", bold=True)
         put(ws, f"C{r}", f"=SUM(C5:C{r - 2})", bold=True, align="center")
-        put(ws, f"B{r + 1}", "Systems the employer built and therefore provides (Art. 25)")
+        put(ws, f"B{r + 1}", "Systems the employer put into service itself and therefore provides (Art. 3(3))")
         role_rng = f"Register!${self.col['role']}${self.first}:${self.col['role']}${self.last}"
         put(ws, f"C{r + 1}", f'=COUNTIF({role_rng},"Provider and deployer")', bold=True, align="center")
         self.check("Summary", "Systems the employer provides", self.summary["provider"], f"Summary!C{r + 1}")
         put(ws, f"B{r + 2}", "Days to the high-risk duties (2 December 2027)")
         put(ws, f"C{r + 2}", f"={self.days_ref}", color=GREEN, bold=True, align="center")
+        put(ws, f"B{r + 3}", "High-risk systems already on the market: duties at their next significant design change")
+        tim_rng = f"Register!${self.col['timing']}${self.first}:${self.col['timing']}${self.last}"
+        put(ws, f"C{r + 3}", f'=COUNTIF({tim_rng},"At its next significant design change")', bold=True, align="center")
+        self.check("Summary", "High-risk systems already on the market", self.summary["legacy"], f"Summary!C{r + 3}")
         put(ws, "E4", "Telling the workers: systems per rule", bold=True, size=11)
         last = self.wk_rows[1]
         for k, it in enumerate(WORKER_RULES, start=5):
@@ -395,17 +405,19 @@ class Model:
         widths(ws, {"A": 14, "B": 62, "C": 3, "D": 26, "E": 26, "F": 12, "G": 8})
         header(ws, 6, ["Area", "Item", "", "Python value", "Workbook value", "Difference", "Match"])
         first, last = 7, 6 + len(self.checks)
-        put(ws, "B3", (f'=IF(COUNTIF(G{first}:G{last},"No")=0,"All "&COUNTA(B{first}:B{last})&" checks match",'
-                       f'COUNTIF(G{first}:G{last},"No")&" of "&COUNTA(B{first}:B{last})&" checks do not match")'),
-            bold=True, size=12)
+        # counted on "Yes", so a check that turns into an error counts as a failure, not as a match
+        put(ws, "B3", (f'=IF(COUNTIF(G{first}:G{last},"Yes")=COUNTA(B{first}:B{last}),'
+                       f'"All "&COUNTA(B{first}:B{last})&" checks match",'
+                       f'(COUNTA(B{first}:B{last})-COUNTIF(G{first}:G{last},"Yes"))&" of "&COUNTA(B{first}:B{last})'
+                       f'&" checks do not match")'), bold=True, size=12)
         for r, (area, item, value, ref) in enumerate(self.checks, start=first):
             put(ws, f"A{r}", area)
             put(ws, f"B{r}", item)
             put(ws, f"D{r}", value, color=BLUE)
             put(ws, f"E{r}", f"={ref}", color=GREEN)
             put(ws, f"F{r}", f'=IF(AND(ISNUMBER(D{r}),ISNUMBER(E{r})),E{r}-D{r},"")')
-            put(ws, f"G{r}", (f'=IF(AND(D{r}="",E{r}=""),"Yes",IF(AND(ISNUMBER(D{r}),ISNUMBER(E{r})),'
-                              f'IF(ABS(E{r}-D{r})<=1E-9*MAX(1,ABS(D{r})),"Yes","No"),IF(D{r}=E{r},"Yes","No")))'))
+            put(ws, f"G{r}", (f'=IFERROR(IF(AND(D{r}="",E{r}=""),"Yes",IF(AND(ISNUMBER(D{r}),ISNUMBER(E{r})),'
+                              f'IF(ABS(E{r}-D{r})<=1E-9*MAX(1,ABS(D{r})),"Yes","No"),IF(EXACT(D{r},E{r}),"Yes","No"))),"No")'))
         for text, colour in (("Yes", "D5ECDC"), ("No", "F5C6C2")):
             ws.conditional_formatting.add(f"G{first}:G{last}", CellIsRule(operator="equal", formula=[f'"{text}"'],
                                                                          fill=PatternFill("solid", fgColor=colour)))

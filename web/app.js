@@ -23,7 +23,7 @@ const UI = {
     inVigore: "In force", daVenire: "Ahead", nessuno: "none",
     vuoto: "No systems yet. Add one, load a list, or try the sample.",
     registro: "The register", registroSub: "Each system's class under the AI Act, and why.",
-    obblighi: "What applies, and when", obblighiSub: "The duties for high-risk systems start on 2 December 2027; the ban and AI literacy apply already.",
+    obblighi: "What applies, and when", obblighiSub: "The duties for high-risk systems start on 2 December 2027, or at the next significant design change for a system already on the market (Art. 111(2)); the ban and AI literacy apply already.",
     avvisi: "Whom to tell, country by country", avvisiSub: "National rules on informing workers and their representatives. They apply now, whatever the AI Act's timetable.",
     nessunPaese: "No system is used in Italy, Germany, Spain or Poland, the four countries this tool knows.", nessunaRegola: "No rule applies to these systems.",
     kSistemi: "AI systems", kVietati: "To stop now", kAlto: "High-risk", kGiorni: "Days to 2 December 2027",
@@ -39,7 +39,10 @@ const UI = {
     wDerog: "Used for {area}, but it only {cond} and profiles no one: not high-risk under Art. 6(3). The provider documents this; keep a copy.",
     wTransp: "Not in Annex III, but it talks to people, who must be told it is an AI (Art. 50(1)).",
     wMinimal: "Not in Annex III and it does not talk to people: AI literacy of the people who use it is the only duty (Art. 4).",
-    wProvider: "You built it, so you are also its provider (Art. 25): the provider's duties apply too.",
+    wProvider: "You put it into service for your own use, so you are also its provider (Art. 3(3) and 16): the provider's duties apply too.",
+    wLegacy: "It was on the market before 2 December 2027, so its high-risk duties start at its next significant design change (Art. 111(2)); cloud software that changes often should plan for December 2027.",
+    wNew: "Its high-risk duties apply from 2 December 2027.",
+    qMercato: "Was this system already on the market or in use before 2 December 2027?", qMercatoH: "The same type and model, from any customer: for a system you use today, the answer is yes.",
     area4a: "recruitment or selection", area4b: "decisions about people at work",
     cond_a: "performs a narrow procedural task", "cond_b": "improves the result of a task a person has finished",
     cond_c: "checks for deviations from earlier decisions without replacing a person's review", cond_d: "prepares an assessment that a person makes",
@@ -79,7 +82,7 @@ const UI = {
     inVigore: "In vigore", daVenire: "In arrivo", nessuno: "nessuno",
     vuoto: "Ancora nessun sistema. Aggiungine uno, carica un elenco o prova l'esempio.",
     registro: "Il registro", registroSub: "La classe di ogni sistema secondo l'AI Act, e perché.",
-    obblighi: "Cosa si applica, e da quando", obblighiSub: "Gli obblighi per i sistemi ad alto rischio partono il 2 dicembre 2027; il divieto e la formazione si applicano già.",
+    obblighi: "Cosa si applica, e da quando", obblighiSub: "Gli obblighi per i sistemi ad alto rischio partono il 2 dicembre 2027, o alla prossima modifica significativa del design per un sistema già sul mercato (art. 111(2)); il divieto e la formazione si applicano già.",
     avvisi: "Chi informare, paese per paese", avvisiSub: "Le regole nazionali per informare lavoratori e rappresentanti. Valgono già oggi, qualunque sia il calendario dell'AI Act.",
     nessunPaese: "Nessun sistema è usato in Italia, Germania, Spagna o Polonia, i quattro paesi che lo strumento conosce.", nessunaRegola: "Nessuna regola si applica a questi sistemi.",
     kSistemi: "Sistemi di AI", kVietati: "Da fermare subito", kAlto: "Ad alto rischio", kGiorni: "Giorni al 2 dicembre 2027",
@@ -95,7 +98,10 @@ const UI = {
     wDerog: "Usato per {area}, ma si limita a {cond} e non profila nessuno: non è ad alto rischio per l'art. 6(3). Lo documenta il fornitore; tienine una copia.",
     wTransp: "Non è nell'allegato III, ma parla con le persone, che devono sapere che è un'AI (art. 50(1)).",
     wMinimal: "Non è nell'allegato III e non parla con le persone: l'unico obbligo è la formazione di chi lo usa (art. 4).",
-    wProvider: "L'avete costruito voi, quindi siete anche il fornitore (art. 25): valgono anche gli obblighi del fornitore.",
+    wProvider: "L'avete messo in servizio per uso vostro, quindi siete anche il fornitore (art. 3(3) e 16): valgono anche gli obblighi del fornitore.",
+    wLegacy: "Era già sul mercato prima del 2 dicembre 2027, quindi gli obblighi da alto rischio scattano alla prossima modifica significativa del suo design (art. 111(2)); un software in cloud che cambia spesso va pianificato per dicembre 2027.",
+    wNew: "Gli obblighi da alto rischio si applicano dal 2 dicembre 2027.",
+    qMercato: "Il sistema era già sul mercato o in uso prima del 2 dicembre 2027?", qMercatoH: "Lo stesso tipo e modello, presso qualunque cliente: per un sistema che usate oggi la risposta è sì.",
     area4a: "la selezione del personale", area4b: "decisioni sulle persone al lavoro",
     cond_a: "svolgere un compito procedurale limitato", cond_b: "migliorare il risultato di un lavoro già fatto da una persona",
     cond_c: "segnalare scostamenti da decisioni precedenti senza sostituire la revisione di una persona", cond_d: "preparare una valutazione che fa una persona",
@@ -125,7 +131,7 @@ const UI = {
 
 // The obligations and national rules in Italian; the English text comes from inputs.json.
 const IT_OBBLIGHI = {
-  O01: "Formazione sull'AI di chi lo usa", O02: "Fermare l'uso vietato", O03: "Dire alle persone che parlano con un'AI",
+  O01: "Formazione sull'AI di chi lo usa", O02: "Fermare l'uso vietato", O03: "Dire alle persone che parlano con un'AI: obbligo del fornitore, verificato dall'azienda",
   O04: "Uso secondo le istruzioni, con una persona che sorveglia", O05: "Dati in ingresso pertinenti e rappresentativi",
   O06: "Monitorare; segnalare rischi e incidenti gravi; sospendere", O07: "Conservare i log per almeno sei mesi",
   O08: "Informare rappresentanti e lavoratori prima dell'uso", O09: "Valutazione d'impatto sulla protezione dei dati, con le informazioni del fornitore",
@@ -133,14 +139,14 @@ const IT_OBBLIGHI = {
   O13: "Valutazione di non alto rischio documentata",
 };
 const IT_REGOLE = {
-  "W-IT1": ["Informativa sui sistemi decisionali o di monitoraggio automatizzati", "Scopi, logica, dati e parametri, controlli, accuratezza ed eventuali effetti discriminatori, per iscritto a ogni lavoratore e alle RSA/RSU", "Prima dell'inizio del lavoro, o 24 ore prima di una modifica"],
-  "W-IT2": ["Accordo o autorizzazione per strumenti che consentono il controllo a distanza", "Un accordo con le rappresentanze sindacali o, in mancanza, l'autorizzazione dell'Ispettorato del lavoro", "Prima dell'installazione"],
+  "W-IT1": ["Informativa sui sistemi decisionali o di monitoraggio integralmente automatizzati", "Per iscritto, a ogni lavoratore e alle RSA/RSU: aspetti del rapporto interessati, scopi, logica e funzionamento, dati e parametri principali, misure di controllo e correzione, accuratezza, robustezza e cybersicurezza, eventuali effetti discriminatori; in formato strutturato e leggibile da dispositivo automatico", "Prima dell'inizio del lavoro; almeno 24 ore prima di ogni modifica di quelle informazioni"],
+  "W-IT2": ["Accordo o autorizzazione per strumenti che consentono il controllo a distanza", "Solo per esigenze organizzative e produttive, sicurezza del lavoro o tutela del patrimonio, con accordo delle rappresentanze sindacali o, in mancanza, autorizzazione dell'Ispettorato; esclusi gli strumenti per rendere la prestazione e quelli di registrazione delle presenze; dati utilizzabili solo con adeguata informazione ai lavoratori", "Prima dell'installazione"],
   "W-DE1": ["Informazione e consultazione sull'uso dell'AI nei processi di lavoro", "Informare il consiglio d'azienda con i documenti e consultarlo quando il suo parere può ancora cambiare il piano", "In fase di progettazione"],
-  "W-DE2": ["Codecisione sugli strumenti tecnici che possono controllare comportamento o prestazioni", "Un accordo aziendale; senza, il sistema non si può usare legittimamente", "Prima dell'introduzione"],
-  "W-DE3": ["Codecisione sui criteri di selezione, anche quando si usa l'AI", "Il consenso del consiglio d'azienda ai criteri di selezione", "Prima dell'uso per assunzioni, trasferimenti o licenziamenti"],
-  "W-DE4": ["Un esperto per il consiglio d'azienda, considerato necessario per l'AI", "Budget e accesso per un esperto scelto dal consiglio d'azienda", "Quando il consiglio valuta il sistema"],
-  "W-ES1": ["Informazione sui parametri degli algoritmi che incidono sul lavoro", "Parametri, regole e istruzioni su cui si basa il sistema, al comitato d'impresa", "Prima dell'uso, e con la periodicità prevista"],
-  "W-PL1": ["Avviso di monitoraggio diverso dalla videosorveglianza", "Scopo, ambito e modalità nel regolamento aziendale; avviso a ogni lavoratore", "Almeno due settimane prima dell'avvio"],
+  "W-DE2": ["Codecisione sugli strumenti tecnici che possono controllare comportamento o prestazioni", "Un accordo aziendale; senza, il sistema non si può usare legittimamente. I tribunali leggono «possono» in senso ampio: anche i sistemi che registrano l'uso da parte di persone identificabili possono richiederlo", "Prima dell'introduzione"],
+  "W-DE3": ["Codecisione sui criteri di selezione", "Il consenso del consiglio d'azienda ai criteri di selezione che il sistema applica", "Prima dell'uso per assunzioni, trasferimenti o licenziamenti"],
+  "W-DE4": ["Un esperto per il consiglio d'azienda, considerato necessario per l'AI", "Un esperto concordato con l'azienda quanto a persona, oggetto e costo; per l'AI la necessità si presume", "Quando il consiglio valuta il sistema"],
+  "W-ES1": ["Informazione sui parametri degli algoritmi che incidono sul lavoro", "Parametri, regole e istruzioni su cui si basa il sistema, al comitato d'impresa", "Con la periodicità prevista; prima dell'uso è la lettura prudente"],
+  "W-PL1": ["Avviso di monitoraggio diverso dalla videosorveglianza", "Consentito solo se necessario per il pieno uso dell'orario e il corretto uso degli strumenti di lavoro; scopo, ambito e modalità nel regolamento aziendale", "Almeno due settimane prima dell'avvio; ai nuovi assunti per iscritto prima dell'inizio"],
 };
 const PAESI_IT = { IT: "Italia", PL: "Polonia", DE: "Germania", ES: "Spagna" };
 const PAESI_EN = { IT: "Italy", PL: "Poland", DE: "Germany", ES: "Spain" };
@@ -156,14 +162,15 @@ const store = {
   set(v) { try { localStorage.setItem(K, JSON.stringify(v)); } catch { /* private mode: fine */ } },
 };
 
-// state: the systems, whether they are the sample (which comes with a headcount), the one being edited
-let sistemi = store.get(), esempio = false, inModifica = null;
-
 const DEFAULT = { supplier: "Vendor", scope: "All", in_it: "No", in_pl: "No", in_de: "No", in_es: "No", applicants: "No",
   infers_emotions: "No", medical_or_safety: "No", annex_iii: "None", profiling: "No", art6_3_condition: "None",
-  interacts: "No", decides_about_people: "No", fully_automated: "No", monitors_workers: "No", controls_input_data: "No" };
+  interacts: "No", decides_about_people: "No", fully_automated: "No", monitors_workers: "No", controls_input_data: "No",
+  on_market_before: "Yes" };
+// state: the systems (with any answer missing from an older save filled in), whether they are the sample, which
+// comes with a headcount, and the one being edited
+let sistemi = store.get().map((s) => ({ ...DEFAULT, ...s })), esempio = false, inModifica = null;
 const YN = ["in_it", "in_pl", "in_de", "in_es", "applicants", "infers_emotions", "medical_or_safety", "profiling", "interacts",
-  "decides_about_people", "fully_automated", "monitors_workers", "controls_input_data"];
+  "decides_about_people", "fully_automated", "monitors_workers", "controls_input_data", "on_market_before"];
 
 const nomeClasse = (c) => t({ [PROHIBITED]: "cProhibited", [HIGH_RISK]: "cHigh", [DEROGATION]: "cDerog", [TRANSPARENCY]: "cTransp", [MINIMAL]: "cMinimal" }[c]);
 const pill = (c) => `<span class="s-pill ${c === PROHIBITED ? "is-high" : c === HIGH_RISK ? "is-medium" : "is-ok"}">${esc(nomeClasse(c))}</span>`;
@@ -179,6 +186,7 @@ function perche(s) {
   if (cls === HIGH_RISK) w = t(s.profiling === "Yes" ? "wHighProfile" : "wHigh", { area });
   if (cls === DEROGATION) w = t("wDerog", { area, cond: t(`cond_${s.art6_3_condition.replace(/[()]/g, "")}`) });
   if (s.supplier === "In-house" && cls === HIGH_RISK) w += ` ${t("wProvider")}`;
+  if (cls === HIGH_RISK) w += ` ${t(s.on_market_before === "Yes" ? "wLegacy" : "wNew")}`;
   return w;
 }
 
@@ -223,7 +231,8 @@ function domande(s) {
     ${yesno("decides_about_people", "qDec", "qDecH", s)}
     ${yesno("fully_automated", "qAuto", "qAutoH", s)}
     ${yesno("monitors_workers", "qMon", "qMonH", s)}
-    ${yesno("controls_input_data", "qInp", "qInpH", s)}`;
+    ${yesno("controls_input_data", "qInp", "qInpH", s)}
+    ${yesno("on_market_before", "qMercato", "qMercatoH", s)}`;
 }
 
 function leggiForm() {
@@ -302,6 +311,7 @@ const CAMPI = [
   ["fully_automated", false, ["fully automated", "integralmente automatizzato"]],
   ["monitors_workers", false, ["monitors workers", "monitoraggio"]],
   ["controls_input_data", false, ["employer controls the input data", "dati in ingresso"]],
+  ["on_market_before", false, ["type and model on the market before 2 dec 2027", "on the market before", "gia sul mercato"]],
 ].map(([key, required, aliases]) => ({ key, required, aliases }));
 
 $("file-lista").addEventListener("change", async (e) => {
@@ -402,12 +412,12 @@ $("scarica").addEventListener("click", () => {
   const oggi = new Date().toISOString().slice(0, 10);
   const yn = (v) => (v === "Yes" ? t("sì") : t("no"));
   const registro = [[t("hSistema"), t("hClasse"), t("hRuolo"), t("hPerche"), t("qSupplier"), ...CFG.countries.map(nomePaese), t("qSu"), t("qScope"),
-    t("qEmo"), t("qMed"), t("qArea"), t("qProf"), t("qCond"), t("qInt"), t("qDec"), t("qAuto"), t("qMon"), t("qInp")],
+    t("qEmo"), t("qMed"), t("qArea"), t("qProf"), t("qCond"), t("qInt"), t("qDec"), t("qAuto"), t("qMon"), t("qInp"), t("qMercato")],
   ...out.map(({ s, r }) => [s.system, nomeClasse(r.class), r.role === "Deployer" ? t("utilizzatore") : t("fornitore"), perche(s),
     s.supplier === "In-house" ? t("supplierI") : t("supplierV"), ...CFG.countries.map((c) => yn(s[`in_${c.toLowerCase()}`])),
     s.applicants === "Yes" ? t("suCand") : t("suDip"), s.scope === "All" ? t("tutti") : s.scope, yn(s.infers_emotions), yn(s.medical_or_safety),
     s.annex_iii, yn(s.profiling), s.art6_3_condition, yn(s.interacts), yn(s.decides_about_people), yn(s.fully_automated),
-    yn(s.monitors_workers), yn(s.controls_input_data)])];
+    yn(s.monitors_workers), yn(s.controls_input_data), yn(s.on_market_before)])];
   const obblighi = [[t("hObbligo"), t("hArticolo"), t("hDa"), t("hStato"), t("hQuali")],
     ...CFG.obligations.map((o) => [obbligo(o), o.article, o.from, t(o.from <= oggi ? "inVigore" : "daVenire"),
       out.filter((x) => x.r.obligations.includes(o.key)).map((x) => x.s.system).join(", ")])];

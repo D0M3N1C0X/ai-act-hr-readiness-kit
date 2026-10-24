@@ -9,7 +9,7 @@ BASE = {"system_id": "X", "system": "Test", "function": "", "supplier": "Vendor"
         "in_pl": "No", "in_de": "Yes", "in_es": "No", "applicants": "No", "infers_emotions": "No",
         "medical_or_safety": "No", "annex_iii": "None", "profiling": "No", "art6_3_condition": "None",
         "interacts": "No", "decides_about_people": "No", "fully_automated": "No", "monitors_workers": "No",
-        "controls_input_data": "No", "rationale": ""}
+        "controls_input_data": "No", "on_market_before": "Yes", "rationale": ""}
 
 
 def s(**kw):
@@ -78,3 +78,33 @@ def test_the_headline_cases(sid, cls):
     r = register.build().set_index("system_id")
     assert r.loc[sid, "class"] == cls
     assert isinstance(r, pd.DataFrame)
+
+
+def test_a_profiling_system_with_a_6_3_condition_still_triggers_the_national_rules():
+    # high-risk through profiling: the rules that follow the class must follow it too (review of 24 October 2026)
+    x = s(annex_iii="4(b)", profiling="Yes", art6_3_condition="(a)", in_es="Yes", fully_automated="Yes")
+    cls = register.classify(x)
+    assert cls == HIGH_RISK
+    assert register.triggers("affects work", "ES", x, cls)
+    assert register.triggers("fully automated", "IT", x, cls)
+    assert register.triggers("processes performance", "DE", x, cls)
+
+
+def test_systems_already_on_the_market_wait_for_a_significant_change():
+    x = s(annex_iii="4(a)", profiling="Yes")
+    assert register.timing({**x, "on_market_before": "Yes"}, HIGH_RISK) == "At its next significant design change"
+    assert register.timing({**x, "on_market_before": "No"}, HIGH_RISK) == "From 2 December 2027"
+    assert register.timing(x, MINIMAL) == ""
+
+
+def test_italy_notice_is_for_workers_not_applicants():
+    x = s(annex_iii="4(a)", profiling="Yes", applicants="Yes", fully_automated="Yes")
+    assert not register.triggers("fully automated", "IT", x, register.classify(x))
+
+
+def test_answers_must_be_spelled_as_allowed():
+    d = register.load()
+    bad = d.copy()
+    bad.loc[0, "infers_emotions"] = "yes"          # Excel would read this as Yes, Python would not
+    with pytest.raises(ValueError):
+        register.validate(bad)

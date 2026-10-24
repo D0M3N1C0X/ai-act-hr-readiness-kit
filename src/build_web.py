@@ -28,7 +28,7 @@ WEB = ROOT / "web"
 VECTORS = ROOT / "tests" / "fixtures" / "js_vectors.json"
 ANSWERS = ["supplier", "scope", "in_it", "in_pl", "in_de", "in_es", "applicants", "infers_emotions",
            "medical_or_safety", "annex_iii", "profiling", "art6_3_condition", "interacts", "decides_about_people",
-           "fully_automated", "monitors_workers", "controls_input_data"]
+           "fully_automated", "monitors_workers", "controls_input_data", "on_market_before"]
 CHOICES = {"supplier": ["Vendor", "In-house"], "scope": ["All", *DEPARTMENTS], "annex_iii": ["None", "4(a)", "4(b)"],
            "art6_3_condition": ["None", "(a)", "(b)", "(c)", "(d)"]}
 
@@ -51,7 +51,8 @@ def cfg() -> dict:
 
 def expected(s: dict, hc) -> dict:
     cls = register.classify(s)
-    return {"class": cls, "role": register.role(s, cls), "workers": register.workers(s, hc),
+    return {"class": cls, "role": register.role(s, cls), "timing": register.timing(s, cls),
+            "workers": register.workers(s, hc),
             "obligations": [k for k, _n, _a, c, *_ in OBLIGATIONS if register.applies(c, s, cls)],
             "rules": [k for k, country, _n, _s, c, *_ in WORKER_RULES if register.triggers(c, country, s, cls)]}
 
