@@ -1,0 +1,25 @@
+country,department,workers
+DE,Customer Service,209
+DE,Finance,79
+DE,HR,73
+DE,Operations,185
+DE,Sales,92
+DE,Tech,103
+ES,Customer Service,149
+ES,Finance,44
+ES,HR,43
+ES,Operations,112
+ES,Sales,71
+ES,Tech,74
+IT,Customer Service,310
+IT,Finance,106
+IT,HR,77
+IT,Operations,260
+IT,Sales,125
+IT,Tech,175
+PL,Customer Service,328
+PL,Finance,105
+PL,HR,89
+PL,Operations,294
+PL,Sales,146
+PL,Tech,194

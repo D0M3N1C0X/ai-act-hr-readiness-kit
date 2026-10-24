@@ -1,0 +1,7 @@
+# Runtime: pinned so every build produces the same file. Python 3.12 or newer.
+pandas==3.0.5
+openpyxl==3.1.5
+# openpyxl writes XML with lxml when it is installed; pinned to keep the workbook byte-stable.
+lxml==6.1.3
+# Reconciliation, LibreOffice recalculation and byte-stable workbooks, shared by the portfolio
+excel-twin[formulas] @ git+https://github.com/D0M3N1C0X/excel-twin@v0.1.2
