@@ -49,6 +49,8 @@ The same register runs in the browser. Answer plain questions about each AI syst
 reason, the obligations with their dates, and the national rules on telling the workers, and the result downloads as
 an Excel workbook. English and Italian. **Nothing leaves the computer.**
 
+<p align="center"><a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/"><img alt="The browser tool on the twelve sample systems: the register with each class and its reason, what applies when, and whom to tell in each country." src="site-assets/tool.webp" width="100%"></a></p>
+
 ## What you get
 
 | Deliverable | For | What is in it |
