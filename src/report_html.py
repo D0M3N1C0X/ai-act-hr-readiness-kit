@@ -136,11 +136,11 @@ REPO = "https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit"
 
 def href(target: str) -> str:
     """Links written for the repository, rewritten for the published page: the site serves the
-    deliverables next to index.html; everything else is read on GitHub."""
+    workbook next to index.html; everything else, the Markdown deliverables included, is read on GitHub."""
     if not target.startswith("../"):
         return target
     path = target[3:]
-    if path.startswith("deliverables/"):
+    if path.startswith("deliverables/") and path.endswith(".xlsx"):
         return path.split("/", 1)[1]
     return f"{REPO}/blob/main/{path}"
 

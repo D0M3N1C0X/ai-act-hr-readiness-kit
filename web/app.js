@@ -1,7 +1,7 @@
 // The browser tool's page: systems added with questions or loaded from a file, classified by engine.js (checked
 // against the Python register on every change), shown and downloaded. Nothing here talks to a server: inputs.json
 // comes from this same page.
-import { assess, classify, daysBetween, yesNo, annex, condition63, PROHIBITED, HIGH_RISK, DEROGATION, TRANSPARENCY, MINIMAL } from "./engine.js";
+import { assess, classify, daysBetween, yesNo, annex, condition63, PROHIBITED, HIGH_RISK, DEROGATION, TRANSPARENCY, MINIMAL, PRIVATE } from "./engine.js";
 import { createI18n } from "./design/i18n.js";
 import { readTable, parseCsv, matchColumns, applyMapping, download, normalise } from "./design/table.js";
 import { writeXlsx } from "./design/xlsx.js";
@@ -12,8 +12,18 @@ const UI = {
   en: {
     brand: "AI Act Readiness Kit for HR", eyebrow: "EU AI Act · Regulation (EU) 2024/1689, as amended in 2026",
     title: "Which of your HR team's AI systems are high-risk?",
-    lead: "Answer a few plain questions about each AI system, or load a list. You get its class, what it owes and from when, and whom to tell in each country.",
+    lead: "Answer a few plain questions about each AI system, or load a list. You get its class, what it owes and from when, whom to tell in each of nine countries, what to ask each supplier and who needs training.",
     privacy: "Your answers stay on this computer: everything runs in this page and nothing is sent anywhere.",
+    qDeployer: "Who is the employer?", qDeployerH: "It decides whether a fundamental rights impact assessment is owed (Art. 27) and whether the use must be registered (Art. 26(8)).",
+    dPrivate: "A private employer", dPublic: "A public body", dService: "A private entity providing public services",
+    fornitori: "What to ask each supplier", fornitoriSub: "The facts only the supplier holds: instructions for use, accuracy, logs, the information for the notices and the data protection impact assessment. Send before signing or at renewal.",
+    nDomande: "{n} questions", inHouse: "Built in-house: the team that built it answers these as the provider would.", nessunaDomanda: "No question for the suppliers of these systems.",
+    formazione: "AI literacy: who learns what", formazioneSub: "Article 4 asks for measures that support the literacy of the people who operate and use each system, not a level to guarantee.",
+    hModulo: "Module", hPerChi: "For whom", hCopre: "What it covers", prova: "Evidence to keep: {x}.",
+    fria: "Fundamental rights impact assessment", friaSub: "Article 27: owed before first use of a high-risk system by public bodies and private entities providing public services; since 2026 it may cross-refer to the data protection impact assessment (Art. 27(4)).",
+    friaDovuta: "Owed for {n} high-risk systems: {x}. Notify the results to the market surveillance authority.", friaVolontaria: "Not owed by a private employer. Recommended as a voluntary assessment for the {n} high-risk systems: {x}.", friaNessuna: "No high-risk system: no assessment needed.",
+    hElemento: "Art. 27(1)", hDpia: "DPIA section (GDPR Art. 35(7))", hKit: "Where to find it",
+    x_fornitori: "Supplier questions", x_formazione: "AI literacy", x_fria: "FRIA",
     step1: "Your AI systems", step1sub: "Add them one at a time with the questions, or load a list you already have.",
     aggiungi: "Add a system", carica: "Load a list (Excel or CSV)", esempio: "Try the sample: 12 systems", modello: "List template",
     wizard: "About this system", wizardEdit: "Change «{n}»", qNome: "What is it called?", qNomePh: "For example: CV screening in the applicant tracking system",
@@ -25,7 +35,7 @@ const UI = {
     registro: "The register", registroSub: "Each system's class under the AI Act, and why.",
     obblighi: "What applies, and when", obblighiSub: "The duties for high-risk systems start on 2 December 2027, or at the next significant design change for a system already on the market (Art. 111(2)); the ban and AI literacy apply already.",
     avvisi: "Whom to tell, country by country", avvisiSub: "National rules on informing workers and their representatives. They apply now, whatever the AI Act's timetable.",
-    nessunPaese: "No system is used in Italy, Germany, Spain or Poland, the four countries this tool knows.", nessunaRegola: "No rule applies to these systems.",
+    nessunPaese: "No system is used in any of the nine countries this tool knows.", nessunaRegola: "No rule applies to these systems.",
     kSistemi: "AI systems", kVietati: "To stop now", kAlto: "High-risk", kGiorni: "Days to 2 December 2027",
     scarica: "Download in Excel", stampa: "Print", stampaTitolo: "AI Act check", stampaMeta: "{n} systems · {oggi}",
     footer: "The same rules as the kit's Python register and Excel model, checked against each other on every change. Not legal advice.",
@@ -71,8 +81,18 @@ const UI = {
   it: {
     brand: "Kit AI Act per l'HR", eyebrow: "AI Act dell'UE · Regolamento (UE) 2024/1689, modificato nel 2026",
     title: "Quali sistemi di AI dell'HR sono ad alto rischio?",
-    lead: "Rispondi a poche domande semplici per ogni sistema di AI, oppure carica un elenco. Ottieni la classe, cosa deve fare l'azienda e da quando, e chi informare in ogni paese.",
+    lead: "Rispondi a poche domande semplici per ogni sistema di AI, oppure carica un elenco. Ottieni la classe, cosa deve fare l'azienda e da quando, chi informare in nove paesi, cosa chiedere a ogni fornitore e chi va formato.",
     privacy: "Le risposte restano su questo computer: tutto gira in questa pagina e niente viene inviato altrove.",
+    qDeployer: "Chi è il datore di lavoro?", qDeployerH: "Decide se serve la valutazione d'impatto sui diritti fondamentali (art. 27) e se l'uso va registrato (art. 26(8)).",
+    dPrivate: "Un datore di lavoro privato", dPublic: "Un ente pubblico", dService: "Un soggetto privato che fornisce servizi pubblici",
+    fornitori: "Cosa chiedere a ogni fornitore", fornitoriSub: "Le informazioni che ha solo il fornitore: istruzioni per l'uso, accuratezza, log, i dati per le informative e per la valutazione d'impatto sulla protezione dei dati. Da inviare prima della firma o al rinnovo.",
+    nDomande: "{n} domande", inHouse: "Costruito internamente: risponde il team che l'ha realizzato, come farebbe il fornitore.", nessunaDomanda: "Nessuna domanda per i fornitori di questi sistemi.",
+    formazione: "Alfabetizzazione sull'AI: chi impara cosa", formazioneSub: "L'articolo 4 chiede misure che sostengano l'alfabetizzazione di chi gestisce e usa ogni sistema, non un livello da garantire.",
+    hModulo: "Modulo", hPerChi: "Per chi", hCopre: "Cosa copre", prova: "Prove da conservare: {x}.",
+    fria: "Valutazione d'impatto sui diritti fondamentali", friaSub: "Articolo 27: dovuta prima del primo uso di un sistema ad alto rischio da enti pubblici e soggetti privati che forniscono servizi pubblici; dal 2026 può rinviare alla valutazione d'impatto sulla protezione dei dati (art. 27(4)).",
+    friaDovuta: "Dovuta per {n} sistemi ad alto rischio: {x}. I risultati vanno notificati all'autorità di vigilanza del mercato.", friaVolontaria: "Non dovuta da un datore di lavoro privato. Consigliata come valutazione volontaria per i {n} sistemi ad alto rischio: {x}.", friaNessuna: "Nessun sistema ad alto rischio: nessuna valutazione necessaria.",
+    hElemento: "Art. 27(1)", hDpia: "Sezione della DPIA (art. 35(7) GDPR)", hKit: "Dove trovarlo",
+    x_fornitori: "Domande ai fornitori", x_formazione: "Alfabetizzazione AI", x_fria: "FRIA",
     step1: "I sistemi di AI", step1sub: "Aggiungili uno alla volta con le domande, oppure carica un elenco che hai già.",
     aggiungi: "Aggiungi un sistema", carica: "Carica un elenco (Excel o CSV)", esempio: "Prova con l'esempio: 12 sistemi", modello: "Modello dell'elenco",
     wizard: "Questo sistema", wizardEdit: "Modifica «{n}»", qNome: "Come si chiama?", qNomePh: "Per esempio: selezione dei CV nel software di recruiting",
@@ -84,7 +104,7 @@ const UI = {
     registro: "Il registro", registroSub: "La classe di ogni sistema secondo l'AI Act, e perché.",
     obblighi: "Cosa si applica, e da quando", obblighiSub: "Gli obblighi per i sistemi ad alto rischio partono il 2 dicembre 2027, o alla prossima modifica significativa del design per un sistema già sul mercato (art. 111(2)); il divieto e la formazione si applicano già.",
     avvisi: "Chi informare, paese per paese", avvisiSub: "Le regole nazionali per informare lavoratori e rappresentanti. Valgono già oggi, qualunque sia il calendario dell'AI Act.",
-    nessunPaese: "Nessun sistema è usato in Italia, Germania, Spagna o Polonia, i quattro paesi che lo strumento conosce.", nessunaRegola: "Nessuna regola si applica a questi sistemi.",
+    nessunPaese: "Nessun sistema è usato in uno dei nove paesi che lo strumento conosce.", nessunaRegola: "Nessuna regola si applica a questi sistemi.",
     kSistemi: "Sistemi di AI", kVietati: "Da fermare subito", kAlto: "Ad alto rischio", kGiorni: "Giorni al 2 dicembre 2027",
     scarica: "Scarica in Excel", stampa: "Stampa", stampaTitolo: "Verifica AI Act", stampaMeta: "{n} sistemi · {oggi}",
     footer: "Le stesse regole del registro in Python e del modello Excel del kit, confrontati a ogni modifica. Non è consulenza legale.",
@@ -137,6 +157,8 @@ const IT_OBBLIGHI = {
   O08: "Informare rappresentanti e lavoratori prima dell'uso", O09: "Valutazione d'impatto sulla protezione dei dati, con le informazioni del fornitore",
   O10: "Informare le persone su cui si decide", O11: "Spiegare una decisione su richiesta", O12: "Obblighi del fornitore per un sistema costruito in casa",
   O13: "Valutazione di non alto rischio documentata",
+  O14: "Valutazione d'impatto sui diritti fondamentali prima del primo uso, con notifica dei risultati",
+  O15: "Registrare l'uso nella banca dati UE; non usare un sistema non registrato",
 };
 const IT_REGOLE = {
   "W-IT1": ["Informativa sui sistemi decisionali o di monitoraggio integralmente automatizzati", "Per iscritto, a ogni lavoratore e alle RSA/RSU: aspetti del rapporto interessati, scopi, logica e funzionamento, dati e parametri principali, misure di controllo e correzione, accuratezza, robustezza e cybersicurezza, eventuali effetti discriminatori; in formato strutturato e leggibile da dispositivo automatico", "Prima dell'inizio del lavoro; almeno 24 ore prima di ogni modifica di quelle informazioni"],
@@ -147,29 +169,71 @@ const IT_REGOLE = {
   "W-DE4": ["Un esperto per il consiglio d'azienda, considerato necessario per l'AI", "Un esperto concordato con l'azienda quanto a persona, oggetto e costo; per l'AI la necessità si presume", "Quando il consiglio valuta il sistema"],
   "W-ES1": ["Informazione sui parametri degli algoritmi che incidono sul lavoro", "Parametri, regole e istruzioni su cui si basa il sistema, al comitato d'impresa", "Con la periodicità prevista; prima dell'uso è la lettura prudente"],
   "W-PL1": ["Avviso di monitoraggio diverso dalla videosorveglianza", "Consentito solo se necessario per il pieno uso dell'orario e il corretto uso degli strumenti di lavoro; scopo, ambito e modalità nel regolamento aziendale", "Almeno due settimane prima dell'avvio; ai nuovi assunti per iscritto prima dell'inizio"],
+  "W-FR1": ["Informazione e consultazione del comitato sociale ed economico (CSE) sull'AI nell'HR", "Nelle imprese con almeno 50 dipendenti: informare il CSE prima di usare metodi o tecniche di supporto al recruiting e prima di introdurre trattamenti automatizzati di gestione del personale; consultarlo sull'introduzione di nuove tecnologie, con informazioni scritte precise e tempo sufficiente; il CSE può nominare un esperto", "Prima dell'uso; la consultazione quando il parere può ancora essere considerato"],
+  "W-FR2": ["Informazione e consultazione prima di strumenti di controllo dell'attività dei dipendenti", "Informare e consultare il CSE prima di decidere l'uso di mezzi o tecniche che permettono di controllare l'attività dei dipendenti; ogni limitazione dei diritti deve essere giustificata dal compito e proporzionata allo scopo", "Prima della decisione di attuazione"],
+  "W-FR3": ["Informare ogni candidato e dipendente prima che il metodo sia usato su di lui", "I candidati informati espressamente dei metodi e delle tecniche di selezione usati su di loro, i dipendenti dei metodi di valutazione; nessuna informazione personale raccolta da un dispositivo non portato prima a loro conoscenza; metodi pertinenti allo scopo; risultati riservati", "Prima che il metodo sia usato sulla persona"],
+  "W-NL1": ["Parere del consiglio d'azienda su una tecnologia importante", "Nelle imprese con almeno 50 persone: sottoporre per iscritto la decisione prevista, con le ragioni e le conseguenze attese per il personale; se la decisione si discosta dal parere, attendere un mese prima di attuarla", "In tempo perché il parere possa incidere in modo sostanziale sulla decisione"],
+  "W-NL2": ["Consenso del consiglio d'azienda su dati personali, monitoraggio e valutazione del personale", "Consenso alla regolamentazione del trattamento dei dati personali del personale (k), degli strumenti che possono osservare o controllare presenza, comportamento o prestazioni (l) e della valutazione del personale (g); una decisione presa senza consenso o autorizzazione del giudice è nulla se il consiglio la contesta per iscritto entro un mese", "Prima di adottare o modificare la regolamentazione"],
+  "W-NL3": ["Consenso del consiglio d'azienda sulle politiche di assunzione, licenziamento o promozione", "Consenso alla regolamentazione delle politiche di assunzione, licenziamento o promozione, che i criteri di selezione del sistema mettono in pratica; senza, la decisione può essere dichiarata nulla", "Prima dell'uso per assunzioni o promozioni"],
+  "W-IE1": ["Forum di informazione e consultazione, dove esiste", "Nelle imprese con almeno 50 dipendenti che hanno un accordo di informazione e consultazione (concordato, o le regole standard dopo la richiesta del 10% dei dipendenti): informazione e consultazione sulle decisioni che possono cambiare in modo sostanziale l'organizzazione del lavoro. Senza accordo la legge irlandese non aggiunge un obbligo generale; per i sistemi ad alto rischio vale comunque l'art. 26(7)", "Secondo l'accordo; prima della decisione è la lettura prudente"],
+  "W-AT1": ["Comunicare al consiglio d'azienda quali dati dei dipendenti sono trattati in modo automatizzato", "Comunicare al consiglio d'azienda quali tipi di dati personali dei dipendenti sono registrati in modo automatizzato e quali trattamenti e trasmissioni sono previsti; su richiesta, permettergli di verificarne le basi; discuterne nelle consultazioni comuni", "Prima dell'avvio del trattamento"],
+  "W-AT2": ["Consenso del consiglio d'azienda per sistemi di dati personali e di valutazione, sostituibile dalla commissione di conciliazione", "Consenso ai sistemi che trattano dati personali dei dipendenti oltre ai dati anagrafici generali e ai requisiti professionali, salvo che l'uso non vada oltre gli obblighi di legge, di contratto collettivo o individuale, e ai sistemi di valutazione dei dipendenti; la commissione di conciliazione può sostituire un consenso negato", "Prima dell'introduzione: senza consenso la misura non ha effetto giuridico"],
+  "W-AT3": ["Consenso del consiglio d'azienda, non sostituibile, per sistemi di controllo che toccano la dignità umana", "Consenso alle misure di controllo e ai sistemi tecnici di controllo dei dipendenti che toccano la dignità umana; nessun organo può sostituirlo, e un accordo aziendale senza termine può essere disdetto in ogni momento", "Prima dell'introduzione: senza consenso la misura non ha effetto giuridico"],
+  "W-BE1": ["Informazione scritta e consultazione su una nuova tecnologia con conseguenze collettive", "Nelle imprese con in media almeno 50 lavoratori, se almeno il 50% e 10 lavoratori delle categorie interessate vedono cambiare il proprio lavoro: informazione scritta sulla tecnologia, sui motivi e sulle conseguenze sociali, e consultazione del consiglio d'impresa o, in mancanza, della delegazione sindacale; in caso contrario i licenziamenti legati alla tecnologia sono vietati e costano tre mesi di retribuzione", "Al più tardi tre mesi prima dell'avvio dell'implementazione"],
+  "W-BE2": ["Informazione prima di controllare le comunicazioni elettroniche in rete", "Controllo dei dati di comunicazione in rete solo per le quattro finalità elencate, dichiarate in modo esplicito; informare il consiglio d'impresa (in mancanza il comitato per la prevenzione, la delegazione sindacale o i lavoratori) e ogni lavoratore interessato su tutti gli aspetti del controllo", "Prima dell'installazione del sistema di controllo"],
 };
-const PAESI_IT = { IT: "Italia", PL: "Polonia", DE: "Germania", ES: "Spagna" };
-const PAESI_EN = { IT: "Italy", PL: "Poland", DE: "Germany", ES: "Spain" };
+const IT_DOMANDE = {
+  V01: "Inviare le istruzioni per l'uso, con tutti gli elementi dell'articolo 13(3)", V02: "Indicare i livelli di accuratezza, robustezza e cybersicurezza su cui il sistema è stato testato, con le metriche, e le circostanze note che li influenzano",
+  V03: "Indicare le prestazioni del sistema per i gruppi di persone su cui è usato", V04: "Descrivere le misure di sorveglianza umana e gli strumenti che aiutano a interpretare i risultati",
+  V05: "Specificare i dati in ingresso attesi e i dati con cui il sistema è stato addestrato, validato e testato", V06: "Spiegare come raccogliere, conservare e leggere i log, e confermare che si possono conservare almeno sei mesi",
+  V07: "Elencare le modifiche predeterminate alla valutazione di conformità e impegnarsi ad avvisare prima di ogni modifica significativa del design", V08: "Indicare il contatto e la procedura per segnalare rischi e incidenti gravi",
+  V09: "Fornire le informazioni necessarie per la valutazione d'impatto sulla protezione dei dati", V10: "Spiegare cosa può mostrare il sistema per spiegare un singolo risultato",
+  V11: "Confermare la valutazione di conformità, la dichiarazione UE di conformità, la marcatura CE e la registrazione nella banca dati UE", V12: "Inviare la valutazione documentata per cui il sistema non è ad alto rischio, e la sua registrazione",
+  V13: "Confermare che le persone sanno di avere a che fare con un'AI, e scriverlo nel contratto", V14: "Confermare che il sistema non riconosce le emozioni, e non lo farà senza avvisare prima",
+  V15: "Fornire la logica, i parametri principali e le categorie di dati che le informative nazionali ai lavoratori richiedono", V16: "Fornire materiale formativo per chi gestirà e userà il sistema",
+};
+const IT_MODULI = {
+  L01: ["Lavorare con questo sistema", "Chiunque lo gestisca o lo usi", "Cosa fa e cosa non fa, i limiti noti, quando non fidarsi, come segnalare un problema"],
+  L02: ["Sorvegliare un sistema ad alto rischio", "Le persone incaricate della sorveglianza", "Leggere i risultati, il rischio di affidarsi troppo all'automazione, il potere di correggerlo o fermarlo, log e incidenti (art. 14, 26(2))"],
+  L03: ["Decisioni sulle persone", "Recruiter, manager e HR business partner che decidono", "Informare la persona (art. 26(11)), spiegare una decisione su richiesta (art. 86), la revisione umana"],
+  L04: ["Monitoraggio e diritti dei lavoratori", "Responsabili di linea e HR operations", "Scopo e proporzionalità, per cosa i dati si possono e non si possono usare, le regole nazionali sull'informativa"],
+  L05: ["AI che parla con le persone", "I responsabili di chatbot e assistenti", "Dire che è un'AI, passare la conversazione a una persona, cosa non deve rispondere"],
+  L06: ["Costruire un sistema ad alto rischio", "Il team dati e IT che l'ha costruito", "Gli obblighi del fornitore (art. 16), la governance dei dati, la documentazione, e perché riaddestrare un modello è una modifica significativa"],
+};
+const IT_PROVA = "Data, materiale e presenze per ogni modulo e persona: le misure prese, non un livello raggiunto (art. 4(1) come sostituito dal Reg. 2026/1744)";
+const IT_FRIA = {
+  "(a)": ["I processi del datore di lavoro in cui il sistema è usato, secondo la sua finalità prevista", "Registro: funzione HR e motivazione"],
+  "(b)": ["Il periodo e la frequenza d'uso", "Da completare: non è nel registro"],
+  "(c)": ["Le categorie di persone e i gruppi che possono essere interessati", "Registro: candidati o dipendenti, paesi, reparto, lavoratori coinvolti"],
+  "(d)": ["I rischi specifici di danno per loro, con le informazioni del fornitore ai sensi dell'articolo 13", "Risposte del fornitore V02-V03; i casi limite del rapporto"],
+  "(e)": ["Come si attuano le misure di sorveglianza umana delle istruzioni per l'uso", "Obbligo O04; risposta del fornitore V04; modulo di formazione L02"],
+  "(f)": ["Le misure se i rischi si concretizzano: governance interna e meccanismi di reclamo", "Obblighi O06 e O11; risposta del fornitore V08"],
+};
+const PAESI_IT = { IT: "Italia", PL: "Polonia", DE: "Germania", ES: "Spagna", FR: "Francia", NL: "Paesi Bassi", IE: "Irlanda", AT: "Austria", BE: "Belgio" };
+const PAESI_EN = CFG.country_names;
+const DEPLOYERS = { "Private employer": "dPrivate", "Public body": "dPublic", "Private entity providing public services": "dService" };
 
 const i18n = createI18n(UI, "en");
 const t = i18n.t;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const it = () => i18n.lang === "it";
-const K = "strumenti.aiact.sistemi";
+const K = "strumenti.aiact.sistemi", KD = "strumenti.aiact.deployer";
 const store = {
   get() { try { return JSON.parse(localStorage.getItem(K)) ?? []; } catch { return []; } },
   set(v) { try { localStorage.setItem(K, JSON.stringify(v)); } catch { /* private mode: fine */ } },
+  deployer() { try { const d = localStorage.getItem(KD); return CFG.deployer_types.includes(d) ? d : PRIVATE; } catch { return PRIVATE; } },
+  setDeployer(v) { try { localStorage.setItem(KD, v); } catch { /* private mode: fine */ } },
 };
 
-const DEFAULT = { supplier: "Vendor", scope: "All", in_it: "No", in_pl: "No", in_de: "No", in_es: "No", applicants: "No",
+const DEFAULT = { supplier: "Vendor", scope: "All", ...Object.fromEntries(CFG.countries.map((c) => [`in_${c.toLowerCase()}`, "No"])), applicants: "No",
   infers_emotions: "No", medical_or_safety: "No", annex_iii: "None", profiling: "No", art6_3_condition: "None",
   interacts: "No", decides_about_people: "No", fully_automated: "No", monitors_workers: "No", controls_input_data: "No",
   on_market_before: "Yes" };
 // state: the systems (with any answer missing from an older save filled in), whether they are the sample, which
 // comes with a headcount, and the one being edited
-let sistemi = store.get().map((s) => ({ ...DEFAULT, ...s })), esempio = false, inModifica = null;
-const YN = ["in_it", "in_pl", "in_de", "in_es", "applicants", "infers_emotions", "medical_or_safety", "profiling", "interacts",
+let sistemi = store.get().map((s) => ({ ...DEFAULT, ...s })), esempio = false, inModifica = null, datore = store.deployer();
+const YN = [...CFG.countries.map((c) => `in_${c.toLowerCase()}`), "applicants", "infers_emotions", "medical_or_safety", "profiling", "interacts",
   "decides_about_people", "fully_automated", "monitors_workers", "controls_input_data", "on_market_before"];
 
 const nomeClasse = (c) => t({ [PROHIBITED]: "cProhibited", [HIGH_RISK]: "cHigh", [DEROGATION]: "cDerog", [TRANSPARENCY]: "cTransp", [MINIMAL]: "cMinimal" }[c]);
@@ -178,6 +242,9 @@ const nomePaese = (c) => (it() ? PAESI_IT : PAESI_EN)[c] || c;
 const data = (iso) => new Date(`${iso}T00:00:00`).toLocaleDateString(it() ? "it-IT" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
 const obbligo = (o) => (it() ? IT_OBBLIGHI[o.key] : o.name);
 const regola = (r) => (it() ? IT_REGOLE[r.key] : [r.name, r.what, r.timing]);
+const domanda = (q) => (it() ? IT_DOMANDE[q.key] : q.question);
+const modulo = (m) => (it() ? IT_MODULI[m.key] : [m.module, m.who, m.covers]);
+const elemento = (e) => (it() ? IT_FRIA[e.key] : [e.element, e.kit]);
 
 function perche(s) {
   const cls = classify(s);
@@ -360,8 +427,13 @@ $("esempio").addEventListener("click", async () => {
 // ---- results -------------------------------------------------------------------------------------------------------
 function risultati() {
   const hc = esempio ? CFG.headcount : null;
-  return sistemi.map((s) => ({ s, r: assess(s, CFG, hc) }));
+  return sistemi.map((s) => ({ s, r: assess(s, CFG, hc, datore) }));
 }
+
+function disegnaDatore() {
+  $("datore").innerHTML = CFG.deployer_types.map((d) => `<option value="${esc(d)}" ${d === datore ? "selected" : ""}>${esc(t(DEPLOYERS[d]))}</option>`).join("");
+}
+$("datore").addEventListener("change", (e) => { datore = e.target.value; store.setDeployer(datore); mostra(); });
 
 function mostra() {
   const out = risultati();
@@ -404,6 +476,30 @@ function mostra() {
     }).join("");
     return `<div class="country"><h3>${esc(nomePaese(c))}</h3>${regole ? `<ul>${regole}</ul>` : `<p class="note">${esc(t("nessunaRegola"))}</p>`}</div>`;
   }).join("") : `<p class="note">${esc(t("nessunPaese"))}</p>`;
+
+  const conDomande = out.filter((x) => x.r.questions.length || (x.s.supplier === "In-house" && x.r.class !== PROHIBITED));
+  $("domande-fornitori").innerHTML = conDomande.length ? conDomande.map(({ s, r }) => s.supplier === "In-house"
+    ? `<details class="sup"><summary><b>${esc(s.system)}</b> ${pill(r.class)}</summary><p class="note">${esc(t("inHouse"))}</p></details>`
+    : `<details class="sup"><summary><b>${esc(s.system)}</b> ${pill(r.class)} <span class="note">${esc(t("nDomande", { n: r.questions.length }))}</span></summary><ol>${
+      r.questions.map((k) => CFG.vendor_questions.find((q) => q.key === k)).map((q) => `<li>${esc(domanda(q))} <span class="note">(${esc(q.article)})</span></li>`).join("")}</ol></details>`).join("")
+    : `<p class="note">${esc(t("nessunaDomanda"))}</p>`;
+
+  $("tab-formazione").innerHTML = `<tr><th class="l">${esc(t("hModulo"))}</th><th class="l">${esc(t("hPerChi"))}</th><th class="l">${esc(t("hCopre"))}</th><th class="l">${esc(t("hQuali"))}</th></tr>` +
+    CFG.literacy.map((m) => {
+      const quali = out.filter((x) => x.r.literacy.includes(m.key)).map((x) => x.s.system);
+      const [nome, chi, copre] = modulo(m);
+      return `<tr><td class="l"><b>${esc(nome)}</b></td><td class="l">${esc(chi)}</td><td class="l">${esc(copre)}</td>
+        <td class="l">${quali.length ? esc(quali.join(", ")) : `<span class="note">${esc(t("nessuno"))}</span>`}</td></tr>`;
+    }).join("");
+  $("nota-prova").textContent = t("prova", { x: it() ? IT_PROVA : CFG.literacy_evidence });
+
+  const alti = out.filter((x) => x.r.class === HIGH_RISK).map((x) => x.s.system);
+  const dovuta = out.filter((x) => x.r.obligations.includes("O14")).map((x) => x.s.system);
+  $("fria-stato").textContent = !alti.length ? t("friaNessuna")
+    : dovuta.length ? t("friaDovuta", { n: dovuta.length, x: dovuta.join(", ") }) : t("friaVolontaria", { n: alti.length, x: alti.join(", ") });
+  $("tab-fria").innerHTML = `<tr><th class="l">${esc(t("hElemento"))}</th><th class="l">${esc(t("hCosa"))}</th><th class="l">${esc(t("hDpia"))}</th><th class="l">${esc(t("hKit"))}</th></tr>` +
+    CFG.fria_elements.map((e) => { const [cosa, kit] = elemento(e);
+      return `<tr><td class="l"><b>${esc(e.key)}</b></td><td class="l">${esc(cosa)}</td><td class="l">${esc(e.dpia)}</td><td class="l">${esc(kit)}</td></tr>`; }).join("");
 }
 
 $("stampa").addEventListener("click", () => print());
@@ -424,17 +520,29 @@ $("scarica").addEventListener("click", () => {
   const avvisi = [[t("hPaese"), t("hRegola"), t("xFonte"), t("hQuali"), t("hCosa"), t("hQuando")],
     ...CFG.worker_rules.map((r) => { const [nome, cosa, quando] = regola(r);
       return [nomePaese(r.country), nome, r.source, out.filter((x) => x.r.rules.includes(r.key)).map((x) => x.s.system).join(", "), cosa, quando]; })];
-  const info = [[t("x_info"), ""], [t("xData"), oggi], [t("xNota", { d: data(CFG.assessment) }), ""],
+  const fornitori = [[t("hSistema"), t("hClasse"), "#", t("x_fornitori"), t("hArticolo")],
+    ...out.flatMap(({ s, r }) => r.questions.map((k, i) => { const q = CFG.vendor_questions.find((x) => x.key === k);
+      return [s.system, nomeClasse(r.class), i + 1, domanda(q), q.article]; }))];
+  const formazione = [[t("hModulo"), t("hPerChi"), t("hCopre"), t("hQuali")],
+    ...CFG.literacy.map((m) => [...modulo(m), out.filter((x) => x.r.literacy.includes(m.key)).map((x) => x.s.system).join(", ")]),
+    [], [t("prova", { x: it() ? IT_PROVA : CFG.literacy_evidence }), "", "", ""]];
+  const fria = [[t("fria"), $("fria-stato").textContent], [], [t("hElemento"), t("hCosa"), t("hDpia"), t("hKit")],
+    ...CFG.fria_elements.map((e) => { const [cosa, kit] = elemento(e); return [e.key, cosa, e.dpia, kit]; })];
+  const info = [[t("x_info"), ""], [t("xData"), oggi], [t("qDeployer"), t(DEPLOYERS[datore])], [t("xNota", { d: data(CFG.assessment) }), ""],
     [t("metodo"), "https://github.com/D0M3N1C0X/ai-act-hr-readiness-kit/blob/main/docs/method.md"]];
   download(writeXlsx([
     { name: t("x_registro"), rows: registro, widths: [34, 22, 20, 70, 18, 10, 10, 10, 10, 22, 18, 14, 14, 14, 14, 16, 14, 14, 14, 14, 14] },
     { name: t("x_obblighi"), rows: obblighi, widths: [60, 22, 14, 12, 80] },
     { name: t("x_avvisi"), rows: avvisi, widths: [12, 60, 40, 60, 70, 40] },
+    { name: t("x_fornitori"), rows: fornitori, widths: [34, 22, 5, 90, 30] },
+    { name: t("x_formazione"), rows: formazione, widths: [34, 40, 80, 60] },
+    { name: t("x_fria"), rows: fria, widths: [40, 80, 24, 60] },
     { name: t("x_info"), rows: info, widths: [60, 80] },
   ]), `${it() ? "verifica_ai_act" : "ai_act_check"}_${oggi}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 });
 
 i18n.apply();
-i18n.onChange(() => { disegnaLista(); mostra(); if (inModifica !== null || $("wizard").style.display === "block") apri(inModifica); });
+i18n.onChange(() => { disegnaDatore(); disegnaLista(); mostra(); if (inModifica !== null || $("wizard").style.display === "block") apri(inModifica); });
+disegnaDatore();
 disegnaLista();
 mostra();

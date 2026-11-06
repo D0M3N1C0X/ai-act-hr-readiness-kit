@@ -10,13 +10,19 @@ import report_html
 from config import (
     ASSESSMENT_DATE,
     COUNTRIES,
+    COUNTRY_NAMES,
     D_ANNEX_III,
+    DEPLOYER,
     ENTITIES,
+    FRIA_ELEMENTS,
     HIGH_RISK,
+    LITERACY,
+    LITERACY_EVIDENCE,
     NOT_APPLICABLE,
     OBLIGATIONS,
     PROHIBITED,
     REPORTS,
+    VENDOR_QUESTIONS,
     WORKER_RULES,
 )
 
@@ -71,7 +77,8 @@ def write() -> dict:
     add("**Method:** each system classified from the answers in the register, in Python and in a live Excel model, "
         "reconciled cell by cell")
     add("**Law:** Regulation (EU) 2024/1689 as amended by Regulation (EU) 2026/1744, both read in the Official "
-        "Journal; national rules on informing and consulting workers in the four countries")
+        f"Journal; national rules on informing and consulting workers in {WORDS[len(COUNTRIES)]} countries: the "
+        "employer's four, and France, the Netherlands, Ireland, Austria and Belgium for anyone running the tool")
     add("")
     add("> A dry run, not legal advice. The organisation is the one in "
         "[pay-transparency-readiness-kit](https://github.com/D0M3N1C0X/pay-transparency-readiness-kit); its AI "
@@ -148,7 +155,7 @@ def write() -> dict:
         f"the affected workers before use (Art. 26(7)), for {obl['O08']} systems here. The national rules below "
         "apply now, and they reach further than the AI Act's high-risk list.")
     add("")
-    for country in COUNTRIES:
+    for country in ENTITIES:
         rules = [w for w in WORKER_RULES if w[1] == country]
         add(f"**{ENTITIES[country]}**")
         add("")
@@ -157,11 +164,73 @@ def write() -> dict:
             who = ", ".join(hit) if hit else "no system in this register"
             add(f"- **{name}** ({src}): {who}. {what}; {when[0].lower() + when[1:]}.")
         add("")
+    others = [c for c in COUNTRIES if c not in ENTITIES]
+    n_other = sum(1 for w in WORKER_RULES if w[1] in others)
+    add(f"**{WORDS[len(others)].capitalize()} more countries, for an employer elsewhere.** The register also holds "
+        f"{n_other} rules for {', '.join(COUNTRY_NAMES[c] for c in others[:-1])} and {COUNTRY_NAMES[others[-1]]}: "
+        "the CSE in France (information before recruitment techniques and automated HR processing are used, "
+        "consultation before monitoring), the works council's advice and consent in the Netherlands (void without "
+        "consent), consent in Austria (one replaceable by the conciliation board, one not), three months' notice for a "
+        "new technology in Belgium, and Ireland's information and consultation forum where one exists. None applies "
+        "to this employer; the [browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/) runs them "
+        "on any list of systems.")
+    add("")
     add("The [worker information pack](../docs/worker-information.md) has, for each country, who to tell, what the "
         "notice must contain and a model text.")
     add("")
 
-    add("## 4. The judgement calls")
+    q, lit = s["questions"], s["literacy"]
+    vendor_high = int(((r["class"] == HIGH_RISK) & (r["system_id"].map(systems["supplier"]) == "Vendor")).sum())
+    add("## 4. What to ask each supplier")
+    add("")
+    add(f"Most deployer duties can only be met with facts the supplier holds. The register turns them into "
+        f"{len(VENDOR_QUESTIONS)} questions and sends each system's supplier the ones its class calls for: "
+        f"{sum(q.values())} in all, most of them for the {vendor_high} bought high-risk systems. In-house systems are "
+        "asked of the team that built them.")
+    add("")
+    add(md_table(["Question", "Article", "Systems"],
+                 [[question, art, q[key]] for key, question, art, _c, _w in VENDOR_QUESTIONS], "llr"))
+    add("")
+    add("The [supplier questionnaire](../deliverables/supplier_questionnaire.md) lists them system by system, ready to "
+        "send.")
+    add("")
+
+    add("## 5. AI literacy: who learns what")
+    add("")
+    add("Since the Digital Omnibus, Article 4 asks providers and deployers to *take measures to support* the AI literacy "
+        "of the people who operate and use their systems, taking into account their knowledge and the context, without "
+        "guaranteeing any level. The register maps each system to the modules its answers call for:")
+    add("")
+    add(md_table(["Module", "For whom", "Systems"], [[m, who, lit[key]] for key, m, who, _c, _w in LITERACY], "llr"))
+    add("")
+    add(f"Evidence to keep: {LITERACY_EVIDENCE[0].lower() + LITERACY_EVIDENCE[1:]}. The "
+        "[literacy plan](../deliverables/ai_literacy_plan.md) gives the modules per system.")
+    add("")
+
+    add("## 6. The fundamental rights impact assessment")
+    add("")
+    n_high = s["n_" + HIGH_RISK]
+    add(f"**Not owed here, drafted anyway.** Article 27 asks for the assessment before the first use of a high-risk "
+        f"system by bodies governed by public law and private entities providing public services (and by deployers of "
+        f"credit and life and health insurance systems, which no HR system is). The deployer here is a "
+        f"{DEPLOYER.lower()}, so obligation O14 is off; the kit still drafts the assessment for its {n_high} high-risk "
+        "systems, because the questions it asks are the ones a works council, a data protection authority or a court "
+        "will ask, and because a public employer running the tool will owe it.")
+    add("")
+    add("Since Regulation 2026/1744 the assessment may cross-refer to the data protection impact assessment where that "
+        "already covers an element (Art. 27(4) as replaced). The six elements, and the section of a GDPR Article 35(7) "
+        "assessment that usually holds each:")
+    add("")
+    add(md_table(["Art. 27(1)", "Element", "DPIA (Art. 35(7))", "In the kit"],
+                 [[k, e, d, x] for k, e, d, x in FRIA_ELEMENTS], "llll"))
+    add("")
+    add("A public body also registers its use of each high-risk system in the EU database and may not use one the "
+        "provider has not registered (Art. 26(8), 49(3)), and its legacy systems comply by 2 August 2030 whatever their "
+        "design changes (Art. 111(2)). The [draft assessments](../deliverables/fria_drafts.md) are pre-filled from the "
+        "register, one per high-risk system.")
+    add("")
+
+    add("## 7. The judgement calls")
     add("")
     add("- **Shift scheduling is a boundary case.** On availability and certified skills alone it might not evaluate "
         "anyone; past attendance makes it allocate tasks on individual behaviour, which is profiling. The register "
@@ -197,7 +266,13 @@ def write() -> dict:
         "one too.")
     add("")
 
-    add("## 5. The next 90 days")
+    add("- **The new countries' rules are read conservatively.** Whether an HR AI system is a *nouvelle technologie* "
+        "(France), an *important* technological facility (Netherlands), a system touching human dignity (Austria) or "
+        "an *investment* in a new technology (Belgium) is a judgement; the register assumes yes where the system "
+        "monitors or changes work, and names it in the verification register.")
+    add("")
+
+    add("## 8. The next 90 days")
     add("")
     add(f"1. **Stop the {lower(banned['system'])} pilot** in Barcelona, delete the scores, and tell the supplier and "
         "the candidates assessed.")
@@ -207,19 +282,23 @@ def write() -> dict:
         "Spanish works council the parameters of the systems that affect work.")
     add("4. **Send the Italian notices** for the fully automated systems and settle the agreement for the monitoring "
         "tool; give the Polish notice two weeks before any new monitoring.")
-    add("5. **Put AI literacy on record**: who uses which system, what training they had, what they still need.")
-    add("6. **Ask each supplier of a high-risk system** for the instructions for use and the information needed for "
-        "the data protection impact assessments, and name an overseer per system.")
+    add(f"5. **Put AI literacy on record**: run the {sum(lit.values())} module-system pairs of the literacy plan and "
+        "keep who took which, when, with what material.")
+    add(f"6. **Send the supplier questionnaire**: {sum(q.values())} questions, starting with the instructions for use "
+        "and the information the data protection impact assessments need; name an overseer per high-risk system.")
+    add("7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.")
     add("")
 
-    add("## 6. Method, sources and limits")
+    add("## 9. Method, sources and limits")
     add("")
     add("- **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live "
         "formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet "
         "checks each pair, and CI recalculates the workbook with LibreOffice.")
     add("- **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German "
-        "and Spanish rules on the official legal databases; the Polish ones through secondary sources. Each statement "
-        "has its status in [docs/verification.md](../docs/verification.md).")
+        "and Spanish rules on the official legal databases; the Dutch and Austrian ones through their governments' "
+        "open-data services, the French on the Ministry of Labour's official code, the Irish in the Irish Statute Book "
+        "and the Belgian agreements on the National Labour Council's site; the Polish ones through secondary sources. "
+        "Each statement has its status in [docs/verification.md](../docs/verification.md).")
     add("- **Limits.** Invented systems and answers; the classification follows the text of the Regulation, and "
         "Commission guidelines, harmonised standards or national practice can move boundary cases. Not legal advice.")
     add("")

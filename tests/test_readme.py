@@ -22,6 +22,9 @@ def test_readme_quotes_current_figures(tmp_path):
         f"a written notice for {s['worker_rules']['W-IT1']} fully automated system",
         f"reconciled on {len(build_workbook.build(tmp_path / 'm.xlsx').checks)} checks",
         f"({s['workers_total']:,} workers)",
+        f"**{sum(s['questions'].values())} questions for the suppliers**",
+        f"**{sum(s['literacy'].values())} AI literacy modules to run**",
+        f"for each of the {s['n_High-risk']} high-risk systems anyway",
     ]
     missing = [e for e in expected if e not in README]
     assert not missing, f"README is out of date: {missing}"

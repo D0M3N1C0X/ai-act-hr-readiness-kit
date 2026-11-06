@@ -1,7 +1,8 @@
 # Worker information pack
 
-Who has to be told about an AI system used on workers, what the notice must contain, and when, in the four
-countries of the register. Each section ends with a model text to adapt. The AI Act's own duty for high-risk systems
+Who has to be told about an AI system used on workers, what the notice must contain, and when, in the nine
+countries of the register: the dry run employer's four (Italy, Germany, Spain, Poland) and France, the Netherlands,
+Ireland, Austria and Belgium. Each section ends with a model text to adapt. The AI Act's own duty for high-risk systems
 (Art. 26(7): inform workers' representatives and the affected workers before use) starts on 2 December 2027; the
 national rules below apply now.
 
@@ -12,7 +13,7 @@ goes out.
 
 ## What every notice should say
 
-Whatever the country, a notice that would satisfy all four regimes covers the same ground:
+Whatever the country, a notice that would satisfy all nine regimes covers the same ground:
 
 1. **Which system**, from which supplier, and since or from when.
 2. **What it is for**: the decisions or tasks it supports, and which ones it does not touch.
@@ -119,6 +120,100 @@ Whatever the country, a notice that would satisfy all four regimes covers the sa
 > order to [purpose]. Monitoring covers [scope] and does not cover [exclusions, such as private messages]. The data are
 > kept for [period] and seen by [roles]. The purpose, scope and method are set out in the work regulations, section
 > [number].
+
+## France
+
+| | |
+|---|---|
+| **Rule** | Code du travail L2312-38 and L2312-8 II 4° (the social and economic committee, CSE); L2312-37 1°; L2315-94 2° (expert); L1221-8, L1221-9, L1222-3, L1222-4 (each person); L1121-1 (proportionality) |
+| **Applies to** | The CSE's consultative powers apply in undertakings with at least 50 employees (L2312-1, L2312-2). The individual rules apply at any size |
+| **Tell the CSE** | Before use, about methods or techniques that help recruit candidates, and before introduction, about automated personnel management processing (L2312-38 al. 1-2); inform and consult it before deciding to use means or techniques that allow employees' activity to be monitored (al. 3, L2312-37 1°); consult it on the introduction of new technologies (L2312-8 II 4°), with precise written information and enough time to give a reasoned opinion (L2312-15). The CSE may appoint an expert (L2315-94 2°) |
+| **Tell each person** | Candidates are expressly told, beforehand, of the recruitment methods and techniques used on them, employees of the evaluation methods; no personal information may be collected by a device not brought to their knowledge first; methods must be relevant to their purpose and results are confidential |
+| **Open point** | Whether every HR AI system is a *nouvelle technologie* under L2312-8 is a judgement; any system that helps recruit or processes personnel data falls under L2312-38 in any case |
+
+**Model (to translate into French)**
+
+> Subject: Information and consultation of the CSE on [system] (articles L2312-38 and L2312-8 of the Labour Code)
+>
+> From [date], we plan to use [system], supplied by [supplier], to [purpose] in [departments]. Enclosed: what it does,
+> the data it uses, its outputs and who sees them, how a person reviews them, how candidates and employees will be told
+> beforehand, and the data protection impact assessment. [If it monitors activity: the means of monitoring, their
+> purpose, and why they are proportionate.] We ask the committee for its opinion at the meeting of [date] and will
+> answer its observations in writing.
+
+## Netherlands
+
+| | |
+|---|---|
+| **Rule** | Wet op de ondernemingsraden (WOR) art. 25(1)(k) (advice), art. 27(1)(e), (g), (k), (l) and (5) (consent) |
+| **Applies to** | Undertakings that normally employ at least 50 persons must have a works council (*ondernemingsraad*, art. 2) |
+| **Advice** | Introducing or changing an important technological facility: the proposed decision in writing, with the reasons and the expected consequences for staff, early enough for the advice to influence it materially; if the decision departs from the advice, it is suspended for a month (art. 25) |
+| **Consent** | Rules on processing and protecting staff personal data (k), on facilities designed or able to observe or check attendance, behaviour or performance (l), on staff assessment (g) and on hiring, dismissal or promotion policy (e). Without consent or the cantonal court's permission the decision is void if the works council invokes it in writing within a month (art. 27(5)) |
+| **Open point** | Whether a system is *important* under art. 25(1)(k) is a judgement; consent under art. 27 does not depend on it |
+
+**Model (to translate into Dutch)**
+
+> Subject: Request for advice (art. 25 WOR) and consent (art. 27 WOR) on [system]
+>
+> We intend to introduce [system], supplied by [supplier], from [date] for [purpose]. Enclosed: our reasons, the
+> expected consequences for staff and the measures we propose, the personal data it processes and who can see them,
+> whether and how it observes attendance, behaviour or performance, and how assessments or selection decisions remain
+> with a person. We ask for your advice and consent and propose to discuss them at the consultation meeting of [date].
+
+## Ireland
+
+| | |
+|---|---|
+| **Rule** | Employees (Provision of Information and Consultation) Act 2006, s. 4, 7, 10 and Schedule 1 para. 3(c) |
+| **Applies to** | Undertakings with at least 50 employees, once an information and consultation arrangement exists: agreed by the employer, or required by a written request of at least 10% of employees (at least 15, at most 100), with the Standard Rules applying if no agreement is reached |
+| **Content** | Under the Standard Rules, information and consultation on decisions likely to lead to substantial changes in work organisation or in contractual relations |
+| **Without an arrangement** | Irish law adds no general duty to inform or consult before an AI system is used; the AI Act's own duty for high-risk systems (Art. 26(7)) and the GDPR's transparency rules still apply |
+| **Open point** | Ireland's national law implementing the AI Act was not found in force in the sources read; check its status before relying on this section |
+
+**Model (to adapt for the forum)**
+
+> Subject: Information and consultation on [system]
+>
+> We propose to introduce [system] from [date] for [purpose]. It is likely to change how work is organised in
+> [teams]: [what changes]. Enclosed: what it does, the data it uses, how a person reviews its output, and the data
+> protection impact assessment. We invite the Forum to give its views at the meeting of [date], before we decide.
+
+## Austria
+
+| | |
+|---|---|
+| **Rule** | Arbeitsverfassungsgesetz (ArbVG) §91(2), §92(1), §96(1) Z 3 and (2), §96a(1) Z 1-2 and (2) |
+| **Applies to** | A works council (*Betriebsrat*) is formed in establishments with at least five employees (§40(1)) |
+| **Information** | What kinds of employee personal data are recorded automatically and which processing and transfers are planned; on request, the works council may check their basis (§91(2)); joint consultations at least quarterly (§92(1)) |
+| **Consent, replaceable** | Systems that process employees' personal data beyond general personal details and qualifications, unless the use goes no further than duties under law, collective rules or the contract, and systems for assessing employees: the conciliation board (*Schlichtungsstelle*) can replace a refused consent (§96a) |
+| **Consent, not replaceable** | Control measures and technical systems for monitoring employees that touch human dignity (§96(1) Z 3); without the works council's consent they have no legal effect |
+| **Open point** | Whether a monitoring system touches human dignity is a judgement; the register assumes it does |
+
+**Model (to translate into German)**
+
+> Subject: [System]: information under §91(2) ArbVG and request for consent under §96a [and §96(1) Z 3] ArbVG
+>
+> We plan to introduce [system], supplied by [supplier], from [date] for [purpose]. It records the following kinds of
+> employee data: [list], processes them to [outputs] and transfers them to [recipients]. Enclosed: the description,
+> the human review, access rights and retention. We propose a works agreement covering purpose, data, evaluation and
+> its duration, and ask to discuss it at the consultation of [date].
+
+## Belgium
+
+| | |
+|---|---|
+| **Rule** | National collective agreement (CCT/cao) n° 39 of 13 December 1983 on new technologies; n° 81 of 26 April 2002 on monitoring electronic online communications |
+| **New technology** | In undertakings employing on average at least 50 workers, where an investment in a new technology has important collective consequences (at least 50% and 10 workers of the categories affected see their employment, work organisation or conditions change): written information on its nature, the reasons and the social consequences, and consultation of the works council or, failing that, the union delegation, at the latest three months before implementation starts. Failing that, dismissals linked to the technology are barred and a dismissal costs three months' pay (art. 6) |
+| **Monitoring communications** | Monitoring of network communication data only for the four purposes listed (art. 5), defined explicitly; inform the works council (failing that the prevention committee, the union delegation or the workers) and each worker concerned of every aspect of the monitoring (art. 7-8) |
+| **Open point** | Whether a software subscription is an *investment* in a new technology, and whether a monitoring system reads network communication data, are judgements; the register applies both where the system changes work or monitors |
+
+**Model (to translate into French or Dutch)**
+
+> Subject: Information and consultation on the introduction of [system] (CCT n° 39)
+>
+> From [date, at least three months ahead], we plan to introduce [system] in [departments]. Its nature: [what it does].
+> Why: [reasons]. The social consequences we foresee for employment, work organisation and working conditions:
+> [what changes, for whom]. We propose to discuss them at the works council of [date].
 
 ## The AI Act duty from December 2027
 
