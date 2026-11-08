@@ -2,6 +2,35 @@
 
 What changed in each release. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.0] - 2026-11-06
+
+### Added
+
+- **Five more countries**: France (the CSE under L2312-38 and L2312-8, and each candidate and employee under L1221-8
+  to L1222-4), the Netherlands (works council advice under art. 25(1)(k) WOR and consent under art. 27(1)), Ireland
+  (the information and consultation forum of the 2006 Act), Austria (ArbVG §91(2), §96a and §96(1) Z 3) and Belgium
+  (CCT n° 39 and n° 81): eleven rules, nineteen in all, in the three engines, the tool and the worker information
+  pack, each read in an official source.
+- **Who the deployer is**: private employer, public body, or private entity providing public services, in the
+  workbook's Settings and as a choice in the tool. It decides two new obligations, the fundamental rights impact
+  assessment (O14, Art. 27) and registering the use (O15, Art. 26(8), 49(3)), and the 2 August 2030 long stop for a
+  public body's systems already on the market (Art. 111(2)).
+- **Questions for the supplier**: sixteen questions, each tied to the duty it serves (Art. 13(3), 26, 50, 6(4),
+  111(2) and the national notices), asked of each bought system as its answers require; a `Supplier` sheet and
+  `deliverables/supplier_questionnaire.md`.
+- **AI literacy plan**: six modules for named groups of people, triggered by each system's answers, under Article 4
+  as replaced by the Omnibus; a `Literacy` sheet and `deliverables/ai_literacy_plan.md`.
+- **Fundamental rights impact assessment**: when it is owed, its six elements mapped to the GDPR Article 35(7) DPIA
+  now that Article 27(4) allows cross-references, and a draft for each high-risk system in
+  `deliverables/fria_drafts.md`, voluntary for a private employer.
+- Reconciliation grows from 330 to 813 checks; the browser engine is checked on 16,309 values, the twelve systems
+  under each kind of deployer included.
+
+### Changed
+
+- The verification register gains an "Official copy" status and records what was read through official open-data
+  services because EUR-Lex, Légifrance and the RIS refuse automated reads.
+
 ## [1.1.0] - 2026-10-24
 
 ### Added

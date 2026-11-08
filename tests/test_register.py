@@ -6,7 +6,8 @@ import register
 from config import DEROGATION, HIGH_RISK, MINIMAL, PROHIBITED, TRANSPARENCY
 
 BASE = {"system_id": "X", "system": "Test", "function": "", "supplier": "Vendor", "scope": "All", "in_it": "Yes",
-        "in_pl": "No", "in_de": "Yes", "in_es": "No", "applicants": "No", "infers_emotions": "No",
+        "in_pl": "No", "in_de": "Yes", "in_es": "No", "in_fr": "No", "in_nl": "No", "in_ie": "No",
+        "in_at": "No", "in_be": "No", "applicants": "No", "infers_emotions": "No",
         "medical_or_safety": "No", "annex_iii": "None", "profiling": "No", "art6_3_condition": "None",
         "interacts": "No", "decides_about_people": "No", "fully_automated": "No", "monitors_workers": "No",
         "controls_input_data": "No", "on_market_before": "Yes", "rationale": ""}
@@ -108,3 +109,50 @@ def test_answers_must_be_spelled_as_allowed():
     bad.loc[0, "infers_emotions"] = "yes"          # Excel would read this as Yes, Python would not
     with pytest.raises(ValueError):
         register.validate(bad)
+
+
+def test_a_private_employer_owes_no_fria_a_public_one_does():
+    x = s(annex_iii="4(a)", profiling="Yes")
+    cls = register.classify(x)
+    assert not register.applies("high-risk and public", x, cls, "Private employer")
+    assert register.applies("high-risk and public", x, cls, "Private entity providing public services")
+    assert register.applies("high-risk and public body", x, cls, "Public body")
+    assert not register.applies("high-risk and public body", x, cls, "Private entity providing public services")
+
+
+def test_public_bodies_get_a_long_stop_date_for_legacy_systems():
+    x = s(annex_iii="4(a)", profiling="Yes")
+    assert register.timing(x, HIGH_RISK, "Public body") == register.LEGACY_PUBLIC
+    assert register.timing(x, HIGH_RISK, "Private entity providing public services") == register.LEGACY
+    assert register.timing({**x, "on_market_before": "No"}, HIGH_RISK, "Public body") == "From 2 December 2027"
+
+
+def test_new_countries_need_the_country_and_follow_their_conditions():
+    x = s(in_fr="Yes", in_nl="Yes", in_at="Yes", in_be="Yes", in_ie="Yes", monitors_workers="Yes")
+    cls = register.classify(x)
+    for country, cond in (("FR", "monitors"), ("AT", "monitors"), ("BE", "monitors"), ("NL", "on employees"),
+                          ("IE", "changes work organisation"), ("BE", "changes work organisation")):
+        assert register.triggers(cond, country, x, cls), (country, cond)
+    assert not register.triggers("monitors", "FR", {**x, "in_fr": "No"}, cls)
+    applicants_only = s(in_nl="Yes", in_at="Yes", applicants="Yes")
+    assert not register.triggers("on employees", "NL", applicants_only, MINIMAL)
+    assert not register.triggers("on employees", "AT", applicants_only, MINIMAL)
+
+
+def test_questions_go_to_vendors_only():
+    x = s(annex_iii="4(a)", profiling="Yes")
+    assert register.asks("high-risk", x, HIGH_RISK)
+    assert not register.asks("high-risk", {**x, "supplier": "In-house"}, HIGH_RISK)
+
+
+def test_every_rule_question_and_module_has_a_known_condition():
+    from config import LITERACY, OBLIGATIONS, VENDOR_QUESTIONS, WORKER_RULES
+    x = s()
+    for _k, _n, _a, cond, *_ in OBLIGATIONS:
+        register.applies(cond, x, MINIMAL)
+    for _k, country, _n, _s, cond, *_ in WORKER_RULES:
+        register.triggers(cond, country, {**x, f"in_{country.lower()}": "Yes"}, MINIMAL)
+    for _k, _q, _a, cond, _w in VENDOR_QUESTIONS:
+        register.asks(cond, x, MINIMAL)
+    for _k, _m, _w, cond, _x in LITERACY:
+        register.applies(cond, x, MINIMAL)

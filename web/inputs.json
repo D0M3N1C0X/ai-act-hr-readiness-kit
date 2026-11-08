@@ -3,7 +3,8 @@
  "dates": {
   "chapters_i_ii": "2025-02-02",
   "general": "2026-08-02",
-  "annex_iii": "2027-12-02"
+  "annex_iii": "2027-12-02",
+  "public_legacy": "2030-08-02"
  },
  "classes": [
   "Prohibited",
@@ -16,8 +17,24 @@
   "IT",
   "PL",
   "DE",
-  "ES"
+  "ES",
+  "FR",
+  "NL",
+  "IE",
+  "AT",
+  "BE"
  ],
+ "country_names": {
+  "IT": "Italy",
+  "PL": "Poland",
+  "DE": "Germany",
+  "ES": "Spain",
+  "FR": "France",
+  "NL": "Netherlands",
+  "IE": "Ireland",
+  "AT": "Austria",
+  "BE": "Belgium"
+ },
  "entities": {
   "IT": "IT · Milan",
   "PL": "PL · Kraków",
@@ -31,6 +48,12 @@
   "Operations",
   "Sales",
   "Tech"
+ ],
+ "deployer": "Private employer",
+ "deployer_types": [
+  "Private employer",
+  "Public body",
+  "Private entity providing public services"
  ],
  "headcount": [
   {
@@ -271,6 +294,24 @@
    "from": "2027-12-02",
    "who": "Provider; deployer keeps it",
    "evidence": "The provider's documented assessment, on file"
+  },
+  {
+   "key": "O14",
+   "name": "Fundamental rights impact assessment before first use, results notified",
+   "article": "Art. 27(1)-(4)",
+   "when": "high-risk and public",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "The six elements of Art. 27(1), cross-referenced to the DPIA (Art. 27(4) as amended); notification to the market surveillance authority with the AI Office template (Art. 27(3), (5))"
+  },
+  {
+   "key": "O15",
+   "name": "Register the use in the EU database; do not use an unregistered system",
+   "article": "Art. 26(8), 49(3)",
+   "when": "high-risk and public body",
+   "from": "2027-12-02",
+   "who": "Deployer",
+   "evidence": "Registration record of the use; check that the provider registered the system (Art. 49(1))"
   }
  ],
  "worker_rules": [
@@ -345,18 +386,318 @@
    "when": "monitors",
    "what": "Allowed only where needed for full use of working time and proper use of work tools; purpose, scope and method in the workplace rules",
    "timing": "At least two weeks before it starts; new hires in writing before they start"
+  },
+  {
+   "key": "W-FR1",
+   "country": "FR",
+   "name": "Information and consultation of the social and economic committee on AI in HR",
+   "source": "Code du travail L2312-38 al. 1-2, L2312-8 II 4°, L2315-94 2°",
+   "when": "in the country",
+   "what": "In undertakings with at least 50 employees (L2312-1): inform the CSE before using methods or techniques that help recruit candidates and before introducing automated personnel management processing; consult it on the introduction of new technologies, with precise written information and enough time (L2312-15); it may appoint an expert",
+   "timing": "Before use; consultation while the CSE's opinion can still be taken into account"
+  },
+  {
+   "key": "W-FR2",
+   "country": "FR",
+   "name": "Information and consultation before means of monitoring employees' activity",
+   "source": "Code du travail L2312-38 al. 3, L2312-37 1°, L1121-1",
+   "when": "monitors",
+   "what": "Inform and consult the CSE before deciding to use means or techniques that allow employees' activity to be monitored; any restriction of rights must be justified by the task and proportionate to its aim",
+   "timing": "Before the decision to implement"
+  },
+  {
+   "key": "W-FR3",
+   "country": "FR",
+   "name": "Tell each candidate and employee before the method is used on them",
+   "source": "Code du travail L1221-8, L1221-9, L1222-3, L1222-4",
+   "when": "in the country",
+   "what": "Candidates expressly told of the recruitment methods and techniques used on them, employees of the evaluation methods; no personal information collected by a device not brought to their knowledge first; methods relevant to their purpose; results confidential",
+   "timing": "Before the method is used on the person"
+  },
+  {
+   "key": "W-NL1",
+   "country": "NL",
+   "name": "Works council advice on an important technological facility",
+   "source": "WOR art. 25(1)(k), (2)-(6)",
+   "when": "in the country",
+   "what": "In undertakings with at least 50 persons (art. 2): submit the proposed decision in writing with its reasons and expected consequences for staff; if the decision departs from the advice, wait a month before carrying it out",
+   "timing": "Early enough for the advice to influence the decision materially"
+  },
+  {
+   "key": "W-NL2",
+   "country": "NL",
+   "name": "Works council consent on personal data, monitoring and staff assessment",
+   "source": "WOR art. 27(1)(g), (k), (l), (5)",
+   "when": "on employees",
+   "what": "Consent to the arrangement on processing and protecting staff personal data (k), on facilities able to observe or check attendance, behaviour or performance (l) and on staff assessment (g); a decision taken without consent or the cantonal court's permission is void if the works council invokes it in writing within a month",
+   "timing": "Before the arrangement is adopted or changed"
+  },
+  {
+   "key": "W-NL3",
+   "country": "NL",
+   "name": "Works council consent on hiring, dismissal or promotion policy",
+   "source": "WOR art. 27(1)(e), (5)",
+   "when": "selects",
+   "what": "Consent to an arrangement on hiring, dismissal or promotion policy, which the system's selection criteria put into practice; without it the decision can be declared void",
+   "timing": "Before use in hiring or promotion"
+  },
+  {
+   "key": "W-IE1",
+   "country": "IE",
+   "name": "Information and consultation forum, where one has been set up",
+   "source": "Employees (Provision of Information and Consultation) Act 2006, s. 4, 7, 10, Schedule 1 para. 3(c)",
+   "when": "changes work organisation",
+   "what": "In undertakings with at least 50 employees that have an information and consultation arrangement (agreed, or the Standard Rules after a request by 10% of employees): information and consultation on decisions likely to lead to substantial changes in work organisation. Without one, Irish law adds no general duty; Art. 26(7) still applies to high-risk systems",
+   "timing": "Under the arrangement; before the decision is the prudent reading"
+  },
+  {
+   "key": "W-AT1",
+   "country": "AT",
+   "name": "Tell the works council which employee data are processed automatically",
+   "source": "ArbVG §91(2), §92(1)",
+   "when": "on employees",
+   "what": "Tell the works council what kinds of employee personal data are recorded automatically and which processing and transfers are planned; on request let it check their basis; discuss it in the joint consultations",
+   "timing": "Before processing starts"
+  },
+  {
+   "key": "W-AT2",
+   "country": "AT",
+   "name": "Works council consent for personal data and assessment systems, replaceable by the conciliation board",
+   "source": "ArbVG §96a(1) Z 1-2, (2)",
+   "when": "on employees",
+   "what": "Consent to systems that process employees' personal data beyond general personal details and qualifications, unless the use goes no further than duties under law, collective rules or the contract, and to systems for assessing employees; the conciliation board can replace a refused consent",
+   "timing": "Before introduction: without consent the measure has no legal effect"
+  },
+  {
+   "key": "W-AT3",
+   "country": "AT",
+   "name": "Works council consent for control systems that touch human dignity, not replaceable",
+   "source": "ArbVG §96(1) Z 3, (2)",
+   "when": "monitors",
+   "what": "Consent to control measures and technical systems for monitoring employees that touch human dignity; no body can replace it, and a works agreement without a term can be ended at any time",
+   "timing": "Before introduction: without consent the measure has no legal effect"
+  },
+  {
+   "key": "W-BE1",
+   "country": "BE",
+   "name": "Written information and consultation on a new technology with collective consequences",
+   "source": "CCT n° 39 of 13 December 1983, art. 1-6",
+   "when": "changes work organisation",
+   "what": "In undertakings with on average at least 50 workers, where at least 50% and 10 workers of the categories affected see their work change: written information on the technology, why it is introduced and its social consequences, and consultation of the works council or, failing that, the union delegation; failing that, dismissals linked to the technology are barred and cost three months' pay",
+   "timing": "At the latest three months before implementation starts"
+  },
+  {
+   "key": "W-BE2",
+   "country": "BE",
+   "name": "Information before monitoring electronic online communications",
+   "source": "CCT n° 81 of 26 April 2002, art. 5, 7, 8",
+   "when": "monitors",
+   "what": "Monitoring of network communication data only for the four purposes listed, stated explicitly; inform the works council (failing that the prevention committee, the union delegation or the workers) and each worker concerned of every aspect of the monitoring",
+   "timing": "Before the monitoring system is installed"
+  }
+ ],
+ "vendor_questions": [
+  {
+   "key": "V01",
+   "question": "Send the instructions for use, with every item Article 13(3) lists",
+   "article": "Art. 13(2)-(3); 26(1)",
+   "when": "high-risk",
+   "why": "Using the system as instructed is the first deployer duty"
+  },
+  {
+   "key": "V02",
+   "question": "State the accuracy, robustness and cybersecurity levels the system was tested against, with the metrics, and the circumstances known to affect them",
+   "article": "Art. 13(3)(b)(ii)-(iii)",
+   "when": "high-risk",
+   "why": "Monitoring, the DPIA and the Italian and Spanish notices need them"
+  },
+  {
+   "key": "V03",
+   "question": "Give the system's performance for the groups of people it is used on",
+   "article": "Art. 13(3)(b)(v)",
+   "when": "high-risk",
+   "why": "The check for discriminatory effects starts here"
+  },
+  {
+   "key": "V04",
+   "question": "Describe the human oversight measures and the tools that help interpret the output",
+   "article": "Art. 13(3)(d); 14; 26(2)",
+   "when": "high-risk",
+   "why": "The named overseers are trained on them"
+  },
+  {
+   "key": "V05",
+   "question": "Specify the input data the system expects, and the data it was trained, validated and tested on",
+   "article": "Art. 13(3)(b)(vi); 26(4)",
+   "when": "high-risk and input",
+   "why": "Input data must be relevant and representative"
+  },
+  {
+   "key": "V06",
+   "question": "Explain how we collect, store and read the logs, and confirm they can be kept at least six months",
+   "article": "Art. 12; 13(3)(f); 26(6)",
+   "when": "high-risk",
+   "why": "Log retention is a deployer duty"
+  },
+  {
+   "key": "V07",
+   "question": "List the changes pre-determined at conformity assessment and commit to tell us before any significant design change",
+   "article": "Art. 13(3)(c); 111(2)",
+   "when": "high-risk on the market",
+   "why": "A significant change ends the grace period of Art. 111(2)"
+  },
+  {
+   "key": "V08",
+   "question": "Name the contact and the procedure for reporting risks and serious incidents",
+   "article": "Art. 26(5); 72; 73",
+   "when": "high-risk",
+   "why": "The employer must inform the provider without undue delay"
+  },
+  {
+   "key": "V09",
+   "question": "Provide the information we need for the data protection impact assessment",
+   "article": "Art. 13; 26(9); GDPR Art. 35",
+   "when": "high-risk",
+   "why": "The DPIA is built on the provider's information"
+  },
+  {
+   "key": "V10",
+   "question": "Explain what the system can show to explain an individual output",
+   "article": "Art. 13(3)(b)(iv); 86",
+   "when": "high-risk and decides",
+   "why": "The person concerned can ask for an explanation"
+  },
+  {
+   "key": "V11",
+   "question": "Confirm the conformity assessment, the EU declaration of conformity, the CE marking and the registration in the EU database",
+   "article": "Art. 16(f)-(i); 47-49",
+   "when": "high-risk",
+   "why": "A public employer may not use an unregistered system (Art. 26(8))"
+  },
+  {
+   "key": "V12",
+   "question": "Send the documented assessment that the system is not high-risk, and its registration",
+   "article": "Art. 6(4); 49(2)",
+   "when": "derogation",
+   "why": "The employer keeps it on file and relies on it"
+  },
+  {
+   "key": "V13",
+   "question": "Confirm people are told they are dealing with an AI, and put it in the contract",
+   "article": "Art. 50(1)",
+   "when": "interacts",
+   "why": "The duty is the provider's; the employer checks it"
+  },
+  {
+   "key": "V14",
+   "question": "Confirm the system does not infer emotions, and will not without telling us first",
+   "article": "Art. 5(1)(f)",
+   "when": "in use",
+   "why": "Emotion recognition at work is prohibited"
+  },
+  {
+   "key": "V15",
+   "question": "Provide the logic, main parameters and data categories the national notices to workers require",
+   "article": "IT D.lgs. 152/1997 art. 1-bis co. 2; ES ET art. 64.4.d; AT ArbVG §91(2)",
+   "when": "high-risk or monitors",
+   "why": "The employer writes the notices; the supplier holds the facts"
+  },
+  {
+   "key": "V16",
+   "question": "Provide training material for the people who will operate and use it",
+   "article": "Art. 4",
+   "when": "in use",
+   "why": "AI literacy measures for staff"
+  }
+ ],
+ "literacy": [
+  {
+   "key": "L01",
+   "module": "Working with this system",
+   "who": "Everyone who operates or uses it",
+   "when": "in use",
+   "covers": "What it does and does not do, its known limits, when not to rely on it, how to report a problem"
+  },
+  {
+   "key": "L02",
+   "module": "Overseeing a high-risk system",
+   "who": "The named overseers",
+   "when": "high-risk",
+   "covers": "Reading the output, automation bias, the authority to override or stop it, logs and incidents (Art. 14, 26(2))"
+  },
+  {
+   "key": "L03",
+   "module": "Decisions about people",
+   "who": "Recruiters, managers and HR business partners who decide",
+   "when": "high-risk and decides",
+   "covers": "Telling the person (Art. 26(11)), explaining a decision on request (Art. 86), human review"
+  },
+  {
+   "key": "L04",
+   "module": "Monitoring and workers' rights",
+   "who": "Line managers and HR operations",
+   "when": "monitors",
+   "covers": "Purpose and proportionality, what the data may and may not be used for, the national rules on telling workers"
+  },
+  {
+   "key": "L05",
+   "module": "AI that talks to people",
+   "who": "The owners of chatbots and assistants",
+   "when": "interacts",
+   "covers": "Saying it is an AI, handing over to a person, what it must not answer"
+  },
+  {
+   "key": "L06",
+   "module": "Building a high-risk system",
+   "who": "The data and IT team that built it",
+   "when": "high-risk in-house",
+   "covers": "Provider duties (Art. 16), data governance, documentation, and why a retrained model is a significant change"
+  }
+ ],
+ "literacy_evidence": "Date, material and attendance for each module and person: the measures taken, not a level reached (Art. 4(1) as replaced by Reg. 2026/1744)",
+ "fria_elements": [
+  {
+   "key": "(a)",
+   "element": "The deployer's processes in which the system is used, in line with its intended purpose",
+   "dpia": "35(7)(a)",
+   "kit": "Register: HR function and rationale"
+  },
+  {
+   "key": "(b)",
+   "element": "The period of time and the frequency of use",
+   "dpia": "35(7)(a)",
+   "kit": "To complete: not in the register"
+  },
+  {
+   "key": "(c)",
+   "element": "The categories of people and groups likely to be affected",
+   "dpia": "35(7)(a), (c)",
+   "kit": "Register: applicants or employees, countries, department, workers in scope"
+  },
+  {
+   "key": "(d)",
+   "element": "The specific risks of harm to them, using the provider's Article 13 information",
+   "dpia": "35(7)(c)",
+   "kit": "Supplier answers V02-V03; the boundary cases in the report"
+  },
+  {
+   "key": "(e)",
+   "element": "How the human oversight measures of the instructions for use are put in place",
+   "dpia": "35(7)(d)",
+   "kit": "Obligation O04; supplier answer V04; literacy module L02"
+  },
+  {
+   "key": "(f)",
+   "element": "The measures if the risks materialise: internal governance and complaint mechanisms",
+   "dpia": "35(7)(d)",
+   "kit": "Obligations O06 and O11; supplier answer V08"
   }
  ],
  "not_applicable": [
   {
-   "name": "Fundamental rights impact assessment",
-   "article": "Art. 27",
-   "why": "Owed by public bodies, private entities providing public services, and deployers of credit and insurance systems (Annex III 5(b)-(c)). A private employer using HR systems is none of these."
-  },
-  {
-   "name": "Registration of the use in the EU database",
-   "article": "Art. 26(8), 49(3)",
-   "why": "Owed by deployers that are public authorities. A provider registers its own systems (Art. 49(1)), which here means the in-house attrition model."
+   "name": "Fundamental rights impact assessment for credit and insurance systems",
+   "article": "Art. 27(1); Annex III 5(b)-(c)",
+   "why": "Owed whatever the deployer for credit scoring and life and health insurance pricing; no HR system is one of them. For public bodies and public-service entities it is obligation O14."
   },
   {
    "name": "Annex III point 3, education and vocational training",

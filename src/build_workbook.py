@@ -25,20 +25,30 @@ from config import (
     ASSESSMENT_DATE,
     CLASSES,
     COUNTRIES,
+    COUNTRY_NAMES,
     D_ANNEX_III,
     D_CHAPTERS_I_II,
     D_GENERAL,
+    D_PUBLIC_LEGACY,
     DELIVERABLES,
+    DEPLOYER,
+    DEPLOYER_TYPES,
     DEROGATION,
     ENTITIES,
+    FRIA_ELEMENTS,
     HIGH_RISK,
+    LITERACY,
+    LITERACY_EVIDENCE,
     MINIMAL,
     NOT_APPLICABLE,
     OBLIGATIONS,
+    PRIVATE,
     PROHIBITED,
+    PUBLIC_BODY,
     SOURCE_COMMIT,
     SOURCE_REPO,
     TRANSPARENCY,
+    VENDOR_QUESTIONS,
     WORKER_RULES,
 )
 
@@ -56,8 +66,8 @@ CLASS_FILLS = {PROHIBITED: "F5C6C2", HIGH_RISK: "F8D7B0", DEROGATION: "E4E7EC", 
 
 # The register's input columns, in order, with their headers.
 INPUTS = [("system_id", "ID"), ("system", "AI system"), ("function", "HR function"), ("supplier", "Supplier"),
-          ("scope", "Department in scope"), ("in_it", "Used in IT"), ("in_pl", "Used in PL"), ("in_de", "Used in DE"),
-          ("in_es", "Used in ES"), ("applicants", "Used on applicants"), ("infers_emotions", "Infers emotions"),
+          ("scope", "Department in scope"), *[(f"in_{c.lower()}", f"Used in {c}") for c in COUNTRIES],
+          ("applicants", "Used on applicants"), ("infers_emotions", "Infers emotions"),
           ("medical_or_safety", "For medical or safety reasons"), ("annex_iii", "Annex III point 4"),
           ("profiling", "Profiles people"), ("art6_3_condition", "Art. 6(3) condition"),
           ("interacts", "Talks to people"), ("decides_about_people", "Decides or helps decide about people"),
@@ -124,8 +134,8 @@ class Model:
         self.checks.append((area, item, value if value != "" else None, ref))
 
     def build(self, path: Path) -> None:
-        names = ["Cover", "Summary", "Register", "Obligations", "Workers", "Timeline", "Headcount", "Settings",
-                 "Reconciliation"]
+        names = ["Cover", "Summary", "Register", "Obligations", "Workers", "Supplier", "Literacy", "FRIA", "Timeline",
+                 "Headcount", "Settings", "Reconciliation"]
         self.wb.active.title = names[0]
         for n in names[1:]:
             self.wb.create_sheet(n)
@@ -134,6 +144,9 @@ class Model:
         self.register(self.wb["Register"])
         self.obligations(self.wb["Obligations"])
         self.workers(self.wb["Workers"])
+        self.supplier(self.wb["Supplier"])
+        self.literacy(self.wb["Literacy"])
+        self.fria(self.wb["FRIA"])
         self.timeline(self.wb["Timeline"])
         self.dashboard(self.wb["Summary"])
         self.reconciliation(self.wb["Reconciliation"])
@@ -156,7 +169,7 @@ class Model:
 
     # -- inputs ---------------------------------------------------------------------------------------------------------
     def settings(self, ws) -> None:
-        title(ws, "Settings", "The dates the register runs on. Blue cells can be changed.")
+        title(ws, "Settings", "Who the deployer is, and the dates the register runs on. Blue cells can be changed.")
         widths(ws, {"A": 3, "B": 58, "C": 16, "D": 80})
         rows = [
             ("assessment", "Date of this assessment", ASSESSMENT_DATE, "Days to each deadline count from here."),
@@ -164,12 +177,24 @@ class Model:
             ("d_general", "Article 50 and the rest apply from", D_GENERAL, "Art. 113, first paragraph."),
             ("d_annex", "Articles 6 to 27 apply to Annex III systems from", D_ANNEX_III,
              "Art. 113(c)(i) as amended by Regulation (EU) 2026/1744 (was 2 August 2026)."),
+            ("d_public", "Systems for public authorities comply in any case by", D_PUBLIC_LEGACY,
+             "Art. 111(2), last sentence, as replaced by Regulation (EU) 2026/1744."),
         ]
         for r, (key, label, value, note) in enumerate(rows, start=4):
             put(ws, f"B{r}", label)
             put(ws, f"C{r}", value, color=BLUE, fmt=DATE, fill=YELLOW if key == "d_annex" else None)
             put(ws, f"D{r}", note, color=MUTED, italic=True)
             self.refs[key] = f"Settings!$C${r}"
+        r = 5 + len(rows)
+        put(ws, f"B{r}", "The deployer is a")
+        put(ws, f"C{r}", DEPLOYER, color=BLUE, fill=YELLOW)
+        put(ws, f"D{r}", "Private employer, Public body, or Private entity providing public services. Decides the "
+                         "fundamental rights impact assessment (Art. 27(1)) and registering the use (Art. 26(8)).",
+            color=MUTED, italic=True)
+        dv = DataValidation(type="list", formula1='"' + ",".join(DEPLOYER_TYPES) + '"', allow_blank=False)
+        ws.add_data_validation(dv)
+        dv.add(f"C{r}")
+        self.refs["deployer"] = f"Settings!$C${r}"
 
     def headcount(self, ws) -> None:
         title(ws, "Headcount by employer and department",
@@ -186,6 +211,8 @@ class Model:
         put(ws, f"B{last + 1}", "Total", bold=True)
         put(ws, f"C{last + 1}", f"=SUM(C5:C{last})", bold=True, fmt=COUNT)
         self.check("Headcount", "Workers in all four employers", self.summary["workers_total"], f"Headcount!C{last + 1}")
+        put(ws, "E4", "The dry run's employer is in four countries; the register knows the rules of nine.",
+            color=MUTED, italic=True)
 
     # -- the register ---------------------------------------------------------------------------------------------------
     def register(self, ws) -> None:
@@ -220,7 +247,7 @@ class Model:
                                      "fully", "monitors", "controls", "on_market")):
                     yesno.add(f"{self.col[key]}{r}")
             C = {k: f"${v}{r}" for k, v in self.col.items()}
-            by_country = "+".join(f'({self.hc["country"]}="{c}")*({C["in_" + c.lower()]}="Yes")' for c in COUNTRIES)
+            by_country = "+".join(f'({self.hc["country"]}="{c}")*({C["in_" + c.lower()]}="Yes")' for c in ENTITIES)
             put(ws, f"{self.col['workers']}{r}",
                 f'=SUMPRODUCT({self.hc["n"]}*({by_country})*((({C["scope"]}="All")+({self.hc["dept"]}={C["scope"]}))>0))',
                 fmt=COUNT)
@@ -228,8 +255,8 @@ class Model:
             put(ws, f"{self.col['role']}{r}",
                 f'=IF(AND({C["supplier"]}="In-house",{C["class"]}="{HIGH_RISK}"),"Provider and deployer","Deployer")')
             put(ws, f"{self.col['timing']}{r}",
-                f'=IF({C["class"]}<>"{HIGH_RISK}","",IF({C["on_market_before"]}="Yes",'
-                f'"At its next significant design change","From 2 December 2027"))')
+                f'=IF({C["class"]}<>"{HIGH_RISK}","",IF({C["on_market_before"]}<>"Yes","From 2 December 2027",'
+                f'IF({self.refs["deployer"]}="{PUBLIC_BODY}","{register.LEGACY_PUBLIC}","{register.LEGACY}")))')
             put(ws, f"{self.col['rationale']}{r}", s["rationale"], color=BLUE)
             p = self.python.loc[s["system_id"]]
             for item, key in (("class", "class"), ("role", "role"), ("high-risk timing", "timing"),
@@ -264,7 +291,15 @@ class Model:
             "high-risk and decides": f'AND({high},{C["decides_about_people"]}="Yes")',
             "high-risk in-house": f'AND({high},{C["supplier"]}="In-house")',
             "derogation": f'{cls}="{DEROGATION}"',
+            "high-risk and public": f'AND({high},{self.refs["deployer"]}<>"{PRIVATE}")',
+            "high-risk and public body": f'AND({high},{self.refs["deployer"]}="{PUBLIC_BODY}")',
+            "high-risk on the market": f'AND({high},{C["on_market_before"]}="Yes")',
+            "high-risk or monitors": f'AND({cls}<>"{PROHIBITED}",OR({high},{C["monitors_workers"]}="Yes"))',
+            "monitors": f'AND({cls}<>"{PROHIBITED}",{C["monitors_workers"]}="Yes")',
         }[cond]
+
+    def question_test(self, cond, C) -> str:
+        return f'AND({C["supplier"]}="Vendor",{self.obligation_test(cond, C)})'
 
     def worker_test(self, cond, country, C) -> str:
         used = f'{C["in_" + country.lower()]}="Yes"'
@@ -278,6 +313,8 @@ class Model:
             "processes performance": f'OR({C["monitors_workers"]}="Yes",AND({staff},{high}))',
             "selects": f'AND({C["annex_iii"]}="4(a)",{C["profiling"]}="Yes",{C["decides_about_people"]}="Yes")',
             "affects work": high,
+            "on employees": staff,
+            "changes work organisation": f'OR({C["monitors_workers"]}="Yes",AND({staff},{high}))',
         }[cond]
         return f"AND({used},{alive},{test})"
 
@@ -337,11 +374,94 @@ class Model:
         for k, (key, country, name, _src, _cond, what, when) in enumerate(WORKER_RULES, start=r + 1):
             put(ws, f"A{k}", key)
             put(ws, f"B{k}", name, wrap=True)
-            put(ws, f"C{k}", ENTITIES[country])
+            put(ws, f"C{k}", ENTITIES.get(country, COUNTRY_NAMES[country]))
             put(ws, f"D{k}", what, wrap=True)
             ws.merge_cells(f"D{k}:F{k}")
             put(ws, f"G{k}", when, wrap=True)
             ws.row_dimensions[k].height = 42
+
+    def supplier(self, ws) -> None:
+        title(ws, "Questions for the supplier: what the employer can only do with the supplier's help",
+              "Asked of the vendor of each bought system before signing or at renewal; for a system built in-house "
+              "the team that built it answers. Row 5 gives the article.")
+        self.q_rows = self.matrix(ws, VENDOR_QUESTIONS, lambda it, C: self.question_test(it[3], C), "Supplier", 2)
+        last = self.q_rows[1]
+        for i, it in enumerate(VENDOR_QUESTIONS):
+            self.check("Supplier", f"{it[0]}: systems", self.summary["questions"][it[0]],
+                       f"Supplier!{get_column_letter(4 + i)}{last + 1}")
+        r = last + 3
+        header(ws, r, ["Key", "Question", "", "", "", "", "Why the employer needs it"], height=18)
+        for k, (key, question, art, _cond, why) in enumerate(VENDOR_QUESTIONS, start=r + 1):
+            put(ws, f"A{k}", key)
+            put(ws, f"B{k}", f"{question} ({art})", wrap=True)
+            ws.merge_cells(f"B{k}:F{k}")
+            put(ws, f"G{k}", why, wrap=True)
+            ws.row_dimensions[k].height = 30
+
+    def literacy(self, ws) -> None:
+        title(ws, "AI literacy: the training each system calls for, and for whom",
+              "Article 4 as replaced by Regulation (EU) 2026/1744: measures that support literacy, not a level to "
+              "guarantee. Row 5 says for whom.")
+        self.l_rows = self.matrix(ws, LITERACY, lambda it, C: self.obligation_test(it[3], C), "Literacy", 2)
+        last = self.l_rows[1]
+        for i, it in enumerate(LITERACY):
+            self.check("Literacy", f"{it[0]}: systems", self.summary["literacy"][it[0]],
+                       f"Literacy!{get_column_letter(4 + i)}{last + 1}")
+        r = last + 3
+        header(ws, r, ["Key", "Module", "", "For whom", "", "", "What it covers"], height=18)
+        for k, (key, module, who, _cond, what) in enumerate(LITERACY, start=r + 1):
+            put(ws, f"A{k}", key)
+            put(ws, f"B{k}", module, wrap=True)
+            put(ws, f"D{k}", who, wrap=True)
+            ws.merge_cells(f"D{k}:F{k}")
+            put(ws, f"G{k}", what, wrap=True)
+            ws.row_dimensions[k].height = 30
+        put(ws, f"B{r + len(LITERACY) + 2}", "Evidence to keep", bold=True)
+        put(ws, f"D{r + len(LITERACY) + 2}", LITERACY_EVIDENCE, color=MUTED, italic=True)
+
+    def fria(self, ws) -> None:
+        title(ws, "Fundamental rights impact assessment (Art. 27)",
+              "Owed before first use of a high-risk system by public bodies and private entities providing public "
+              "services; for a private employer the kit drafts it as a voluntary assessment (docs/fria.md).")
+        widths(ws, {"A": 6, "B": 34, "C": 22, "D": 16, "E": 18, "F": 40, "G": 40})
+        put(ws, "B4", "This deployer", bold=True)
+        put(ws, "C4", f"={self.refs['deployer']}", color=GREEN)
+        put(ws, "B5", "Owed by this deployer", bold=True)
+        put(ws, "C5", f'=IF({self.refs["deployer"]}<>"{PRIVATE}","Yes","No")', bold=True)
+        self.check("FRIA", "Owed by this deployer", "Yes" if DEPLOYER != PRIVATE else "No", "FRIA!C5")
+        header(ws, 7, ["ID", "AI system", "Class", "Owed (O14)", "Voluntary, recommended"], height=30)
+        o14 = get_column_letter(4 + [o[0] for o in OBLIGATIONS].index("O14"))
+        r0 = 8
+        for k, sid in enumerate(self.systems["system_id"]):
+            r, src, orow = r0 + k, self.rows[sid], self.obl_rows[0] + k
+            C = self.C(src)
+            put(ws, f"A{r}", f"=Register!A{src}", color=GREEN)
+            put(ws, f"B{r}", f"=Register!B{src}", color=GREEN)
+            put(ws, f"C{r}", f"={C['class']}", color=GREEN)
+            put(ws, f"D{r}", f'=IF(Obligations!{o14}{orow}="Yes","Yes","")', color=GREEN, align="center")
+            put(ws, f"E{r}", f'=IF(AND({C["class"]}="{HIGH_RISK}",{self.refs["deployer"]}="{PRIVATE}"),"Yes","")',
+                align="center")
+            high = self.python.loc[sid, "class"] == HIGH_RISK
+            self.check("FRIA", f"{sid}: voluntary assessment recommended", "Yes" if high and DEPLOYER == PRIVATE else "",
+                       f"FRIA!E{r}")
+        last = r0 + len(self.systems) - 1
+        put(ws, f"B{last + 1}", "Systems", bold=True)
+        for L in "DE":
+            put(ws, f"{L}{last + 1}", f'=COUNTIF({L}{r0}:{L}{last},"Yes")', bold=True, align="center")
+        colours(ws, f"C{r0}:E{last}")
+        r = last + 3
+        header(ws, r, ["Art. 27(1)", "What the assessment describes", "", "", "DPIA section (GDPR Art. 35)",
+                       "Where the kit already has it"], height=30)
+        for k, (key, element, dpia, kit) in enumerate(FRIA_ELEMENTS, start=r + 1):
+            put(ws, f"A{k}", key)
+            put(ws, f"B{k}", element, wrap=True)
+            ws.merge_cells(f"B{k}:D{k}")
+            put(ws, f"E{k}", dpia)
+            put(ws, f"F{k}", kit, wrap=True)
+            ws.row_dimensions[k].height = 30
+        put(ws, f"B{r + len(FRIA_ELEMENTS) + 2}", "Since Regulation (EU) 2026/1744, the assessment may cross-refer to "
+            "the DPIA where it already meets an element (Art. 27(4)); results are notified to the market surveillance "
+            "authority with the AI Office template (Art. 27(3), (5)).", color=MUTED, italic=True)
 
     def timeline(self, ws) -> None:
         title(ws, "Timeline: every obligation in date order",
@@ -390,8 +510,21 @@ class Model:
         put(ws, f"C{r + 2}", f"={self.days_ref}", color=GREEN, bold=True, align="center")
         put(ws, f"B{r + 3}", "High-risk systems already on the market: duties at their next significant design change")
         tim_rng = f"Register!${self.col['timing']}${self.first}:${self.col['timing']}${self.last}"
-        put(ws, f"C{r + 3}", f'=COUNTIF({tim_rng},"At its next significant design change")', bold=True, align="center")
+        put(ws, f"C{r + 3}", f'=COUNTIF({tim_rng},"{register.LEGACY}")+COUNTIF({tim_rng},"{register.LEGACY_PUBLIC}")',
+            bold=True, align="center")
         self.check("Summary", "High-risk systems already on the market", self.summary["legacy"], f"Summary!C{r + 3}")
+        q_last, l_last = self.q_rows[1], self.l_rows[1]
+        n_q = len(VENDOR_QUESTIONS)
+        put(ws, f"B{r + 4}", "Questions to send to suppliers, across all systems")
+        put(ws, f"C{r + 4}", f"=SUM(Supplier!D{q_last + 1}:{get_column_letter(3 + n_q)}{q_last + 1})", bold=True,
+            align="center")
+        self.check("Summary", "Questions to suppliers", sum(self.summary["questions"].values()), f"Summary!C{r + 4}")
+        put(ws, f"B{r + 5}", "Literacy modules to run, across all systems")
+        put(ws, f"C{r + 5}", f"=SUM(Literacy!D{l_last + 1}:{get_column_letter(3 + len(LITERACY))}{l_last + 1})",
+            bold=True, align="center")
+        self.check("Summary", "Literacy modules", sum(self.summary["literacy"].values()), f"Summary!C{r + 5}")
+        put(ws, f"B{r + 6}", "Fundamental rights impact assessment owed by this deployer")
+        put(ws, f"C{r + 6}", "=FRIA!C5", color=GREEN, bold=True, align="center")
         put(ws, "E4", "Telling the workers: systems per rule", bold=True, size=11)
         last = self.wk_rows[1]
         for k, it in enumerate(WORKER_RULES, start=5):
@@ -435,7 +568,9 @@ class Model:
             "Article 6(3), transparency only, or minimal risk.",
             "Says which obligations each system triggers and from when, including where building a system in-house "
             "makes the employer its provider.",
-            "Says which national rules on informing and consulting workers apply in Italy, Germany, Spain and Poland.",
+            "Says which national rules on informing and consulting workers apply in nine countries, what to ask each "
+            "supplier, which AI literacy measures each system calls for, and whether a fundamental rights impact "
+            "assessment is owed.",
         ], start=6):
             put(ws, f"C{i}", line)
         put(ws, "B10", "How to read it", bold=True, size=11)
@@ -450,26 +585,29 @@ class Model:
         purpose = {
             "Summary": "Systems by class, the provider question, days to the high-risk duties, national rules.",
             "Register": "One row per AI system: the answers that decide its class, the class and why.",
-            "Obligations": "Which of thirteen obligations each system triggers, with the article.",
-            "Workers": "Which national rules on telling the workers each system triggers.",
+            "Obligations": "Which of fifteen obligations each system triggers, with the article.",
+            "Workers": "Which national rules on telling the workers each system triggers, in nine countries.",
+            "Supplier": "Which of sixteen questions to send each system's supplier, with the article behind each.",
+            "Literacy": "Which AI literacy modules each system calls for, for whom, and the evidence to keep.",
+            "FRIA": "Whether the fundamental rights impact assessment is owed, and its six elements against the DPIA.",
             "Timeline": "The obligations in date order: what is already in force, what starts in December 2027.",
             "Headcount": "Workers by employer and department, to size each system's scope.",
-            "Settings": "The application dates of the AI Act and the date of this assessment.",
+            "Settings": "Who the deployer is, the application dates of the AI Act and the date of this assessment.",
             "Reconciliation": "Each workbook figure checked against the Python register.",
         }
         for i, n in enumerate(names[1:], start=17):
             cell = put(ws, f"B{i}", n, color="1F5FA8")
             cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"'{n}'!A1")
             put(ws, f"C{i}", purpose[n])
-        put(ws, "B26", "Check", bold=True, size=11)
-        put(ws, "C26", f"={self.recon_result}", color=GREEN, bold=True)
-        put(ws, "B28", "Limits", bold=True, size=11)
-        put(ws, "C28", "Synthetic organisation and systems. Not legal advice. The classification follows the AI Act "
+        put(ws, "B30", "Check", bold=True, size=11)
+        put(ws, "C30", f"={self.recon_result}", color=GREEN, bold=True)
+        put(ws, "B32", "Limits", bold=True, size=11)
+        put(ws, "C32", "Synthetic organisation and systems. Not legal advice. The classification follows the AI Act "
                        "text; Commission guidelines and national practice can move boundary cases. Sources and their "
                        "status are in docs/verification.md in the repository.", wrap=True)
-        ws.row_dimensions[28].height = 40
-        put(ws, "B30", "Domenico Perroni", color=MUTED)
-        cell = put(ws, "C30", REPO, color="1F5FA8")
+        ws.row_dimensions[32].height = 40
+        put(ws, "B34", "Domenico Perroni", color=MUTED)
+        cell = put(ws, "C34", REPO, color="1F5FA8")
         cell.hyperlink = REPO
 
 

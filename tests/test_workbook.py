@@ -8,6 +8,7 @@ from openpyxl import load_workbook  # noqa: E402
 
 import build_workbook  # noqa: E402
 import check_workbook  # noqa: E402
+import register  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -32,3 +33,20 @@ def test_changing_an_answer_reclassifies_the_system(built, tmp_path):
     values = values_from_formulas(changed)
     assert values[("REGISTER", f"{m.col['class']}{r}")] == "High-risk"
     assert check_workbook.check(values, len(m.checks)) == 1   # and the reconciliation notices
+
+
+def test_a_public_deployer_owes_the_fria_and_the_registration(built, tmp_path):
+    m, path = built
+    wb = load_workbook(path)
+    sheet, cell = m.refs["deployer"].replace("$", "").split("!")
+    wb[sheet][cell] = "Public body"
+    changed = tmp_path / "public.xlsx"
+    wb.save(changed)
+    values = values_from_formulas(changed)
+    assert values[("FRIA", "C5")] == "Yes"
+    high = [sid for sid in m.systems["system_id"] if m.python.loc[sid, "class"] == "High-risk"]
+    legacy = [sid for sid in high if m.python.loc[sid, "timing"] != "From 2 December 2027"]
+    r = m.rows[legacy[0]]
+    assert values[("REGISTER", f"{m.col['timing']}{r}")] == register.LEGACY_PUBLIC
+    # O14 and O15 now hold for every high-risk system, so the reconciliation flags the counts and the rows that moved
+    assert check_workbook.check(values, len(m.checks)) > 0

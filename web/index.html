@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Act check for HR</title>
-<meta name="description" content="Classify your HR team's AI systems under the EU AI Act, see what each one owes and from when, and whom to tell in each country. Nothing leaves the computer.">
+<meta name="description" content="Classify your HR team's AI systems under the EU AI Act: what each one owes and from when, whom to tell in nine countries, what to ask each supplier, who needs training. Nothing leaves the computer.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="AI Act check for HR">
-<meta property="og:description" content="Classify your HR team's AI systems under the EU AI Act, see what each one owes and from when, and whom to tell in each country. Nothing leaves the computer.">
+<meta property="og:description" content="Classify your HR team's AI systems under the EU AI Act: what each one owes and from when, whom to tell in nine countries, what to ask each supplier, who needs training. Nothing leaves the computer.">
 <meta property="og:url" content="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/">
 <meta property="og:image" content="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/og.png">
 <meta property="og:image:width" content="1280">
@@ -40,6 +40,11 @@
   .country ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
   .country li span { color: var(--muted); font-size: 14px; }
   .note { color: var(--muted); font-size: 13px; }
+  .sup { border-top: 1px solid var(--line-soft); padding: 10px 0; }
+  .sup summary { cursor: pointer; min-height: 44px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .sup ol { margin: 6px 0 0; padding-left: 22px; display: grid; gap: 6px; }
+  .org { margin-top: 18px; }
+  .org select { max-width: 420px; }
   .print-only { display: none; }
   @media print { .print-only { display: block; margin-bottom: 16px; } #risultati { display: block !important; }
     #passo-sistemi, #wizard, .s-privacy, .s-actions, .row-actions { display: none !important; } }
@@ -77,6 +82,9 @@
     </div>
     <div class="s-msg is-error" id="errore" role="alert"></div>
     <div class="s-table-wrap" id="lista-wrap" style="margin-top:18px" tabindex="0" role="region" data-i18n-attr="aria-label:step1"><table class="s-table" id="lista"></table></div>
+    <div class="q org"><label class="lab" for="datore" data-i18n="qDeployer">Who is the employer?</label>
+      <p class="s-why" data-i18n="qDeployerH">It decides whether a fundamental rights impact assessment is owed (Art. 27) and whether the use must be registered (Art. 26(8)).</p>
+      <select class="text-in" id="datore"></select></div>
   </section>
 
   <section class="s-card" id="wizard" aria-labelledby="h-wizard">
@@ -114,6 +122,26 @@
       <h2 id="h-avvisi" data-i18n="avvisi">Whom to tell, country by country</h2>
       <p class="s-sub" data-i18n="avvisiSub">National rules on informing workers and their representatives. They apply now, whatever the AI Act's timetable.</p>
       <div id="paesi"></div>
+    </section>
+
+    <section class="s-card" aria-labelledby="h-fornitori">
+      <h2 id="h-fornitori" data-i18n="fornitori">What to ask each supplier</h2>
+      <p class="s-sub" data-i18n="fornitoriSub">The facts only the supplier holds.</p>
+      <div id="domande-fornitori"></div>
+    </section>
+
+    <section class="s-card" aria-labelledby="h-formazione">
+      <h2 id="h-formazione" data-i18n="formazione">AI literacy: who learns what</h2>
+      <p class="s-sub" data-i18n="formazioneSub">Measures that support the literacy of the people who operate and use each system.</p>
+      <div class="s-table-wrap" tabindex="0" role="region" data-i18n-attr="aria-label:formazione"><table class="s-table" id="tab-formazione"></table></div>
+      <p class="note" id="nota-prova"></p>
+    </section>
+
+    <section class="s-card" aria-labelledby="h-fria">
+      <h2 id="h-fria" data-i18n="fria">Fundamental rights impact assessment</h2>
+      <p class="s-sub" data-i18n="friaSub">Article 27.</p>
+      <p id="fria-stato"></p>
+      <div class="s-table-wrap" tabindex="0" role="region" data-i18n-attr="aria-label:fria"><table class="s-table" id="tab-fria"></table></div>
       <div class="s-actions">
         <button type="button" class="s-btn" id="scarica" data-i18n="scarica">Download in Excel</button>
         <button type="button" class="s-btn" id="stampa" data-i18n="stampa">Print</button>

@@ -8,12 +8,12 @@ const expect = (ok, what) => { checks++; if (!ok) { failures++; if (failures <= 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 for (const c of V.cases) {
-  const r = assess(c.system, V.cfg, V.cfg.headcount);
-  for (const k of ["class", "role", "timing", "workers", "obligations", "rules"])
+  const r = assess(c.system, V.cfg, V.cfg.headcount, c.deployer);
+  for (const k of ["class", "role", "timing", "workers", "obligations", "rules", "questions", "literacy"])
     expect(same(r[k], c[k]), `${c.system.system_id} ${k}: ${JSON.stringify(r[k])} vs ${JSON.stringify(c[k])}`);
 }
 // Reading answers the way files write them
-for (const [v, w] of [["Yes", "Yes"], ["sì", "Yes"], ["Ja", "Yes"], ["TAK", "Yes"], ["x", "Yes"], ["No", "No"], ["", "No"], ["maybe", null]])
+for (const [v, w] of [["Yes", "Yes"], ["sì", "Yes"], ["Ja", "Yes"], ["TAK", "Yes"], ["x", "Yes"], ["oui", "Yes"], ["No", "No"], ["", "No"], ["nee", "No"], ["Non", "No"], ["maybe", null]])
   expect(yesNo(v) === w, `yesNo(${v})`);
 for (const [v, w] of [["4(a)", "4(a)"], ["4a", "4(a)"], ["4 (b)", "4(b)"], ["None", "None"], ["", "None"], ["5", null]])
   expect(annex(v) === w, `annex(${v})`);

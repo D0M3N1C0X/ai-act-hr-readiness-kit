@@ -11,19 +11,27 @@ from config import (
     CHOICES,
     COUNTRIES,
     DEPARTMENTS,
+    DEPLOYER,
+    DEPLOYER_TYPES,
     DEROGATION,
+    ENTITIES,
     HEADCOUNT,
     HIGH_RISK,
+    LITERACY,
     MINIMAL,
     OBLIGATIONS,
+    PRIVATE,
     PROHIBITED,
+    PUBLIC_BODY,
     SYSTEMS,
     TRANSPARENCY,
+    VENDOR_QUESTIONS,
     WORKER_RULES,
 )
 
 YES = "Yes"
-YES_NO = ["in_it", "in_pl", "in_de", "in_es", "applicants", "infers_emotions", "medical_or_safety", "profiling",
+COUNTRY_ANSWERS = [f"in_{c.lower()}" for c in COUNTRIES]
+YES_NO = [*COUNTRY_ANSWERS, "applicants", "infers_emotions", "medical_or_safety", "profiling",
           "interacts", "decides_about_people", "fully_automated", "monitors_workers", "controls_input_data",
           "on_market_before"]
 
@@ -47,7 +55,7 @@ def load() -> pd.DataFrame:
 
 def headcount() -> pd.DataFrame:
     hc = pd.read_csv(HEADCOUNT)
-    return hc[hc["country"].isin(COUNTRIES)].reset_index(drop=True)
+    return hc[hc["country"].isin(ENTITIES)].reset_index(drop=True)
 
 
 def classify(s: dict) -> str:
@@ -67,12 +75,19 @@ def role(s: dict, cls: str) -> str:
     return "Provider and deployer" if s["supplier"] == "In-house" and cls == HIGH_RISK else "Deployer"
 
 
-def timing(s: dict, cls: str) -> str:
+LEGACY = "At its next significant design change"
+LEGACY_PUBLIC = "At its next significant design change, by 2 August 2030 at the latest"
+
+
+def timing(s: dict, cls: str, deployer: str = DEPLOYER) -> str:
     """Article 111(2) as amended by Reg. 2026/1744: a high-risk system whose type and model was on the market or in
-    service before 2 December 2027 falls under the Regulation only once its design changes significantly."""
+    service before 2 December 2027 falls under the Regulation only once its design changes significantly; one intended
+    to be used by public authorities complies by 2 August 2030 in any case (read here as a public body's systems)."""
     if cls != HIGH_RISK:
         return ""
-    return "At its next significant design change" if s["on_market_before"] == YES else "From 2 December 2027"
+    if s["on_market_before"] != YES:
+        return "From 2 December 2027"
+    return LEGACY_PUBLIC if deployer == PUBLIC_BODY else LEGACY
 
 
 def workers(s: dict, hc: pd.DataFrame) -> int:
@@ -82,8 +97,9 @@ def workers(s: dict, hc: pd.DataFrame) -> int:
     return int(hc.loc[inside & dept, "workers"].sum())
 
 
-def applies(condition: str, s: dict, cls: str) -> bool:
-    """When an obligation applies to a system. The same tests, in the same order, as the workbook formulas."""
+def applies(condition: str, s: dict, cls: str, deployer: str = DEPLOYER) -> bool:
+    """When an obligation, a question for the supplier or a literacy module applies to a system. The same tests, in
+    the same order, as the workbook formulas."""
     high = cls == HIGH_RISK
     return {
         "in use": cls != PROHIBITED,
@@ -95,7 +111,17 @@ def applies(condition: str, s: dict, cls: str) -> bool:
         "high-risk and decides": high and s["decides_about_people"] == YES,
         "high-risk in-house": high and s["supplier"] == "In-house",
         "derogation": cls == DEROGATION,
+        "high-risk and public": high and deployer != PRIVATE,
+        "high-risk and public body": high and deployer == PUBLIC_BODY,
+        "high-risk on the market": high and s["on_market_before"] == YES,
+        "high-risk or monitors": cls != PROHIBITED and (high or s["monitors_workers"] == YES),
+        "monitors": cls != PROHIBITED and s["monitors_workers"] == YES,
     }[condition]
+
+
+def asks(condition: str, s: dict, cls: str) -> bool:
+    """A question goes to the supplier of a bought system; for an in-house one the employer answers it itself."""
+    return s["supplier"] == "Vendor" and applies(condition, s, cls)
 
 
 def triggers(condition: str, country: str, s: dict, cls: str) -> bool:
@@ -112,21 +138,30 @@ def triggers(condition: str, country: str, s: dict, cls: str) -> bool:
         "processes performance": s["monitors_workers"] == YES or (staff and high),
         "selects": s["annex_iii"] == "4(a)" and s["profiling"] == YES and s["decides_about_people"] == YES,
         "affects work": high,
+        "on employees": staff,
+        "changes work organisation": s["monitors_workers"] == YES or (staff and high),
     }[condition]
 
 
-def build() -> pd.DataFrame:
-    """One row per system: its class, role, workers in scope, and a Yes/blank per obligation and national rule."""
+def build(deployer: str = DEPLOYER) -> pd.DataFrame:
+    """One row per system: its class, role, workers in scope, and a Yes/blank per obligation, national rule, question
+    for the supplier and literacy module."""
+    if deployer not in DEPLOYER_TYPES:
+        raise ValueError(f"deployer must be one of {DEPLOYER_TYPES}")
     systems, hc = load(), headcount()
     rows = []
     for s in systems.to_dict("records"):
         cls = classify(s)
         row = {"system_id": s["system_id"], "system": s["system"], "class": cls, "role": role(s, cls),
-               "timing": timing(s, cls), "workers": workers(s, hc)}
+               "timing": timing(s, cls, deployer), "workers": workers(s, hc)}
         for key, _name, _art, cond, *_ in OBLIGATIONS:
-            row[key] = YES if applies(cond, s, cls) else ""
+            row[key] = YES if applies(cond, s, cls, deployer) else ""
         for key, country, _name, _src, cond, *_ in WORKER_RULES:
             row[key] = YES if triggers(cond, country, s, cls) else ""
+        for key, _q, _art, cond, _why in VENDOR_QUESTIONS:
+            row[key] = YES if asks(cond, s, cls) else ""
+        for key, _m, _who, cond, _what in LITERACY:
+            row[key] = YES if applies(cond, s, cls) else ""
         rows.append(row)
     return pd.DataFrame(rows)
 
@@ -138,11 +173,13 @@ def summary(r: pd.DataFrame) -> dict:
         "systems": len(r),
         **{f"n_{c}": int((r["class"] == c).sum()) for c in [PROHIBITED, HIGH_RISK, DEROGATION, TRANSPARENCY, MINIMAL]},
         "provider": int((r["role"] == "Provider and deployer").sum()),
-        "legacy": int((r["timing"] == "At its next significant design change").sum()),
+        "legacy": int(r["timing"].isin([LEGACY, LEGACY_PUBLIC]).sum()),
         # the largest scope of any one high-risk system: the most workers a single system touches
         "max_workers_high": int(high["workers"].max()) if len(high) else 0,
         "workers_total": int(headcount()["workers"].sum()),
         "obligations": {key: int((r[key] == YES).sum()) for key, *_ in OBLIGATIONS},
         "worker_rules": {key: int((r[key] == YES).sum()) for key, *_ in WORKER_RULES},
-        "countries": COUNTRIES,
+        "questions": {key: int((r[key] == YES).sum()) for key, *_ in VENDOR_QUESTIONS},
+        "literacy": {key: int((r[key] == YES).sum()) for key, *_ in LITERACY},
+        "countries": list(ENTITIES),
     }
