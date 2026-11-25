@@ -34,6 +34,23 @@ the consequences.
 The order matters: a prohibited practice is prohibited even if it would also be high-risk, and profiling closes the
 Art. 6(3) door whatever the condition claimed.
 
+## The classification put to the test
+
+`src/guideline_cases.py`, report section 8. The Commission's guidelines on prohibited practices (C(2025) 5052 final,
+section 7) give twenty-one workplace cases of emotion recognition with a verdict each; `data/guideline_cases.csv`
+records their facts (whose emotions, from what data, emotion or physical state, for what purpose) and the verdict,
+with the paragraph. Each case becomes the register's two answers as a reader of the question would give them, under
+the first wording read literally and under the wording now used, and is classified by `register.classify`. The
+first wording disagreed on eight cases; the current wording is written from the guidelines, so its agreement is by
+construction. Fragility: every answer that can move a class is changed in turn to each of its other values, and the
+system reclassified.
+
+The two questions now read: *Does it infer the emotions of workers or candidates from their face, voice, gestures or
+typing?* (not from written text, not tiredness or pain, not an expression counted without reading a feeling, not
+customers' emotions; No if the results only serve the worker's own training and never reach HR), and *Is that only
+for a medical use, or to protect life and health against a specific danger?* (not wellbeing, stress, burnout or
+property).
+
 ## Obligations
 
 Fifteen obligations, each with the condition that triggers it and the date it applies from

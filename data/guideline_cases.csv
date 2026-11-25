@@ -1,0 +1,22 @@
+case_id,paragraph,example,target,basis,infers,purpose,verdict
+G01,249,A broadcaster counts how often its news presenters smile at the camera,workers,biometric,expression,none,Not prohibited
+G02,249,A system infers from gestures or a frown that an employee is unhappy or angry towards customers,workers,biometric,emotion,none,Prohibited
+G03,249,A system infers a professional driver's fatigue to suggest breaks and avoid accidents,workers,biometric,physical_state,safety,Not prohibited
+G04,249,A system identifies whether a person is sick,workers,biometric,physical_state,none,Not prohibited
+G05,251,A system infers emotions from written text to set the tone of an article,workers,text,emotion,none,Not prohibited
+G06,251,A system infers emotions from the way a person types (keystrokes),workers,biometric,emotion,none,Prohibited
+G07,254,"A call centre uses webcams and voice recognition to track its employees' emotions, such as anger",workers,biometric,emotion,none,Prohibited
+G08,254,"The same call centre system used only for the worker's own training, and the results never reach HR or any assessment",workers,biometric,emotion,training_only,Not prohibited
+G09,254,"A call centre uses voice recognition to track its customers' emotions, such as anger or impatience",customers,biometric,emotion,none,Not prohibited
+G10,254,A system reads the emotional tone of hybrid teams from the voice and images of video calls,workers,biometric,emotion,none,Prohibited
+G11,254,Emotion recognition used during recruitment,candidates,biometric,emotion,none,Prohibited
+G12,254,Emotion recognition used during the probationary period,workers,biometric,emotion,none,Prohibited
+G13,254,"A supermarket uses cameras to track its employees' emotions, such as happiness",workers,biometric,emotion,none,Prohibited
+G14,254,"A supermarket or bank uses cameras to spot suspicious customers, with no employee tracked",customers,biometric,emotion,none,Not prohibited
+G15,257,A system detects burnout or depression at the workplace,workers,biometric,emotion,wellbeing,Prohibited
+G16,263,Emotion recognition assists employees with autism (a medical use),workers,biometric,emotion,medical,Not prohibited
+G17,263,"Emotion recognition assesses employees' wellbeing, motivation or job satisfaction",workers,biometric,emotion,wellbeing,Prohibited
+G18,263,"A digital assistant measures employees' anxiety from stress levels, or their boredom",workers,biometric,emotion,wellbeing,Prohibited
+G19,263,Stress is measured where a lapse of concentration is a specific danger (dangerous machines or chemicals),workers,biometric,emotion,safety,Not prohibited
+G20,258,Staff emotions are inferred to protect property against theft or fraud,workers,biometric,emotion,property,Prohibited
+G21,270,"A station detects aggressive behaviour in the crowd, and security staff are screened only incidentally",incidental,biometric,emotion,safety,Not prohibited

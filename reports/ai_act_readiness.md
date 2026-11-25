@@ -164,7 +164,28 @@ A public body also registers its use of each high-risk system in the EU database
 
 - **The new countries' rules are read conservatively.** Whether an HR AI system is a *nouvelle technologie* (France), an *important* technological facility (Netherlands), a system touching human dignity (Austria) or an *investment* in a new technology (Belgium) is a judgement; the register assumes yes where the system monitors or changes work, and names it in the verification register.
 
-## 8. The next 90 days
+## 8. The classification put to the test
+
+The Commission's guidelines on prohibited practices (Commission Guidelines on prohibited artificial intelligence practices established by Regulation (EU) 2024/1689 (AI Act), C(2025) 5052 final, 29 July 2025, section 7) work through 21 workplace cases of emotion recognition, each with a verdict. Each case was turned into the answers the register asks and classified. **With the questions as this kit first worded them, read literally, the register agreed with the Commission on 13 of 21**, and it was wrong both ways: it would have banned 4 systems the guidelines allow and allowed 4 they ban.
+
+| Case | Guidelines | Verdict | First wording |
+|---|---|---|---|
+| A system infers emotions from written text to set the tone of an article | para. 251 | Not prohibited | Prohibited |
+| The same call centre system used only for the worker's own training, and the results never reach HR or any assessment | para. 254 | Not prohibited | Prohibited |
+| A call centre uses voice recognition to track its customers' emotions, such as anger or impatience | para. 254 | Not prohibited | Prohibited |
+| A supermarket or bank uses cameras to spot suspicious customers, with no employee tracked | para. 254 | Not prohibited | Prohibited |
+| A system detects burnout or depression at the workplace | para. 257 | Prohibited | Not prohibited |
+| Emotion recognition assesses employees' wellbeing, motivation or job satisfaction | para. 263 | Prohibited | Not prohibited |
+| A digital assistant measures employees' anxiety from stress levels, or their boredom | para. 263 | Prohibited | Not prohibited |
+| Staff emotions are inferred to protect property against theft or fraud | para. 258 | Prohibited | Not prohibited |
+
+- **"From words" was wrong.** The prohibition covers emotions inferred from biometric data, face, voice, gestures, typing; sentiment read from written text is outside it (paras 250-251). So is the emotion of a customer (para. 254), and an emotion read only for the worker's own training, if the results never reach HR (para. 254).
+- **"Medical or safety" was too wide.** Wellbeing, stress, burnout and motivation do not count, nor does protecting property (paras 257-258, 263); a medical use or a specific danger to life and health does.
+- **The questions are now worded from the guidelines**, in the register, the workbook and the browser tool, and the 21 cases agree. That agreement is by design, not a second test: the value of the exercise is the eight cases the first wording got wrong.
+- **How much each class rests on.** Changing each answer in turn: every system would turn prohibited if it inferred emotions; every high-risk system would drop to minimal risk outside Annex III, and nothing else moves it; the chatbot and the assistants move only if they enter Annex III, or start or stop talking to people. The interview scheduling assistant (S04) is the one class that rests on three answers inside Annex III: its area, its Article 6(3) condition and whether it profiles anyone. Its assessment is the one to document and keep (Art. 6(4)), and to redo if the tool starts ranking candidates. 
+- **Not yet tested: the Annex III boundary.** The Commission's draft guidelines on high-risk classification (May 2026, under consultation) could not be read in this session; the high-risk cases follow the text of Article 6 and Annex III.
+
+## 9. The next 90 days
 
 1. **Stop the video interview analysis pilot** in Barcelona, delete the scores, and tell the supplier and the candidates assessed.
 2. **Decide the attrition-risk model's future**: keep it and build the provider's file, buy a supplier's equivalent, or narrow it to a team-level view that profiles no one.
@@ -174,7 +195,7 @@ A public body also registers its use of each high-risk system in the EU database
 6. **Send the supplier questionnaire**: 94 questions, starting with the instructions for use and the information the data protection impact assessments need; name an overseer per high-risk system.
 7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.
 
-## 9. Method, sources and limits
+## 10. Method, sources and limits
 
 - **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet checks each pair, and CI recalculates the workbook with LibreOffice.
 - **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German and Spanish rules on the official legal databases; the Dutch and Austrian ones through their governments' open-data services, the French on the Ministry of Labour's official code, the Irish in the Irish Statute Book and the Belgian agreements on the National Labour Council's site; the Polish ones through secondary sources. Each statement has its status in [docs/verification.md](../docs/verification.md).
