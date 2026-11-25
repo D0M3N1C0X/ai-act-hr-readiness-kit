@@ -42,7 +42,7 @@ Netherlands, Ireland, Austria or Belgium too.
 | | |
 |---|---|
 | **One system has to stop now.** A video interview pilot in Barcelona infers candidates' emotions from voice and face: prohibited at work since February 2025 (Art. 5(1)(f)), fines up to €35 million or 7% of turnover. | **Seven of twelve systems are high-risk**, from CV screening to the pay review recommender. The duties apply from **2 December 2027**, 404 days from this assessment; for systems already on the market, from their next significant design change (Art. 111(2)). |
-| **The attrition model makes the employer a provider.** HR analytics put it into service for the employer's own use, so the provider's duties come with it: quality management, technical documentation, conformity assessment, registration (Art. 3(3) and 16). | **AI literacy applies already** to the staff using 11 systems (Art. 4, softened by the Omnibus). Telling people they are talking to an AI is the supplier's duty for 2 (Art. 50(1)); the employer checks it. |
+| **The attrition model makes the employer a provider.** HR analytics put it into service for the employer's own use, so the provider's duties come with it (Art. 3(3) and 16). The real model, in [hr-people-analytics](https://github.com/D0M3N1C0X/hr-people-analytics), covers 3 of 21 provider duties, partly 10, and misses 8: the analysis is done, the paperwork is not, and its planned version 1.1 ends the grace period. | **AI literacy applies already** to the staff using 11 systems (Art. 4, softened by the Omnibus). Telling people they are talking to an AI is the supplier's duty for 2 (Art. 50(1)); the employer checks it. |
 | **Germany's works council is the constraint today**: 11 systems to inform it about, at least 5 that need its agreement before use (BetrVG §87(1) Nr. 6). | **Spain owes the works council the parameters of 7 systems; Italy, a written notice for 1 fully automated system** and a union agreement for a monitoring tool; Poland, two weeks' notice of monitoring. |
 | **94 questions for the suppliers**, most of them for the six bought high-risk systems: the Article 13 instructions for use, accuracy by group, logs, and a warning before the design change that would end the Article 111(2) grace period. | **28 AI literacy modules to run** across the systems, from basics for every user to oversight training for the named overseers; the record shows the measures taken, as the Omnibus wording asks, not a level reached. |
 | **The classification was tested against the Commission's own examples.** On the 21 workplace cases of emotion recognition in its guidelines on prohibited practices, the kit's first questions, read literally, agreed on 13: they banned emotion read from text or from customers and allowed wellbeing and stress monitoring. The questions now follow the guidelines. | **The interview scheduler is the one fragile class**: it rests on three answers (its Annex III area, its Article 6(3) condition and whether it profiles anyone), so its Article 6(4) assessment is the one to document. |
@@ -127,12 +127,14 @@ pytest                       # includes the workbook calculated in pure Python
 ```
 ├── data/ai_systems.csv          the twelve systems and the twenty-three answers that classify them
 ├── data/guideline_cases.csv     the Commission's 21 workplace cases of emotion recognition, with paragraph and verdict
+├── data/provider_file_s07.csv   the in-house model's provider duties, with the evidence and what is missing
 ├── data/source/headcount.csv    workers by employer and department (pay-transparency-readiness-kit)
 ├── src/
 │   ├── config.py                dates, obligations, national rules, supplier questions, literacy
 │   │                            modules and the FRIA elements, each with its source
 │   ├── register.py              classification, role, obligations, notices
 │   ├── guideline_cases.py       the classification against the Commission's examples, and its fragility
+│   ├── provider_file.py         the in-house model's provider file, checked against hr-people-analytics
 │   ├── build_workbook.py        the Excel register and its reconciliation sheet
 │   ├── check_workbook.py        proves the formulas reproduce Python
 │   ├── build_report.py          the report and its page

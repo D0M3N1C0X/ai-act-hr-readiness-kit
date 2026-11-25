@@ -13,6 +13,11 @@ What changed in each release. Format: [Keep a Changelog](https://keepachangelog.
   allowed wellbeing, stress, burnout and property monitoring. And a fragility check: the interview scheduler is the one
   class that rests on three answers.
 
+- **The in-house model as a real case** (report section 9, `src/provider_file.py`, `data/provider_file_s07.csv`): the
+  attrition model built in hr-people-analytics set against the 21 provider duties of Articles 9 to 20, 43, 47 to 49,
+  72 and 73: 3 covered, 10 partly, 8 missing. Its model card is vendored with a pinned checksum, and a test checks it
+  states the register's class and role and answers all 14 supplier questions the register would send.
+
 ### Fixed
 
 - **The emotion and medical-or-safety questions**, in the register, the workbook and the browser tool, now follow the

@@ -1,0 +1,22 @@
+ref,duty,article,evidence,status,gap
+P01,"Risk management system: known and foreseeable risks identified, estimated and mitigated across the lifecycle",Art. 9,"Model card V01 (uses ruled out), V03 (known issues), V04 (stop rule)",Partly,"The risks are named but there is no documented, iterative risk process with owners and review dates"
+P02,"Data governance: design choices, data origin and original purpose, preparation, assumptions, availability",Art. 10(2)(a)-(e),"Model card V05 (inputs, sources, training and test sets); src/analysis_validation.py",Partly,The original purpose of each data source and the preparation steps are not written down
+P03,Examination for possible biases,Art. 10(2)(f),"src/analysis_fairness.py; model card V03 (calibration and catch rate by sex, age, country, working time)",Covered,
+P04,"Measures to detect, prevent and mitigate the biases found",Art. 10(2)(g),"Model card V07 (a release gate per group), V03 (Germany over-read, fix planned for 1.1)",Partly,"The Germany over-read is found and a fix is planned, not made"
+P05,"Data relevant, representative and suited to the setting where it is used",Art. 10(3)-(4),"Model card V05 (country of work deliberately not an input), V03",Partly,"Country of work is left out, so the model does not fit each country's setting; version 1.1 adds it"
+P06,Technical documentation drawn up before putting into service (Annex IV),Art. 11; Annex IV,"Model card (described as a start); the repository's code, tests and CI",Partly,"Annex IV asks for more: the development process, the standards applied, the monitoring plan, the declaration"
+P07,Automatic recording of events (logs) over the system's lifetime,Art. 12,Model card V06 states what to log,Missing,The repository does not implement the log; a deployment must
+P08,Instructions for use,Art. 13,Model card V01 to V11,Covered,
+P09,Human oversight designed in,Art. 14,"Model card V04 (team-level view, named overseer, override logged, stop rule)",Covered,
+P10,"Accuracy, robustness and cybersecurity, declared and tested",Art. 15,"src/analysis_validation.py (out-of-time AUC, calibration); model card V02, V07 release gates",Partly,"Accuracy is tested out of time; robustness to data drift and the cybersecurity assessment are stated, not tested"
+P11,Name and contact on the system or its documentation,Art. 16(b),Model card V08,Partly,The contacts are placeholders
+P12,Quality management system,Art. 16(c); 17,CI reproduces every output and reconciles the engines,Missing,"No written quality management system: strategy, procedures, responsibilities"
+P13,Documentation kept for ten years,Art. 16(d); 18,,Missing,No retention rule for the technical and quality documentation
+P14,Logs kept while under the provider's control,Art. 16(e); 19,,Missing,Depends on the logging above
+P15,"Conformity assessment by internal control, before putting into service",Art. 16(f); 43(2); Annex VI,Model card V11 (not done),Missing,"Annex III point 4 systems follow internal control, with no notified body"
+P16,EU declaration of conformity,Art. 16(g); 47,,Missing,
+P17,"CE marking, in the accompanying documentation",Art. 16(h); 48,,Missing,
+P18,Registration in the EU database,Art. 16(i); 49(1),Model card V11 (not done),Missing,
+P19,Corrective action and information when the system does not conform,Art. 16(j); 20,Model card V04 (stop rule),Partly,"A stop rule exists; who corrects, recalls and informs is not set"
+P20,Post-market monitoring,Art. 72,Model card V07 (quarterly refit with release gates),Partly,"The quarterly check is a plan in the card, not a documented monitoring system"
+P21,Reporting serious incidents,Art. 73,Model card V08,Partly,Same-day reporting inside HR is set; reporting to the market surveillance authority is not

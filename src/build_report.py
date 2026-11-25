@@ -6,6 +6,7 @@ Every number in the text comes from src/register.py, the same functions the work
 import pandas as pd
 
 import guideline_cases
+import provider_file
 import register
 import report_html
 from config import (
@@ -312,12 +313,43 @@ def write() -> dict:
         "Article 6 and Annex III.")
     add("")
 
-    add("## 9. The next 90 days")
+    pf = provider_file.summary()
+    c, cons, fl = pf["counts"], pf["consistency"], pf["file"]
+    add("## 9. The in-house model, as a real case")
+    add("")
+    add("The attrition model (S07) is the register's one in-house high-risk system, so the employer is its provider. "
+        "It exists: [hr-people-analytics](https://github.com/D0M3N1C0X/hr-people-analytics) built it, tested it on "
+        "quarters it never saw, audited it by sex, age, country and working time, and wrote "
+        "[its model card](https://github.com/D0M3N1C0X/hr-people-analytics/blob/main/docs/model_card.md), which "
+        "answers the register's supplier questions as the provider. Set against the provider's duties in Regulation "
+        f"(EU) 2024/1689, **{c['Covered']} of {pf['n']} are covered, {c['Partly']} partly and {c['Missing']} "
+        "missing.**")
+    add("")
+    add(md_table(["Duty", "Article", "Status", "What is missing"],
+                 [[r.duty, r.article, r.status, r.gap or "-"] for r in fl.itertuples()], "llll"))
+    add("")
+    add(f"- **The two repositories agree.** The card states the register's class ({cons['card']['class']}) and role "
+        f"({cons['card']['role'].lower()}), and answers all {len(cons['asked'])} questions the register would send "
+        "the system's supplier if it were bought" + (f", missing {', '.join(cons['unanswered'])}" if cons["unanswered"]
+                                                     else "") + ". A test fails if either side changes alone.")
+    add("- **The analysis is the strong part; the paperwork is not there yet.** Instructions for use, human "
+        "oversight and the examination for bias are done; logging, the quality management system, the conformity "
+        "assessment, the declaration, the CE marking and the registration are not.")
+    add("- **The deadline is the next change, not December 2027.** The card already plans version 1.1, adding country "
+        "of work to fix the Germany over-read: a significant change that ends the Article 111(2) grace period, so the "
+        f"{WORDS[c['Missing']]} missing items have to be in place before it ships. Internal control applies (Art. 43(2)); no notified "
+        "body is involved.")
+    add("- *Duties as in Regulation (EU) 2024/1689 (Official Journal L, 12 July 2024); amendments to these articles "
+        "by Regulation (EU) 2026/1744 were not re-read for this section.*")
+    add("")
+
+    add("## 10. The next 90 days")
     add("")
     add(f"1. **Stop the {lower(banned['system'])} pilot** in Barcelona, delete the scores, and tell the supplier and "
         "the candidates assessed.")
     add(f"2. **Decide the {lower(provider['system'])}'s future**: keep it and build the provider's file, buy a "
-        "supplier's equivalent, or narrow it to a team-level view that profiles no one.")
+        "supplier's equivalent, or narrow it to a team-level view that profiles no one; if it stays, the missing "
+        "items of its provider's file come before version 1.1 (section 9).")
     add("3. **Open the works council agenda in Munich** with the information and co-determination items, and send the "
         "Spanish works council the parameters of the systems that affect work.")
     add("4. **Send the Italian notices** for the fully automated systems and settle the agreement for the monitoring "
@@ -329,7 +361,7 @@ def write() -> dict:
     add("7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.")
     add("")
 
-    add("## 10. Method, sources and limits")
+    add("## 11. Method, sources and limits")
     add("")
     add("- **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live "
         "formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet "
