@@ -185,17 +185,50 @@ The Commission's guidelines on prohibited practices (Commission Guidelines on pr
 - **How much each class rests on.** Changing each answer in turn: every system would turn prohibited if it inferred emotions; every high-risk system would drop to minimal risk outside Annex III, and nothing else moves it; the chatbot and the assistants move only if they enter Annex III, or start or stop talking to people. The interview scheduling assistant (S04) is the one class that rests on three answers inside Annex III: its area, its Article 6(3) condition and whether it profiles anyone. Its assessment is the one to document and keep (Art. 6(4)), and to redo if the tool starts ranking candidates. 
 - **Not yet tested: the Annex III boundary.** The Commission's draft guidelines on high-risk classification (May 2026, under consultation) could not be read in this session; the high-risk cases follow the text of Article 6 and Annex III.
 
-## 9. The next 90 days
+## 9. The in-house model, as a real case
+
+The attrition model (S07) is the register's one in-house high-risk system, so the employer is its provider. It exists: [hr-people-analytics](https://github.com/D0M3N1C0X/hr-people-analytics) built it, tested it on quarters it never saw, audited it by sex, age, country and working time, and wrote [its model card](https://github.com/D0M3N1C0X/hr-people-analytics/blob/main/docs/model_card.md), which answers the register's supplier questions as the provider. Set against the provider's duties in Regulation (EU) 2024/1689, **3 of 21 are covered, 10 partly and 8 missing.**
+
+| Duty | Article | Status | What is missing |
+|---|---|---|---|
+| Risk management system: known and foreseeable risks identified, estimated and mitigated across the lifecycle | Art. 9 | Partly | The risks are named but there is no documented, iterative risk process with owners and review dates |
+| Data governance: design choices, data origin and original purpose, preparation, assumptions, availability | Art. 10(2)(a)-(e) | Partly | The original purpose of each data source and the preparation steps are not written down |
+| Examination for possible biases | Art. 10(2)(f) | Covered | - |
+| Measures to detect, prevent and mitigate the biases found | Art. 10(2)(g) | Partly | The Germany over-read is found and a fix is planned, not made |
+| Data relevant, representative and suited to the setting where it is used | Art. 10(3)-(4) | Partly | Country of work is left out, so the model does not fit each country's setting; version 1.1 adds it |
+| Technical documentation drawn up before putting into service (Annex IV) | Art. 11; Annex IV | Partly | Annex IV asks for more: the development process, the standards applied, the monitoring plan, the declaration |
+| Automatic recording of events (logs) over the system's lifetime | Art. 12 | Missing | The repository does not implement the log; a deployment must |
+| Instructions for use | Art. 13 | Covered | - |
+| Human oversight designed in | Art. 14 | Covered | - |
+| Accuracy, robustness and cybersecurity, declared and tested | Art. 15 | Partly | Accuracy is tested out of time; robustness to data drift and the cybersecurity assessment are stated, not tested |
+| Name and contact on the system or its documentation | Art. 16(b) | Partly | The contacts are placeholders |
+| Quality management system | Art. 16(c); 17 | Missing | No written quality management system: strategy, procedures, responsibilities |
+| Documentation kept for ten years | Art. 16(d); 18 | Missing | No retention rule for the technical and quality documentation |
+| Logs kept while under the provider's control | Art. 16(e); 19 | Missing | Depends on the logging above |
+| Conformity assessment by internal control, before putting into service | Art. 16(f); 43(2); Annex VI | Missing | Annex III point 4 systems follow internal control, with no notified body |
+| EU declaration of conformity | Art. 16(g); 47 | Missing | - |
+| CE marking, in the accompanying documentation | Art. 16(h); 48 | Missing | - |
+| Registration in the EU database | Art. 16(i); 49(1) | Missing | - |
+| Corrective action and information when the system does not conform | Art. 16(j); 20 | Partly | A stop rule exists; who corrects, recalls and informs is not set |
+| Post-market monitoring | Art. 72 | Partly | The quarterly check is a plan in the card, not a documented monitoring system |
+| Reporting serious incidents | Art. 73 | Partly | Same-day reporting inside HR is set; reporting to the market surveillance authority is not |
+
+- **The two repositories agree.** The card states the register's class (High-risk) and role (provider and deployer), and answers all 14 questions the register would send the system's supplier if it were bought. A test fails if either side changes alone.
+- **The analysis is the strong part; the paperwork is not there yet.** Instructions for use, human oversight and the examination for bias are done; logging, the quality management system, the conformity assessment, the declaration, the CE marking and the registration are not.
+- **The deadline is the next change, not December 2027.** The card already plans version 1.1, adding country of work to fix the Germany over-read: a significant change that ends the Article 111(2) grace period, so the eight missing items have to be in place before it ships. Internal control applies (Art. 43(2)); no notified body is involved.
+- *Duties as in Regulation (EU) 2024/1689 (Official Journal L, 12 July 2024); amendments to these articles by Regulation (EU) 2026/1744 were not re-read for this section.*
+
+## 10. The next 90 days
 
 1. **Stop the video interview analysis pilot** in Barcelona, delete the scores, and tell the supplier and the candidates assessed.
-2. **Decide the attrition-risk model's future**: keep it and build the provider's file, buy a supplier's equivalent, or narrow it to a team-level view that profiles no one.
+2. **Decide the attrition-risk model's future**: keep it and build the provider's file, buy a supplier's equivalent, or narrow it to a team-level view that profiles no one; if it stays, the missing items of its provider's file come before version 1.1 (section 9).
 3. **Open the works council agenda in Munich** with the information and co-determination items, and send the Spanish works council the parameters of the systems that affect work.
 4. **Send the Italian notices** for the fully automated systems and settle the agreement for the monitoring tool; give the Polish notice two weeks before any new monitoring.
 5. **Put AI literacy on record**: run the 28 module-system pairs of the literacy plan and keep who took which, when, with what material.
 6. **Send the supplier questionnaire**: 94 questions, starting with the instructions for use and the information the data protection impact assessments need; name an overseer per high-risk system.
 7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.
 
-## 10. Method, sources and limits
+## 11. Method, sources and limits
 
 - **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet checks each pair, and CI recalculates the workbook with LibreOffice.
 - **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German and Spanish rules on the official legal databases; the Dutch and Austrian ones through their governments' open-data services, the French on the Ministry of Labour's official code, the Irish in the Irish Statute Book and the Belgian agreements on the National Labour Council's site; the Polish ones through secondary sources. Each statement has its status in [docs/verification.md](../docs/verification.md).

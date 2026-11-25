@@ -51,6 +51,15 @@ customers' emotions; No if the results only serve the worker's own training and 
 for a medical use, or to protect life and health against a specific danger?* (not wellbeing, stress, burnout or
 property).
 
+## The in-house model, as a real case
+
+`src/provider_file.py`, report section 9. The attrition model (S07) exists in
+[hr-people-analytics](https://github.com/D0M3N1C0X/hr-people-analytics); its model card is vendored at a pinned commit
+and checksum (`data/source/model_card_s07.md`). `data/provider_file_s07.csv` sets the provider's duties of
+Regulation (EU) 2024/1689 against that repository's evidence, one row per duty, each *Covered*, *Partly* or
+*Missing* with what is missing. A test checks the two repositories agree: the card's class and role are the
+register's, and the card answers every supplier question the register would send if the system were bought.
+
 ## Obligations
 
 Fifteen obligations, each with the condition that triggers it and the date it applies from
