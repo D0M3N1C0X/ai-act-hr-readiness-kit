@@ -2,6 +2,23 @@
 
 What changed in each release. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- **The classification put to the test** (report section 8, `src/guideline_cases.py`, `data/guideline_cases.csv`):
+  the 21 workplace cases of emotion recognition in the Commission's guidelines on prohibited practices (C(2025) 5052
+  final, 29 July 2025), each with its paragraph and verdict. Read literally, the kit's first questions agreed on 13:
+  they would have banned emotion read from written text, from customers and for the worker's own training, and
+  allowed wellbeing, stress, burnout and property monitoring. And a fragility check: the interview scheduler is the one
+  class that rests on three answers.
+
+### Fixed
+
+- **The emotion and medical-or-safety questions**, in the register, the workbook and the browser tool, now follow the
+  guidelines: emotions of workers or candidates from biometric data; a medical use or a specific danger to life and
+  health only. Verification register: A02 verified, A20-A24 added.
+
 ## [1.2.0] - 2026-11-06
 
 ### Added
