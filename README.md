@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="site-assets/cover-dark.png">
-  <img alt="Which of HR's AI systems are high-risk, and what do they owe? One of twelve to stop now, seven high-risk systems with duties from 2 December 2027, national rules on telling the workers in four countries." src="site-assets/cover-light.png">
+  <img alt="Which of HR's AI systems are high-risk, and what do they owe? 8 of 21 Commission cases the kit's first questions got wrong, now all agree; 3 of 21 provider duties the in-house model meets; a merit pay review moves a 17.6% gap by 0.1 points, an equity fund cuts it to 15.5%." src="site-assets/cover-light.png">
 </picture>
 
 <p align="center">
@@ -58,13 +58,13 @@ nine countries, the questions for its supplier and the literacy modules it calls
 impact assessment where it is owed; the result downloads as an Excel workbook. English and Italian. **Nothing leaves
 the computer.**
 
-<p align="center"><a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/"><img alt="The browser tool on the twelve sample systems: the register with each class and its reason, what applies when, and whom to tell in each country." src="site-assets/tool.webp" width="100%"></a></p>
+<p align="center"><a href="https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/"><img alt="The browser tool: a call centre mood tracker checked question by question, with the emotion and medical-or-safety questions worded from the Commission guidelines and a prohibited verdict; then the twelve sample systems, their classes and whom to tell in each country." src="site-assets/tool.webp" width="100%"></a></p>
 
 ## What you get
 
 | Deliverable | For | What is in it |
 |---|---|---|
-| [`ai_act_hr_register.xlsx`](deliverables/ai_act_hr_register.xlsx) | the HR, legal and data protection team | Twelve sheets: the register with twenty-three answers per system and its class, the obligations each system triggers, the national rules on telling the workers, the questions for each supplier, the literacy modules, the fundamental rights impact assessment, a timeline, headcount, settings and a reconciliation sheet. **Every class, obligation, rule, question and module is a live formula**: change an answer, or the kind of employer, and the register follows. |
+| [`ai_act_hr_register.xlsx`](deliverables/ai_act_hr_register.xlsx) | the HR, legal and data protection team | Fourteen sheets: the register with twenty-three answers per system and its class, the obligations each system triggers, the national rules on telling the workers, the questions for each supplier, the literacy modules, the fundamental rights impact assessment, a timeline, the Commission's 21 cases classified by the register, the in-house model's provider file, headcount, settings and a reconciliation sheet. **Every class, obligation, rule, question and module is a live formula**: change an answer, or the kind of employer, and the register follows. |
 | [`ai_act_readiness.md`](reports/ai_act_readiness.md) · [online](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/) | the HR director and the board | Answer first: the register, what applies when, the notices country by country, the boundary cases, the next 90 days. |
 | [Browser tool](https://d0m3n1c0x.github.io/ai-act-hr-readiness-kit/tool/) | the HR business partner, on the client's own systems | Guided questions or a file; class, obligations and notices per system; an Excel download. Runs in the page. |
 | [`supplier_questionnaire.md`](deliverables/supplier_questionnaire.md) | procurement and the system owners | The questions to send each system's supplier, with the article behind each, ready to send. |
@@ -99,7 +99,7 @@ the computer.**
 
 | | |
 |---|---|
-| **Three engines, one answer** | Python and the workbook's live formulas, reconciled on 813 checks and recalculated in CI by LibreOffice; the browser tool checked against Python on 16,309 values from the twelve systems under each kind of employer and 2,000 random ones; tests change an answer, or the kind of employer, and check the workbook follows |
+| **Three engines, one answer** | Python and the workbook's live formulas, reconciled on 838 checks and recalculated in CI by LibreOffice; the browser tool checked against Python on 16,309 values from the twelve systems under each kind of employer and 2,000 random ones; tests change an answer, or the kind of employer, and check the workbook follows |
 | **Law read in the original** | the Official Journal for the AI Act, the Omnibus and the GDPR; normattiva, gesetze-im-internet and the BOE for the Italian, German and Spanish rules; the Dutch and Austrian governments' open-data services, the Irish Statute Book, the National Labour Council in Belgium and the Ministry of Labour's official code in France (the Polish rules through secondary sources); a [verification register](docs/verification.md) with the status of each |
 | **Reproducible** | one command rebuilds every output; CI fails if a rebuilt file differs from the committed one |
 
