@@ -71,6 +71,13 @@ after an equity fund that lifts the lower-paid sex to the other's mean hourly pa
 the review. Gaps are recomputed with the kit's rules (hourly pay level with all components, 5% on hourly or annual
 pay). One cycle; components unchanged.
 
+## Who supervises, country by country
+
+`data/national_authorities.csv`, report section 11: for each of the nine countries, the authority that supervises
+an employer's HR AI systems under the AI Act, the national act that designates it, when it applies, what it changes
+for an HR employer, the source and its status. Rows are *Verified* only where the official text was read in this
+environment; a host that refused the connection is named, and the row stays *Secondary* or *Not checked*.
+
 ## Obligations
 
 Fifteen obligations, each with the condition that triggers it and the date it applies from
