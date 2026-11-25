@@ -24,6 +24,13 @@ What changed in each release. Format: [Keep a Changelog](https://keepachangelog.
   the kit's cost ceiling, clears all 12 flags and brings the gap to 15.5%. The retention boost is the use the
   attrition model's card rules out.
 
+- **Who supervises, country by country** (report section 11, `data/national_authorities.csv`): the AI Act
+  authorities and national AI acts for the nine countries, read in the original where this environment could reach
+  it. Verified: Poland (Dz.U. 2026 poz. 1003), Germany (KI-MIG, BGBl. 2026 I Nr. 223), Ireland (S.I. 366/2025 and
+  405/2026: the Workplace Relations Commission supervises HR systems); Spain's AESIA statute. Italy's Law 132/2025
+  is from secondary sources and marked to verify; the Netherlands has a draft; France, Austria and Belgium were not
+  checked.
+
 ### Fixed
 
 - **The emotion and medical-or-safety questions**, in the register, the workbook and the browser tool, now follow the

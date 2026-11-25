@@ -15,6 +15,7 @@ from config import (
     COUNTRIES,
     COUNTRY_NAMES,
     D_ANNEX_III,
+    DATA,
     DEPLOYER,
     ENTITIES,
     FRIA_ELEMENTS,
@@ -390,7 +391,29 @@ def write() -> dict:
         "against the median for the role in each country. Code: src/pay_review.py.*")
     add("")
 
-    add("## 11. The next 90 days")
+    na = pd.read_csv(DATA / "national_authorities.csv", keep_default_na=False)
+    ok = na[na["status"] == "Verified"]
+    add("## 11. Who supervises, country by country")
+    add("")
+    add("Each Member State names the authorities that enforce the AI Act (Art. 70) and can add its own rules on AI "
+        "at work (Art. 2(11)). Read at the official source where this environment could reach it, on "
+        f"{day(pd.Timestamp(na['checked_on'].iloc[0]))}:")
+    add("")
+    add(md_table(["Country", "Who supervises HR's AI systems", "National act", "In force", "For an HR employer", "Status"],
+                 [[COUNTRY_NAMES.get(r.country, r.country), r.authority, r.national_ai_law or "-", r.in_force or "-",
+                   r.for_an_hr_employer or "-", r.status] for r in na.itertuples()], "llllll"))
+    add("")
+    add(f"- **{len(ok)} of {len(na)} countries are verified in the original text.** Ireland gives HR systems to the "
+        "body that already hears employment complaints, the Workplace Relations Commission, which also enforces "
+        "the ban on emotion recognition at work; Germany and Poland put them under one general authority.")
+    add("- **Italy is the gap that matters most here, and it is a gap in this session, not in the law.** Law "
+        "132/2025 is in force, but Normattiva and the Gazzetta Ufficiale refused the connection from this "
+        "environment, so its articles on work are taken from secondary sources and marked to verify.")
+    add("- **The Netherlands has a draft; France, Austria and Belgium were not checked.** The register's rules on "
+        "telling the workers in those countries do not depend on who supervises the AI Act.")
+    add("")
+
+    add("## 12. The next 90 days")
     add("")
     add(f"1. **Stop the {lower(banned['system'])} pilot** in Barcelona, delete the scores, and tell the supplier and "
         "the candidates assessed.")
@@ -408,7 +431,7 @@ def write() -> dict:
     add("7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.")
     add("")
 
-    add("## 12. Method, sources and limits")
+    add("## 13. Method, sources and limits")
     add("")
     add("- **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live "
         "formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet "

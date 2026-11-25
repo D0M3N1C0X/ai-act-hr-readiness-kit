@@ -236,7 +236,27 @@ S08 proposes each person's pay rise. It is high-risk under the AI Act, and under
 - **Small categories move on their own.** DE Cat G becomes flagged under every design: it has fewer than five of one sex, so any rise to one person can move it across 5%. The recommender's output for small categories needs a human check before it is approved.
 - *A simulation on the synthetic payroll, one review cycle, components unchanged; compa-ratio is base pay against the median for the role in each country. Code: src/pay_review.py.*
 
-## 11. The next 90 days
+## 11. Who supervises, country by country
+
+Each Member State names the authorities that enforce the AI Act (Art. 70) and can add its own rules on AI at work (Art. 2(11)). Read at the official source where this environment could reach it, on 25 November 2026:
+
+| Country | Who supervises HR's AI systems | National act | In force | For an HR employer | Status |
+|---|---|---|---|---|---|
+| Italy | ACN (Agenzia per la cybersicurezza nazionale) for market surveillance; AgID for notification and promotion | Law no. 132/2025 on artificial intelligence (GU no. 223 of 25 September 2025) | 10 October 2025 | Secondary sources describe rules on AI at work and an observatory on AI and work; the notice the register already plans for Italy (D.lgs. 152/1997 art. 1-bis) stands either way | Secondary · to verify against the official text |
+| Poland | Komisja Rozwoju i Bezpieczeństwa Sztucznej Inteligencji: market surveillance authority and single point of contact (art. 5) | Ustawa o systemach sztucznej inteligencji, Dz.U. 2026 poz. 1003 (27 July 2026) | 14 days after publication; the supervision chapters three months after publication (art. 127) | Complaints about an AI system go to the Commission (art. 59); no employment-specific duty beyond the AI Act and the Labour Code's monitoring notice | Verified |
+| Germany | Bundesnetzagentur, the general market surveillance authority (§ 2(1)); an independent chamber inside it for Annex III points 1 (in part), 6, 7 and 8 (§ 2(5)), not for employment | KI-Marktüberwachungs- und Innovationsförderungs-Gesetz, BGBl. 2026 I Nr. 223 (28 July 2026) | The day after promulgation (29 July 2026) | Employment systems fall to the Bundesnetzagentur; a central complaints office (§ 8). Co-determination stays in the BetrVG, untouched | Verified |
+| Spain | AESIA (Agencia Española de Supervisión de la Inteligencia Artificial), set up to be the national supervisory authority | No act designating market surveillance authorities under Art. 70 found in the BOE's consolidated legislation | AESIA statute in force since 3 September 2023 | Algorithmic transparency to the works council stays in the Estatuto de los Trabajadores art. 64.4.d, already in the register | Verified (AESIA statute) · designation act not found |
+| Ireland | Workplace Relations Commission for Annex III point 4 (employment) and for the Art. 5(1)(f) ban outside education; the Minister is the single point of contact | European Union (Artificial Intelligence) (Designation) Regulations 2025, amended 31 July 2026 | S.I. 405/2026 given 31 July 2026 | An employer's HR AI systems are supervised by the body that already hears its employment complaints | Verified |
+| Netherlands | Not yet designated: the draft Uitvoeringswet AI-verordening was in public consultation from 20 April to 1 June 2026 | Draft Uitvoeringswet AI-verordening | Not in force | Works council consent under WOR art. 27 already applies (register) | Secondary · draft |
+| France | Not established in this session | - | - | - | Not checked |
+| Austria | Not established in this session | - | - | - | Not checked |
+| Belgium | Not established in this session | - | - | - | Not checked |
+
+- **3 of 9 countries are verified in the original text.** Ireland gives HR systems to the body that already hears employment complaints, the Workplace Relations Commission, which also enforces the ban on emotion recognition at work; Germany and Poland put them under one general authority.
+- **Italy is the gap that matters most here, and it is a gap in this session, not in the law.** Law 132/2025 is in force, but Normattiva and the Gazzetta Ufficiale refused the connection from this environment, so its articles on work are taken from secondary sources and marked to verify.
+- **The Netherlands has a draft; France, Austria and Belgium were not checked.** The register's rules on telling the workers in those countries do not depend on who supervises the AI Act.
+
+## 12. The next 90 days
 
 1. **Stop the video interview analysis pilot** in Barcelona, delete the scores, and tell the supplier and the candidates assessed.
 2. **Decide the attrition-risk model's future**: keep it and build the provider's file, buy a supplier's equivalent, or narrow it to a team-level view that profiles no one; if it stays, the missing items of its provider's file come before version 1.1 (section 9).
@@ -246,7 +266,7 @@ S08 proposes each person's pay rise. It is high-risk under the AI Act, and under
 6. **Send the supplier questionnaire**: 94 questions, starting with the instructions for use and the information the data protection impact assessments need; name an overseer per high-risk system.
 7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.
 
-## 12. Method, sources and limits
+## 13. Method, sources and limits
 
 - **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet checks each pair, and CI recalculates the workbook with LibreOffice.
 - **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German and Spanish rules on the official legal databases; the Dutch and Austrian ones through their governments' open-data services, the French on the Ministry of Labour's official code, the Irish in the Irish Statute Book and the Belgian agreements on the National Labour Council's site; the Polish ones through secondary sources. Each statement has its status in [docs/verification.md](../docs/verification.md).
