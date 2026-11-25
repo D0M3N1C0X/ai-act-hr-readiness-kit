@@ -18,6 +18,12 @@ What changed in each release. Format: [Keep a Changelog](https://keepachangelog.
   72 and 73: 3 covered, 10 partly, 8 missing. Its model card is vendored with a pinned checksum, and a test checks it
   states the register's class and role and answers all 14 supplier questions the register would send.
 
+- **The pay review recommender under both laws** (report section 10, `src/pay_review.py`): four designs, one 3%
+  budget, run on the pay transparency kit's payroll (vendored, its figures reproduced before any rise). Rating only,
+  the merit matrix and a retention boost move the group gap by at most 0.1 points; an equity fund of €1.91 million,
+  the kit's cost ceiling, clears all 12 flags and brings the gap to 15.5%. The retention boost is the use the
+  attrition model's card rules out.
+
 ### Fixed
 
 - **The emotion and medical-or-safety questions**, in the register, the workbook and the browser tool, now follow the

@@ -46,6 +46,7 @@ Netherlands, Ireland, Austria or Belgium too.
 | **Germany's works council is the constraint today**: 11 systems to inform it about, at least 5 that need its agreement before use (BetrVG §87(1) Nr. 6). | **Spain owes the works council the parameters of 7 systems; Italy, a written notice for 1 fully automated system** and a union agreement for a monitoring tool; Poland, two weeks' notice of monitoring. |
 | **94 questions for the suppliers**, most of them for the six bought high-risk systems: the Article 13 instructions for use, accuracy by group, logs, and a warning before the design change that would end the Article 111(2) grace period. | **28 AI literacy modules to run** across the systems, from basics for every user to oversight training for the named overseers; the record shows the measures taken, as the Omnibus wording asks, not a level reached. |
 | **The classification was tested against the Commission's own examples.** On the 21 workplace cases of emotion recognition in its guidelines on prohibited practices, the kit's first questions, read literally, agreed on 13: they banned emotion read from text or from customers and allowed wellbeing and stress monitoring. The questions now follow the guidelines. | **The interview scheduler is the one fragile class**: it rests on three answers (its Annex III area, its Article 6(3) condition and whether it profiles anyone), so its Article 6(4) assessment is the one to document. |
+| **The pay review recommender cannot close the pay gaps on its own.** Run on the pay transparency kit's payroll with a 3% budget, merit designs move the group gap by 0.1 points at most; setting €1.91 million of the same budget aside first for the flagged categories clears all 12 and brings the gap from 17.6% to 15.5%. | |
 | **No fundamental rights impact assessment is owed**: Article 27 binds public bodies and public-service providers, not a private employer. The kit drafts one for each of the 7 high-risk systems anyway, cross-referred to the DPIA as the Omnibus now allows (Art. 27(4)). | **A public employer running the same register** owes the assessment for every high-risk system, registers each use in the EU database (Art. 26(8)) and has until 2 August 2030 at the latest for systems already in use (Art. 111(2)). |
 
 ## Check your own systems
@@ -135,6 +136,7 @@ pytest                       # includes the workbook calculated in pure Python
 │   ├── register.py              classification, role, obligations, notices
 │   ├── guideline_cases.py       the classification against the Commission's examples, and its fragility
 │   ├── provider_file.py         the in-house model's provider file, checked against hr-people-analytics
+│   ├── pay_review.py            the pay review recommender run on the pay transparency kit's payroll
 │   ├── build_workbook.py        the Excel register and its reconciliation sheet
 │   ├── check_workbook.py        proves the formulas reproduce Python
 │   ├── build_report.py          the report and its page

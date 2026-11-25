@@ -6,6 +6,7 @@ Every number in the text comes from src/register.py, the same functions the work
 import pandas as pd
 
 import guideline_cases
+import pay_review
 import provider_file
 import register
 import report_html
@@ -343,7 +344,53 @@ def write() -> dict:
         "by Regulation (EU) 2026/1744 were not re-read for this section.*")
     add("")
 
-    add("## 10. The next 90 days")
+    pr = pay_review.simulate()
+    b = pr["before"]
+    m_ = lambda x: f"€{x / 1e6:.2f} million"
+    pc = lambda x: f"{x * 100:.1f}%"
+    add("## 10. The pay review recommender under both laws")
+    add("")
+    add("S08 proposes each person's pay rise. It is high-risk under the AI Act, and under the Pay Transparency "
+        "Directive its criteria must be gender-neutral, and next year's report will show what it did. The register "
+        "cannot tell which way it pushes the gaps; a simulation can. Four designs a supplier might ship were run on "
+        "the payroll of [pay-transparency-readiness-kit](https://github.com/D0M3N1C0X/pay-transparency-readiness-kit), "
+        f"each spending the same budget, 3% of base pay ({m_(pr['budget_eur'])}), and the gaps recomputed with that "
+        f"kit's rules. Before any rise the code gives the kit's own figures: a {pc(b['group_gap'])} hourly gap and "
+        f"{len(b['flags'])} of {len(b['categories'])} categories flagged.")
+    add("")
+    rows = []
+    for d in pay_review.DESIGNS:
+        x = pr[d]
+        rows.append([d, pc(x["mean_rise_f"]) + " / " + pc(x["mean_rise_m"]), pc(x["group_gap"]),
+                     f"{len(x['flags'])} ({len(x['cleared'])} cleared, {len(x['new_flags'])} new)"])
+    add(md_table(["Design", "Average rise, women / men", "Group hourly gap after", "Categories flagged after"],
+                 [["Before the review", "-", pc(b["group_gap"]), str(len(b["flags"]))], *rows], "lrrr"))
+    add("")
+    eq = pr["Matrix with an equity fund"]
+    boost = pr["Matrix with a retention boost"]
+    new_all = set.intersection(*(set(pr[d]["new_flags"]) for d in pay_review.DESIGNS))
+    add("- **No merit design closes the gaps.** Rating only, the matrix and the matrix with a retention boost move "
+        f"the group gap by at most {abs(b['group_gap'] - min(pr[d]['group_gap'] for d in pay_review.DESIGNS[:3])) * 100:.1f} "
+        "points: the gap comes from which levels women and men hold, and a review inside each role cannot reach it. "
+        "Rating only even adds two flags.")
+    add(f"- **An equity fund does.** Spending {m_(pr['equity_eur'])} of the budget first on the flagged categories, "
+        "the lower-paid sex lifted to the other's mean, and the rest through the matrix, clears "
+        f"{len(eq['cleared'])} of {len(b['flags'])} flags and brings the group gap to {pc(eq['group_gap'])}. That sum is "
+        "the pay-transparency kit's cost ceiling: the review budget can carry it, at the price of smaller merit rises "
+        "that year.")
+    add("- **The retention boost is wrong for a different reason.** It barely changes the gaps "
+        f"({pc(boost['group_gap'])}), but it pays people more because a model predicts they may leave: the use the "
+        "attrition model's card rules out (V01), and a predicted wish to leave is none of the objective, gender-neutral "
+        "criteria the Directive expects pay to rest on: skills, effort, responsibility, working conditions (Art. 4(4)).")
+    if new_all:
+        add(f"- **Small categories move on their own.** {', '.join(f'{c} {cat}' for c, cat in sorted(new_all))} becomes "
+            "flagged under every design: it has fewer than five of one sex, so any rise to one person can move it "
+            "across 5%. The recommender's output for small categories needs a human check before it is approved.")
+    add("- *A simulation on the synthetic payroll, one review cycle, components unchanged; compa-ratio is base pay "
+        "against the median for the role in each country. Code: src/pay_review.py.*")
+    add("")
+
+    add("## 11. The next 90 days")
     add("")
     add(f"1. **Stop the {lower(banned['system'])} pilot** in Barcelona, delete the scores, and tell the supplier and "
         "the candidates assessed.")
@@ -361,7 +408,7 @@ def write() -> dict:
     add("7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.")
     add("")
 
-    add("## 11. Method, sources and limits")
+    add("## 12. Method, sources and limits")
     add("")
     add("- **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live "
         "formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet "
