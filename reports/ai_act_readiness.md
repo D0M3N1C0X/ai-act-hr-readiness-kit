@@ -218,7 +218,25 @@ The attrition model (S07) is the register's one in-house high-risk system, so th
 - **The deadline is the next change, not December 2027.** The card already plans version 1.1, adding country of work to fix the Germany over-read: a significant change that ends the Article 111(2) grace period, so the eight missing items have to be in place before it ships. Internal control applies (Art. 43(2)); no notified body is involved.
 - *Duties as in Regulation (EU) 2024/1689 (Official Journal L, 12 July 2024); amendments to these articles by Regulation (EU) 2026/1744 were not re-read for this section.*
 
-## 10. The next 90 days
+## 10. The pay review recommender under both laws
+
+S08 proposes each person's pay rise. It is high-risk under the AI Act, and under the Pay Transparency Directive its criteria must be gender-neutral, and next year's report will show what it did. The register cannot tell which way it pushes the gaps; a simulation can. Four designs a supplier might ship were run on the payroll of [pay-transparency-readiness-kit](https://github.com/D0M3N1C0X/pay-transparency-readiness-kit), each spending the same budget, 3% of base pay (€4.26 million), and the gaps recomputed with that kit's rules. Before any rise the code gives the kit's own figures: a 17.6% hourly gap and 12 of 28 categories flagged.
+
+| Design | Average rise, women / men | Group hourly gap after | Categories flagged after |
+|---|---:|---:|---:|
+| Before the review | - | 17.6% | 12 |
+| Rating only | 3.0% / 3.0% | 17.5% | 14 (0 cleared, 2 new) |
+| Merit matrix | 3.1% / 3.0% | 17.4% | 12 (1 cleared, 1 new) |
+| Matrix with a retention boost | 3.2% / 3.0% | 17.4% | 12 (1 cleared, 1 new) |
+| Matrix with an equity fund | 4.3% / 1.6% | 15.5% | 1 (12 cleared, 1 new) |
+
+- **No merit design closes the gaps.** Rating only, the matrix and the matrix with a retention boost move the group gap by at most 0.1 points: the gap comes from which levels women and men hold, and a review inside each role cannot reach it. Rating only even adds two flags.
+- **An equity fund does.** Spending €1.91 million of the budget first on the flagged categories, the lower-paid sex lifted to the other's mean, and the rest through the matrix, clears 12 of 12 flags and brings the group gap to 15.5%. That sum is the pay-transparency kit's cost ceiling: the review budget can carry it, at the price of smaller merit rises that year.
+- **The retention boost is wrong for a different reason.** It barely changes the gaps (17.4%), but it pays people more because a model predicts they may leave: the use the attrition model's card rules out (V01), and a predicted wish to leave is none of the objective, gender-neutral criteria the Directive expects pay to rest on: skills, effort, responsibility, working conditions (Art. 4(4)).
+- **Small categories move on their own.** DE Cat G becomes flagged under every design: it has fewer than five of one sex, so any rise to one person can move it across 5%. The recommender's output for small categories needs a human check before it is approved.
+- *A simulation on the synthetic payroll, one review cycle, components unchanged; compa-ratio is base pay against the median for the role in each country. Code: src/pay_review.py.*
+
+## 11. The next 90 days
 
 1. **Stop the video interview analysis pilot** in Barcelona, delete the scores, and tell the supplier and the candidates assessed.
 2. **Decide the attrition-risk model's future**: keep it and build the provider's file, buy a supplier's equivalent, or narrow it to a team-level view that profiles no one; if it stays, the missing items of its provider's file come before version 1.1 (section 9).
@@ -228,7 +246,7 @@ The attrition model (S07) is the register's one in-house high-risk system, so th
 6. **Send the supplier questionnaire**: 94 questions, starting with the instructions for use and the information the data protection impact assessments need; name an overseer per high-risk system.
 7. **Complete the draft fundamental rights assessments** with the DPO, cross-referring to the DPIAs.
 
-## 11. Method, sources and limits
+## 12. Method, sources and limits
 
 - **Two engines, one answer.** Every class, role and obligation is computed in Python and again by live formulas in [the register workbook](../deliverables/ai_act_hr_register.xlsx); its Reconciliation sheet checks each pair, and CI recalculates the workbook with LibreOffice.
 - **Law read in the original.** The AI Act and the Digital Omnibus in the Official Journal; the Italian, German and Spanish rules on the official legal databases; the Dutch and Austrian ones through their governments' open-data services, the French on the Ministry of Labour's official code, the Irish in the Irish Statute Book and the Belgian agreements on the National Labour Council's site; the Polish ones through secondary sources. Each statement has its status in [docs/verification.md](../docs/verification.md).

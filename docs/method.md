@@ -60,6 +60,17 @@ Regulation (EU) 2024/1689 against that repository's evidence, one row per duty, 
 *Missing* with what is missing. A test checks the two repositories agree: the card's class and role are the
 register's, and the card answers every supplier question the register would send if the system were bought.
 
+## The pay review recommender under both laws
+
+`src/pay_review.py`, report section 10. The pay transparency kit's payroll and job evaluation are vendored at a
+pinned checksum; before any rise the code reproduces that kit's group gap and flagged categories. Four designs share
+one budget, 3% of each employer's base pay: rise by rating; a merit matrix of rating times position in the range
+(compa-ratio against the role's median full-time base pay in the country, multipliers 1.5, 1.2, 1.0 and 0.6 at 0.92,
+1.00 and 1.08); the matrix with a two-point boost for people below 0.92 or on fixed-term contracts; and the matrix
+after an equity fund that lifts the lower-paid sex to the other's mean hourly pay in every category flagged before
+the review. Gaps are recomputed with the kit's rules (hourly pay level with all components, 5% on hourly or annual
+pay). One cycle; components unchanged.
+
 ## Obligations
 
 Fifteen obligations, each with the condition that triggers it and the date it applies from
