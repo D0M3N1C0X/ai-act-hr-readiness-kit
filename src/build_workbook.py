@@ -20,6 +20,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.hyperlink import Hyperlink
 
+import guideline_cases
+import provider_file
 import register
 from config import (
     ASSESSMENT_DATE,
@@ -135,7 +137,7 @@ class Model:
 
     def build(self, path: Path) -> None:
         names = ["Cover", "Summary", "Register", "Obligations", "Workers", "Supplier", "Literacy", "FRIA", "Timeline",
-                 "Headcount", "Settings", "Reconciliation"]
+                 "Guideline cases", "Provider file", "Headcount", "Settings", "Reconciliation"]
         self.wb.active.title = names[0]
         for n in names[1:]:
             self.wb.create_sheet(n)
@@ -148,6 +150,8 @@ class Model:
         self.literacy(self.wb["Literacy"])
         self.fria(self.wb["FRIA"])
         self.timeline(self.wb["Timeline"])
+        self.guideline_cases(self.wb["Guideline cases"])
+        self.provider_file(self.wb["Provider file"])
         self.dashboard(self.wb["Summary"])
         self.reconciliation(self.wb["Reconciliation"])
         self.cover(self.wb["Cover"], names)
@@ -532,6 +536,63 @@ class Model:
             put(ws, f"F{k}", f"=Workers!{get_column_letter(4 + WORKER_RULES.index(it))}{last + 1}", color=GREEN,
                 align="center")
 
+    def guideline_cases(self, ws) -> None:
+        """The Commission's examples: the facts are inputs; the two answers, the verdict and the agreement are formulas
+        that follow the questions as worded now."""
+        title(ws, "The classification against the Commission's examples (Art. 5(1)(f))",
+              f"{guideline_cases.SOURCE}. Change a fact and the answers and the verdict follow.")
+        widths(ws, {"A": 7, "B": 7, "C": 70, "D": 11, "E": 10, "F": 14, "G": 13, "H": 12, "I": 12, "J": 15, "K": 15,
+                    "L": 9})
+        header(ws, 4, ["Case", "Para.", "Example", "Whose emotions", "From", "Infers", "Purpose", "Infers emotions?",
+                       "Medical or safety?", "Register says", "Guidelines say", "Agree?"], height=36)
+        e = guideline_cases.evaluate()
+        first = 5
+        for r, c in enumerate(e.to_dict("records"), start=first):
+            for col, key in zip("ABCDEFG", ["case_id", "paragraph", "example", "target", "basis", "infers", "purpose"],
+                                strict=True):
+                put(ws, f"{col}{r}", c[key], color=BLUE, wrap=key == "example")
+            put(ws, f"H{r}", (f'=IF(AND(F{r}="emotion",E{r}="biometric",OR(D{r}="workers",D{r}="candidates"),'
+                              f'G{r}<>"training_only"),"Yes","No")'))
+            put(ws, f"I{r}", f'=IF(AND(H{r}="Yes",OR(G{r}="medical",G{r}="safety")),"Yes","No")')
+            put(ws, f"J{r}", f'=IF(AND(H{r}="Yes",I{r}<>"Yes"),"Prohibited","Not prohibited")', bold=True)
+            put(ws, f"K{r}", c["verdict"], color=BLUE)
+            put(ws, f"L{r}", f'=IF(J{r}=K{r},"Yes","No")')
+            self.check("Guideline cases", f"{c['case_id']} verdict", c["new_verdict"], f"'Guideline cases'!J{r}")
+        last = first + len(e) - 1
+        put(ws, f"C{last + 2}", "Cases where the register agrees with the guidelines", bold=True)
+        put(ws, f"L{last + 2}", f'=COUNTIF(L{first}:L{last},"Yes")', bold=True)
+        self.check("Guideline cases", "cases that agree", int(e["new_agrees"].sum()), f"'Guideline cases'!L{last + 2}")
+        put(ws, f"C{last + 3}", f"With the first wording, read literally, {int(e['old_agrees'].sum())} of {len(e)} "
+                                "agreed (report section 8).", color=MUTED, italic=True)
+        ws.freeze_panes = "D5"
+
+    def provider_file(self, ws) -> None:
+        """The in-house attrition model's provider duties, with the evidence from hr-people-analytics."""
+        title(ws, "The in-house attrition model (S07): the provider's file",
+              "Each provider duty of Regulation (EU) 2024/1689 against the evidence in hr-people-analytics. Change a "
+              "status as the file is built; the counts follow.")
+        widths(ws, {"A": 6, "B": 60, "C": 22, "D": 52, "E": 11, "F": 60})
+        header(ws, 4, ["Ref", "Duty", "Article", "Evidence", "Status", "What is missing"])
+        f = provider_file.load()
+        dv = DataValidation(type="list", formula1='"Covered,Partly,Missing"', allow_blank=False)
+        ws.add_data_validation(dv)
+        first = 5
+        for r, x in enumerate(f.itertuples(index=False), start=first):
+            for col, v in zip("ABCDEF", [x.ref, x.duty, x.article, x.evidence, x.status, x.gap], strict=True):
+                put(ws, f"{col}{r}", v, color=BLUE, wrap=col in "BDF")
+            dv.add(f"E{r}")
+        last = first + len(f) - 1
+        counts = provider_file.summary()["counts"]
+        for i, status in enumerate(provider_file.STATUSES):
+            row = last + 2 + i
+            put(ws, f"B{row}", status, bold=True)
+            put(ws, f"E{row}", f'=COUNTIF(E{first}:E{last},"{status}")', bold=True)
+            self.check("Provider file", f"duties {status.lower()}", counts[status], f"'Provider file'!E{row}")
+        for text, colour in (("Covered", "D5ECDC"), ("Partly", "FBE8B5"), ("Missing", "F5C6C2")):
+            ws.conditional_formatting.add(f"E{first}:E{last}", CellIsRule(operator="equal", formula=[f'"{text}"'],
+                                                                         fill=PatternFill("solid", fgColor=colour)))
+        ws.freeze_panes = "B5"
+
     def reconciliation(self, ws) -> None:
         title(ws, "Reconciliation: workbook formulas against the Python register",
               "Column D was written by src/build_workbook.py from the Python results; column E is the live formula.")
@@ -591,6 +652,8 @@ class Model:
             "Literacy": "Which AI literacy modules each system calls for, for whom, and the evidence to keep.",
             "FRIA": "Whether the fundamental rights impact assessment is owed, and its six elements against the DPIA.",
             "Timeline": "The obligations in date order: what is already in force, what starts in December 2027.",
+            "Guideline cases": "The Commission's 21 workplace cases of emotion recognition, classified by the register.",
+            "Provider file": "The in-house attrition model's 21 provider duties: covered, partly, missing.",
             "Headcount": "Workers by employer and department, to size each system's scope.",
             "Settings": "Who the deployer is, the application dates of the AI Act and the date of this assessment.",
             "Reconciliation": "Each workbook figure checked against the Python register.",
@@ -599,15 +662,16 @@ class Model:
             cell = put(ws, f"B{i}", n, color="1F5FA8")
             cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"'{n}'!A1")
             put(ws, f"C{i}", purpose[n])
-        put(ws, "B30", "Check", bold=True, size=11)
-        put(ws, "C30", f"={self.recon_result}", color=GREEN, bold=True)
-        put(ws, "B32", "Limits", bold=True, size=11)
-        put(ws, "C32", "Synthetic organisation and systems. Not legal advice. The classification follows the AI Act "
+        k = 17 + len(names)
+        put(ws, f"B{k}", "Check", bold=True, size=11)
+        put(ws, f"C{k}", f"={self.recon_result}", color=GREEN, bold=True)
+        put(ws, f"B{k + 2}", "Limits", bold=True, size=11)
+        put(ws, f"C{k + 2}", "Synthetic organisation and systems. Not legal advice. The classification follows the AI Act "
                        "text; Commission guidelines and national practice can move boundary cases. Sources and their "
                        "status are in docs/verification.md in the repository.", wrap=True)
-        ws.row_dimensions[32].height = 40
-        put(ws, "B34", "Domenico Perroni", color=MUTED)
-        cell = put(ws, "C34", REPO, color="1F5FA8")
+        ws.row_dimensions[k + 2].height = 40
+        put(ws, f"B{k + 4}", "Domenico Perroni", color=MUTED)
+        cell = put(ws, f"C{k + 4}", REPO, color="1F5FA8")
         cell.hyperlink = REPO
 
 

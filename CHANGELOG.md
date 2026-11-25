@@ -31,6 +31,10 @@ What changed in each release. Format: [Keep a Changelog](https://keepachangelog.
   is from secondary sources and marked to verify; the Netherlands has a draft; France, Austria and Belgium were not
   checked.
 
+- **Two workbook sheets**: *Guideline cases* (the 21 cases' facts as inputs; the answers, the verdict and the
+  agreement as formulas) and *Provider file* (the 21 provider duties with a status drop-down and live counts).
+  Reconciliation checks: 813 → 838, all matching after a LibreOffice recalculation. New cover and tool loop.
+
 ### Fixed
 
 - **The emotion and medical-or-safety questions**, in the register, the workbook and the browser tool, now follow the
